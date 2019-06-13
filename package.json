@@ -1,22 +1,16 @@
 {
-  "name": "propertyprolite",
+  "name": "script_rest_api",
   "version": "1.0.0",
-  "description": "Property Pro Lite is a platform where people can create and/or search properties for sale or rent.",
-  "main": "index.js",
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hezronkimutai/PropertyProLiteAPI.git"
-  },
-  "author": "hezron kimutai chelimo",
+  "author": "Hezron Kimutai Chelimo",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/hezronkimutai/PropertyProLiteAPI/issues"
-  },
-  "homepage": "https://github.com/hezronkimutai/PropertyProLiteAPI#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.16.4",
+    "nodemon": "^1.19.1"
   }
 }
