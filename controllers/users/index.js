@@ -1,6 +1,6 @@
 const express = require('express');
- const router = express.Router();
-const records = require('../models/users');
+ const users = express.Router();
+const records = require('../../models/users');
 
 function asyncHandler(cb){
   return async (req, res, next)=>{
@@ -12,21 +12,21 @@ function asyncHandler(cb){
   };
 }
 
-// /users
-router.get('/users', asyncHandler(async(req, res)=>{
-
-    const users = await records.getUsers();
-    if(users){
-      res.json(users)
-    }
-    else{
-      res.status(400).json({message:"No users found"})
-    }
-
-}));
+// // /users
+// users.get('/', asyncHandler(async(req, res)=>{
+//
+//     const users = await records.getData();
+//     if(users){
+//       res.json(users)
+//     }
+//     else{
+//       res.status(400).json({message:"No users found"})
+//     }
+//
+// }));
 
 //send a post request to signup a user
-router.post('/users', asyncHandler(async(req, res)=>{
+users.post('/signup', asyncHandler(async(req, res)=>{
   if(req.body.username && req.body.password){
     const user = await records.createUser({
       username: req.body.username,
@@ -39,7 +39,7 @@ router.post('/users', asyncHandler(async(req, res)=>{
 }));
 
 //send a post request to signin a user
-router.post('/users/login', asyncHandler(async(req, res)=>{
+users.post('/login', asyncHandler(async(req, res)=>{
   if(req.body.username && req.body.password){
 
     const users = await records.getUsers();
@@ -63,4 +63,4 @@ router.post('/users/login', asyncHandler(async(req, res)=>{
   }
 }));
 
-module.exports = router;
+module.exports = users;

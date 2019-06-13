@@ -2,10 +2,9 @@ const express = require('express');
 const records = require('./models/users')
 const app = express();
 app.use(express.json());
-const users = require('./controllers/users');
-const properties = require('./controllers/properties');
+const controllers = require('./controllers');
 
-app.use('/api', users);
+app.use('/api', controllers);
 
 
 

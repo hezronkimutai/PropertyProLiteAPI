@@ -1,5 +1,5 @@
 {
-  "records": [
+  "users": [
     {
       "username": "Matilda",
       "password": "Khjdghf76",
@@ -10,5 +10,13 @@
       "password": "Khj",
       "id": 3810
     }
+  ],
+  "properties":[
+    {
+      "propertyName":"car"
+
+    }
+
+
   ]
 }
