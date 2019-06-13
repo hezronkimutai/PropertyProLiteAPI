@@ -1,6 +1,6 @@
 const express = require('express');
  const users = express.Router();
-const records = require('../../models/users');
+const records = require('../../models');
 
 function asyncHandler(cb){
   return async (req, res, next)=>{
@@ -12,22 +12,24 @@ function asyncHandler(cb){
   };
 }
 
-// // /users
-// users.get('/', asyncHandler(async(req, res)=>{
-//
-//     const users = await records.getData();
-//     if(users){
-//       res.json(users)
-//     }
-//     else{
-//       res.status(400).json({message:"No users found"})
-//     }
-//
-// }));
+// /users
+users.get('/', asyncHandler(async(req, res)=>{
+
+  const gdb =  await records.getData()
+  const users = gdb.users;
+    if(users){
+      res.json(users)
+    }
+    else{
+      res.status(400).json({message:"No users found"})
+    }
+
+}));
 
 //send a post request to signup a user
 users.post('/signup', asyncHandler(async(req, res)=>{
   if(req.body.username && req.body.password){
+    console.log(req.body.password)
     const user = await records.createUser({
       username: req.body.username,
       password: req.body.password
@@ -42,11 +44,13 @@ users.post('/signup', asyncHandler(async(req, res)=>{
 users.post('/login', asyncHandler(async(req, res)=>{
   if(req.body.username && req.body.password){
 
-    const users = await records.getUsers();
+    const gdb =  await records.getData()
+    const users = gdb.users;
+    console.log(users)
 
-    for (var i = 0; i < users.records.length; i++) {
-      console.log(req.body.username +"==="+users.records[i].username)
-      if(users.records[i].username === req.body.username && users.records[i].password === req.body.password){
+    for (var i = 0; i < users.length; i++) {
+      console.log(req.body.username +"==="+users[i].username)
+      if(users[i].username === req.body.username && users[i].password === req.body.password){
         res.status(201).json({
           msg:"User logged in"
         });
