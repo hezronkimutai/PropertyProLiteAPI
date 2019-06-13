@@ -1,5 +1,5 @@
 const express = require('express');
-const records = require('./models/users')
+const records = require('./models')
 const app = express();
 app.use(express.json());
 const controllers = require('./controllers');
