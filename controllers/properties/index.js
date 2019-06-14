@@ -37,12 +37,26 @@ properties.get('/:id', asyncHandler(async(req, res)=>{
     }
   }));
 
+  //Send a get request to retrieve a single property
+  properties.get('/type/:type', asyncHandler(async(req, res)=>{
+
+      const property = await  records.getPropertyType(req.params.type)
+
+      if(property){
+
+      res.json(property);}
+      else {
+        res.status(400).json({message:"Property not found"})
+      }
+    }));
+
+
   //send a post request to pst a property
   properties.post('/post-property', asyncHandler(async(req, res)=>{
-    if(req.body.username && req.body.password){
+    if(req.body.propertyName && req.body.propertyType){
       const property = await records.createProperty({
-        username: req.body.username,
-        password: req.body.password
+        propertyName: req.body.propertyName,
+        propertyType: req.body.propertyType
       });
       res.status(201).json(property);
     }else{
@@ -54,8 +68,8 @@ properties.get('/:id', asyncHandler(async(req, res)=>{
 properties.put('/:id', asyncHandler(async(req, res)=>{
     const property = await  records.getProperty(req.params.id);
       if (property){
-        property.username = req.body.username;
-        property.password = req.body.password;
+        property.username = req.body.propertyName;
+        property.password = req.body.propertyType;
 
         await records.updateProperty(property);
 

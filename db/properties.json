@@ -1,12 +1,22 @@
 [
   {
-    "username": "ezra",
-    "password": "Khj",
-    "id": 7004
+    "propertyName": "volvo",
+    "propertyType": "vehicle",
+    "id": 1936
   },
   {
-    "username": "Katumani",
-    "password": "Khj",
-    "id": 8118
+    "propertyName": "marcf",
+    "propertyType": "vehicle",
+    "id": 9158
+  },
+  {
+    "propertyName": "Nokia s2",
+    "propertyType": "phones",
+    "id": 7255
+  },
+  {
+    "propertyName": "Samsung",
+    "propertyType": "phones",
+    "id": 9989
   }
 ]
