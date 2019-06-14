@@ -108,6 +108,34 @@ async function getUser(id){
   return newRecord;
 }
 
+/**
+ * Updates a property
+ * @param {Object} newProperty - Object containing info for updated property: the username, password
+ */
+async function updateProperty(newProperty){
+  const properties = await getProperties()
+  let property = properties.find(record => record.id == newProperty.id);
+
+  property.username = newProperty.username;
+  property.password = newProperty.password;
+
+  await saveProperties(properties);
+}
+
+/**
+ * Updates a user
+ * @param {Object} newUser - Object containing info for updated user: the username, password
+ */
+async function updateUser(newUser){
+  const users = await getUsers()
+  let user = users.find(record => record.id == newUser.id);
+
+  user.username = newUser.username;
+  user.password = newUser.password;
+
+  await saveUsers(users);
+}
+
 
 
 
@@ -117,5 +145,7 @@ module.exports = {
   createUser,
   createProperty,
    getProperty,
-   getUser
+   getUser,
+   updateProperty,
+   updateUser
 }

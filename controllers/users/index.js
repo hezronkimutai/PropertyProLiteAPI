@@ -79,4 +79,23 @@ users.post('/login', asyncHandler(async(req, res)=>{
   }
 }));
 
+//send a put request to update a user
+users.put('/:id', asyncHandler(async(req, res)=>{
+  const user = await  records.getUser(req.params.id);
+    if (user){
+      user.username = req.body.username;
+      user.password = req.body.password;
+
+      await records.updateUser(user);
+
+      res.status(204).end();
+    }
+    else{
+      res.status(404).json({message:"Property wasn't found"});
+    }
+
+
+}));
+
+
 module.exports = users;

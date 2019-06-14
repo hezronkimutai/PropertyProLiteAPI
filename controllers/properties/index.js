@@ -30,6 +30,7 @@ properties.get('/:id', asyncHandler(async(req, res)=>{
     const property = await  records.getProperty(req.params.id)
 
     if(property){
+
     res.json(property);}
     else {
       res.status(400).json({message:"Property not found"})
@@ -48,6 +49,24 @@ properties.get('/:id', asyncHandler(async(req, res)=>{
       res.status(400).json({message: "password and Username required."});
     }
   }));
+
+  //send a put request to update a property
+properties.put('/:id', asyncHandler(async(req, res)=>{
+    const property = await  records.getProperty(req.params.id);
+      if (property){
+        property.username = req.body.username;
+        property.password = req.body.password;
+
+        await records.updateProperty(property);
+
+        res.status(204).end();
+      }
+      else{
+        res.status(404).json({message:"Property wasn't found"});
+      }
+
+
+}));
 
 
 
