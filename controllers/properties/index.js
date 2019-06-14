@@ -64,10 +64,20 @@ properties.put('/:id', asyncHandler(async(req, res)=>{
       else{
         res.status(404).json({message:"Property wasn't found"});
       }
-
-
 }));
 
+//send a delete request to delete a property
+properties.delete("/:id", asyncHandler(async(req,res) =>{
+
+    const property = await records.getProperty(req.params.id)
+    if (property){
+      await records.deleteProperty(property);
+      res.status(204).end();
+    }
+    else{
+      res.status(404).json({message:"Property wasn't found"});
+    }
+}));
 
 
 module.exports = properties;

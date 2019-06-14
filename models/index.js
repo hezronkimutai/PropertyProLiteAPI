@@ -136,6 +136,26 @@ async function updateUser(newUser){
   await saveUsers(users);
 }
 
+/**
+ * Deletes a single Property
+ * @param {Object} property - Accepts record to be deleted.
+ */
+async function deleteProperty(property){
+  const allProperties = await getProperties();
+  const properties = allProperties.filter(record => record.id != property.id);
+  await saveProperties(properties);
+}
+
+/**
+ * Deletes a single Property
+ * @param {Object} user - Accepts record to be deleted.
+ */
+async function deleteUser(user){
+  const allUsers = await getUsers();
+const  users = allUsers.filter(record => record.id != user.id);
+    console.log("======here======")
+  await saveUsers(users);
+}
 
 
 
@@ -147,5 +167,7 @@ module.exports = {
    getProperty,
    getUser,
    updateProperty,
-   updateUser
+   updateUser,
+   deleteProperty,
+   deleteUser
 }
