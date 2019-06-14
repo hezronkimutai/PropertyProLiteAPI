@@ -24,6 +24,7 @@ properties.get('/', asyncHandler(async(req, res)=>{
 
 }));
 
+//Send a get request to retrieve a single property
 properties.get('/:id', asyncHandler(async(req, res)=>{
 
     const property = await  records.getProperty(req.params.id)
@@ -35,14 +36,13 @@ properties.get('/:id', asyncHandler(async(req, res)=>{
     }
   }));
 
-  //send a post request to signup a user
+  //send a post request to pst a property
   properties.post('/post-property', asyncHandler(async(req, res)=>{
     if(req.body.username && req.body.password){
       const property = await records.createProperty({
         username: req.body.username,
         password: req.body.password
       });
-      console.log("======"+property);
       res.status(201).json(property);
     }else{
       res.status(400).json({message: "password and Username required."});
