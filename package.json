@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test":"mocha",
+    "test": "nyc --reporter=text mocha --exit",
     "start": "nodemon app.js"
   },
   "author": "Hezron Kimutai Chelimo",
@@ -12,5 +12,8 @@
   "dependencies": {
     "express": "^4.16.4",
     "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.4"
   }
 }
