@@ -1,15 +1,5 @@
 [
   {
-    "propertyName": "volvo",
-    "propertyType": "vehicle",
-    "id": 1936
-  },
-  {
-    "propertyName": "marcf",
-    "propertyType": "vehicle",
-    "id": 9158
-  },
-  {
     "propertyName": "Nokia s2",
     "propertyType": "phones",
     "id": 7255
@@ -18,5 +8,75 @@
     "propertyName": "Samsung",
     "propertyType": "phones",
     "id": 9989
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 3814
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 5663
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 6918
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 7875
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 5623
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 912
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 2529
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 9606
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 6704
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 7293
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 5883
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 699
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 7298
+  },
+  {
+    "propertyName": "toyota",
+    "propertyType": "vitz",
+    "id": 7202
   }
 ]

@@ -15,8 +15,7 @@ function asyncHandler(cb){
 // /Get request to get all users
 users.get('/', asyncHandler(async(req, res)=>{
 
-  const gdb =  await records.getUsers()
-  const users = gdb.users;
+  const users =  await records.getUsers()
     if(users){
       res.json(users)
     }
