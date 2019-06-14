@@ -93,8 +93,20 @@ users.put('/:id', asyncHandler(async(req, res)=>{
     else{
       res.status(404).json({message:"Property wasn't found"});
     }
+}));
 
+//send a delete request to delete a user
+users.delete("/:id", asyncHandler(async(req,res) =>{
 
+    const user = await records.getUser(req.params.id)
+
+    if (user){
+      await records.deleteUser(user);
+      res.status(204).end();
+    }
+    else{
+      res.status(404).json({message:"User wasn't found"});
+    }
 }));
 
 
