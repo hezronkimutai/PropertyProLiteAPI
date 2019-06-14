@@ -74,7 +74,7 @@ async function getProperty(id){
 
 /**
  * Gets a specific property type
- * @param {number} type - Accepts the type of the specified property.
+ * @param {string} type - Accepts the type of the specified property.
  */
 async function getPropertyType(type){
   const properties = await getProperties()
