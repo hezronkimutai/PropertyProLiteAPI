@@ -12,9 +12,11 @@ function asyncHandler(cb){
   };
 }
 
-// /users
+// /Get request to get all users
 users.get('/', asyncHandler(async(req, res)=>{
-  const users = await records.getUsers()
+
+  const gdb =  await records.getUsers()
+  const users = gdb.users;
     if(users){
       res.json(users)
     }
@@ -23,6 +25,19 @@ users.get('/', asyncHandler(async(req, res)=>{
     }
 
 }));
+
+//Send a get request to retrieve a single property
+users.get('/:id', asyncHandler(async(req, res)=>{
+
+    const user = await  records.getUser(req.params.id)
+
+    if(user){
+    res.json(user);}
+    else {
+      res.status(400).json({message:"Property not found"})
+    }
+  }));
+
 
 //send a post request to signup a user
 users.post('/signup', asyncHandler(async(req, res)=>{
@@ -41,7 +56,8 @@ users.post('/signup', asyncHandler(async(req, res)=>{
 users.post('/login', asyncHandler(async(req, res)=>{
   if(req.body.username && req.body.password){
 
-    const users = await records.getUsers()
+    const gdb =  await records.getData()
+    const users = gdb.users;
     console.log(users)
 
     for (var i = 0; i < users.length; i++) {
