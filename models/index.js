@@ -72,6 +72,23 @@ async function getProperty(id){
   return properties.find(record => record.id == id);
 }
 
+/**
+ * Gets a specific property type
+ * @param {number} type - Accepts the type of the specified property.
+ */
+async function getPropertyType(type){
+  const properties = await getProperties()
+  const onePropertyType = [];
+
+   properties.forEach(await function (item) {
+    console.log(item)
+        if(item.propertyType == type){
+          onePropertyType.push(item);
+        }
+      });
+  return onePropertyType
+}
+
 
 /**
  * Gets a specific user by ID
@@ -116,8 +133,8 @@ async function updateProperty(newProperty){
   const properties = await getProperties()
   let property = properties.find(record => record.id == newProperty.id);
 
-  property.username = newProperty.username;
-  property.password = newProperty.password;
+  property.propertyName = newProperty.propertyName;
+  property.propertyType = newProperty.propertyType;
 
   await saveProperties(properties);
 }
@@ -169,5 +186,6 @@ module.exports = {
    updateProperty,
    updateUser,
    deleteProperty,
-   deleteUser
+   deleteUser,
+   getPropertyType
 }
