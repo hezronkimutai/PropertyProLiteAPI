@@ -14,9 +14,7 @@ function asyncHandler(cb){
 
 // /users
 users.get('/', asyncHandler(async(req, res)=>{
-
-  const gdb =  await records.getData()
-  const users = gdb.users;
+  const users = await records.getUsers()
     if(users){
       res.json(users)
     }
@@ -29,7 +27,6 @@ users.get('/', asyncHandler(async(req, res)=>{
 //send a post request to signup a user
 users.post('/signup', asyncHandler(async(req, res)=>{
   if(req.body.username && req.body.password){
-    console.log(req.body.password)
     const user = await records.createUser({
       username: req.body.username,
       password: req.body.password
@@ -44,8 +41,7 @@ users.post('/signup', asyncHandler(async(req, res)=>{
 users.post('/login', asyncHandler(async(req, res)=>{
   if(req.body.username && req.body.password){
 
-    const gdb =  await records.getData()
-    const users = gdb.users;
+    const users = await records.getUsers()
     console.log(users)
 
     for (var i = 0; i < users.length; i++) {

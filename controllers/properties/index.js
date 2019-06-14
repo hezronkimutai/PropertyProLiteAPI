@@ -14,9 +14,7 @@ function asyncHandler(cb){
 
 // /users
 properties.get('/', asyncHandler(async(req, res)=>{
-
-    const gdp =  await records.getData();
-      const properties =  gdp.properties;
+      const properties =  await records.getProperties();
     if(properties){
       res.json(properties)
     }
