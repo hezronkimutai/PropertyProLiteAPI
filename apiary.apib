@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: https://propertyproliteapi.herokuapp.com/api/
 
 # PropertyProLite
 
@@ -25,6 +25,9 @@ Property Pro Lite is a platform where people can create and/or search properties
             }
 
         ]
+
+
+### Single property [/properties/2563]
 
 ### Fetch a single property [GET]
 
@@ -85,6 +88,9 @@ object containing a property name, propertytype, and an uploaded image.
 
         ]
 
+
+### Single user [/users/8118]
+
 ### Fetch a single user [GET]
 
 + Response 200 (application/json)
@@ -115,6 +121,7 @@ object containing a username and password.
             Location: /users/signup
 
     + Body
+    
             {
               "username": "Katumani",
               "password": "Khj",
