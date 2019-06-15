@@ -3,6 +3,60 @@ const express = require('express');
 const properties = express.Router();
 const records = require('../../models');
 
+// MULTER
+const multer = require('multer')
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function(req, file, cb) {
+    console.log(file)
+    cb(null, file.originalname)
+  }
+})
+
+properties.post('/post-property', asyncHandler(async (req, res) => {
+  const upload = multer({ storage }).single('propertyUrl')
+  upload(req, res, async function(err) {
+
+    if (err) {
+      return res.send(err)
+    }
+
+    // SEND FILE TO CLOUDINARY
+    const cloudinary = require('cloudinary').v2
+    cloudinary.config({
+      cloud_name: 'hezzie',
+      api_key: '769876422482872',
+      api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
+    })
+
+    const path = req.file.path
+    const uniqueFilename = new Date().toISOString()
+
+    cloudinary.uploader.upload(
+      path,
+      { public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
+      async function(err, image) {
+        if (err) return res.send(err)
+        const fs = require('fs')
+        fs.unlinkSync(path)
+        if (req.body.propertyName && req.body.propertyType ) {
+          const property = await records.createProperty({
+            propertyName: req.body.propertyName,
+            propertyType: req.body.propertyType,
+            propertyUrl:image.secure_url
+          });
+          res.status(201).json(property);
+        } else {
+          res.status(400).json({ message: 'password, username and image required.' });
+        }
+      }
+    )
+  })
+}));
+
+
 function asyncHandler(cb) {
   return async (req, res, next) => {
     try {
@@ -12,6 +66,8 @@ function asyncHandler(cb) {
     }
   };
 }
+
+
 
 // /users
 properties.get('/', asyncHandler(async (req, res) => {
@@ -47,17 +103,17 @@ properties.get('/type/:type', asyncHandler(async (req, res) => {
 
 
 // send a post request to pst a property
-properties.post('/post-property', asyncHandler(async (req, res) => {
-  if (req.body.propertyName && req.body.propertyType) {
-    const property = await records.createProperty({
-      propertyName: req.body.propertyName,
-      propertyType: req.body.propertyType,
-    });
-    res.status(201).json(property);
-  } else {
-    res.status(400).json({ message: 'password and Username required.' });
-  }
-}));
+// properties.post('/post-property', asyncHandler(async (req, res) => {
+//   if (req.body.propertyName && req.body.propertyType) {
+//     const property = await records.createProperty({
+//       propertyName: req.body.propertyName,
+//       propertyType: req.body.propertyType,
+//     });
+//     res.status(201).json(property);
+//   } else {
+//     res.status(400).json({ message: 'password and Username required.' });
+//   }
+// }));
 
 // send a put request to update a property
 properties.put('/:id', asyncHandler(async (req, res) => {
