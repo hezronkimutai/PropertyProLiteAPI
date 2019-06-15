@@ -10,7 +10,9 @@
   "author": "Hezron Kimutai Chelimo",
   "license": "ISC",
   "dependencies": {
+    "cloudinary": "^1.14.0",
     "express": "^4.16.4",
+    "multer": "^1.4.1",
     "nodemon": "^1.19.1"
   },
   "devDependencies": {
