@@ -1,9 +1,9 @@
 const express = require('express');
-const records = require('./models');
+const records = require('./api/v1/models');
 
 const app = express();
 app.use(express.json());
-const controllers = require('./controllers');
+const controllers = require('./api/v1/controllers');
 
 app.use('/api', controllers);
 
