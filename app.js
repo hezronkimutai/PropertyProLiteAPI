@@ -1,5 +1,6 @@
 const express = require('express');
-const records = require('./models')
+const records = require('./models');
+
 const app = express();
 app.use(express.json());
 const controllers = require('./controllers');
@@ -7,20 +8,18 @@ const controllers = require('./controllers');
 app.use('/api', controllers);
 
 
-
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
+  const err = new Error('Not Found');
   next(err);
 });
-app.use((err, req, res, next)=> {
+app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
-   error:{
-     message:err.message
-   }
+    error: {
+      message: err.message,
+    },
   });
-})
-app.listen(process.env.PORT || 3000, () => console.log('PropertyProLiteAPI listening on port 3000!'))
-
+});
+app.listen(process.env.PORT || 3000, () => console.log('PropertyProLiteAPI listening on port 3000!'));
 
 
 module.exports = app;

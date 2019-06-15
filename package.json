@@ -14,9 +14,13 @@
     "nodemon": "^1.19.1"
   },
   "devDependencies": {
-    "nyc": "14.1.1",
-    "chai-http": "4.3.0",
     "chai": "4.2.0",
-    "mocha": "6.1.4"
+    "chai-http": "4.3.0",
+    "coveralls": "^3.0.4",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "mocha": "6.1.4",
+    "nyc": "14.1.1"
   }
 }

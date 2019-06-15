@@ -1,10 +1,10 @@
 const fs = require('fs');
 
-function generateRandomId(){
+function generateRandomId() {
   return Math.floor(Math.random() * 10000);
 }
 
-function saveProperties(data){
+function saveProperties(data) {
   return new Promise((resolve, reject) => {
     fs.writeFile('db/properties.json', JSON.stringify(data, null, 2), (err) => {
       if (err) {
@@ -16,7 +16,7 @@ function saveProperties(data){
   });
 }
 
-function saveUsers(data){
+function saveUsers(data) {
   return new Promise((resolve, reject) => {
     fs.writeFile('db/users.json', JSON.stringify(data, null, 2), (err) => {
       if (err) {
@@ -32,7 +32,7 @@ function saveUsers(data){
  * Gets all users
  * @param None
  */
-function getUsers(){
+function getUsers() {
   return new Promise((resolve, reject) => {
     fs.readFile('db/users.json', 'utf8', (err, data) => {
       if (err) {
@@ -49,7 +49,7 @@ function getUsers(){
  * Gets all Users
  * @param None
  */
-function getProperties(){
+function getProperties() {
   return new Promise((resolve, reject) => {
     fs.readFile('db/properties.json', 'utf8', (err, data) => {
       if (err) {
@@ -67,26 +67,26 @@ function getProperties(){
  * Gets a specific property by ID
  * @param {number} id - Accepts the ID of the specified property.
  */
-async function getProperty(id){
-  const properties = await getProperties()
-  return properties.find(record => record.id == id);
+async function getProperty(id) {
+  const properties = await getProperties();
+  return properties.find(record => record.id === id);
 }
 
 /**
  * Gets a specific property type
  * @param {string} type - Accepts the type of the specified property.
  */
-async function getPropertyType(type){
-  const properties = await getProperties()
+async function getPropertyType(type) {
+  const properties = await getProperties();
   const onePropertyType = [];
 
-   properties.forEach(await function (item) {
-    console.log(item)
-        if(item.propertyType == type){
-          onePropertyType.push(item);
-        }
-      });
-  return onePropertyType
+  properties.forEach(await function (item) {
+    console.log(item);
+    if (item.propertyType === type) {
+      onePropertyType.push(item);
+    }
+  });
+  return onePropertyType;
 }
 
 
@@ -94,17 +94,17 @@ async function getPropertyType(type){
  * Gets a specific user by ID
  * @param {number} id - Accepts the ID of the specified user.
  */
-async function getUser(id){
+async function getUser(id) {
   const users = await getUsers();
-  return users.find(record => record.id == id);
+  return users.find(record => record.id === id);
 }
 
 /**
  * Creates a new user record
  * @param {Object} newRecord - Object containing info for new user: the username, password
  */
-  async function createUser(newRecord) {
-      const users = await getUsers();
+async function createUser(newRecord) {
+  const users = await getUsers();
 
   newRecord.id = generateRandomId();
   users.push(newRecord);
@@ -116,8 +116,8 @@ async function getUser(id){
  * Creates a new user record
  * @param {Object} newRecord - Object containing info for new user: the username, password
  */
-  async function createProperty(newRecord) {
-    const properties = await getProperties()
+async function createProperty(newRecord) {
+  const properties = await getProperties();
 
   newRecord.id = generateRandomId();
   properties.push(newRecord);
@@ -129,9 +129,9 @@ async function getUser(id){
  * Updates a property
  * @param {Object} newProperty - Object containing info for updated property: the username, password
  */
-async function updateProperty(newProperty){
-  const properties = await getProperties()
-  let property = properties.find(record => record.id == newProperty.id);
+async function updateProperty(newProperty) {
+  const properties = await getProperties();
+  const property = properties.find(record => record.id === newProperty.id);
 
   property.propertyName = newProperty.propertyName;
   property.propertyType = newProperty.propertyType;
@@ -143,9 +143,9 @@ async function updateProperty(newProperty){
  * Updates a user
  * @param {Object} newUser - Object containing info for updated user: the username, password
  */
-async function updateUser(newUser){
-  const users = await getUsers()
-  let user = users.find(record => record.id == newUser.id);
+async function updateUser(newUser) {
+  const users = await getUsers();
+  const user = users.find(record => record.id === newUser.id);
 
   user.username = newUser.username;
   user.password = newUser.password;
@@ -157,9 +157,9 @@ async function updateUser(newUser){
  * Deletes a single Property
  * @param {Object} property - Accepts record to be deleted.
  */
-async function deleteProperty(property){
+async function deleteProperty(property) {
   const allProperties = await getProperties();
-  const properties = allProperties.filter(record => record.id != property.id);
+  const properties = allProperties.filter(record => record.id !== property.id);
   await saveProperties(properties);
 }
 
@@ -167,13 +167,11 @@ async function deleteProperty(property){
  * Deletes a single Property
  * @param {Object} user - Accepts record to be deleted.
  */
-async function deleteUser(user){
+async function deleteUser(user) {
   const allUsers = await getUsers();
-const  users = allUsers.filter(record => record.id != user.id);
-    console.log("======here======")
+  const users = allUsers.filter(record => record.id !== user.id);
   await saveUsers(users);
 }
-
 
 
 module.exports = {
@@ -181,11 +179,11 @@ module.exports = {
   getUsers,
   createUser,
   createProperty,
-   getProperty,
-   getUser,
-   updateProperty,
-   updateUser,
-   deleteProperty,
-   deleteUser,
-   getPropertyType
-}
+  getProperty,
+  getUser,
+  updateProperty,
+  updateUser,
+  deleteProperty,
+  deleteUser,
+  getPropertyType,
+};
