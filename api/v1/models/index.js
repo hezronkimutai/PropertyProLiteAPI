@@ -68,8 +68,9 @@ function getProperties() {
  * @param {number} id - Accepts the ID of the specified property.
  */
 async function getProperty(id) {
+
   const properties = await getProperties();
-  return properties.find(record => record.id === id);
+  return properties.find(record => record.id == id);
 }
 
 /**
@@ -96,7 +97,7 @@ async function getPropertyType(type) {
  */
 async function getUser(id) {
   const users = await getUsers();
-  return users.find(record => record.id === id);
+  return users.find(record => record.id == id);
 }
 
 /**
