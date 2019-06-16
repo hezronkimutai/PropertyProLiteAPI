@@ -64,14 +64,8 @@ Property Pro Lite is a platform where people can create and/or search properties
 
 ### Delete a single property [DELETE]
 
-+ Response 201 (application/json)
++ Response 204 
 
-        <!--{-->
-        <!--    "propertyName": "macerdees benz truck",-->
-        <!--    "propertyType": "heavy truck",-->
-        <!--    "propertyUrl": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png",-->
-        <!--    "id": 2563-->
-        <!--}-->
 
 ### Post a property [/properties/post-property]
 ### Create a New Property [POST]
@@ -138,28 +132,9 @@ object.
             "url": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png"
         }
 
-+ Response 201 (application/json)
++ Response 204 
 
-    + Headers
-
-            Location: /properties/post-property
-
-    + Body
-
-            {
-                "name": "samsung g4c",
-                "category": "phones",
-                "state": "Kenya",
-                "price":"6000",
-                "city":"Nairobi",
-                "address":"30100",
-                "map":"789,7655",
-                "reason":"rent",
-                "description": "None of the things will be sold",
-                "url": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png",
-                "id": 2563
-            }
-
+  
 
 ## Users collection [/users]
 
@@ -169,15 +144,22 @@ object.
 
         [
             {
-              "username": "Katumani",
-              "password": "Khj",
-              "id": 8118
+                "firstName": "Hezron",
+                "secondName": "Kimutai",
+                "userName": "Hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "2345778990",
+                "password": "my_password",
+                "confirmPassword": "my_password"
             },{
-              "username": "Katumani",
-              "password": "Khj",
-              "id": 8118
+                "firstName": "My",
+                "secondName": "LFA",
+                "userName": "Kigali",
+                "email": "tia@gmail.com",
+                "phoneNumber": "7568768798990",
+                "password": "tia",
+                "confirmPassword": "tia"
             }
-
         ]
 
 
@@ -188,11 +170,44 @@ object.
 + Response 200 (application/json)
 
         {
-          "username": "Katumani",
-          "password": "Khj",
-          "id": 8118
+            "firstName": "Hezron",
+            "secondName": "Kimutai",
+            "userName": "Hezzie",
+            "email": "hez@gmail.com",
+            "phoneNumber": "2345778990",
+            "password": "my_password",
+            "confirmPassword": "my_password"
+        }
+ 
+ 
+### Update a user [/users/2569]
+### Update a user [PUT]
+
+You may update your own details using this action. It takes a JSON
+object.
+
++ Request (application/json)
+
+         {
+            "firstName": "Hezron",
+            "secondName": "Kimutai",
+            "userName": "Hezzie",
+            "email": "hez@gmail.com",
+            "phoneNumber": "2345778990",
+            "password": "my_password",
+            "confirmPassword": "my_password"
         }
 
++ Response 204 
+
+         
+        
+### Delete a user [/users/259]
+### Delete a single user [DELETE]
+
++ Response 204 
+
+### Create a new user account  [/users/signup]
 ### Create a New user [POST]
 
 You may signup using this action. It takes a JSON
@@ -201,9 +216,13 @@ object containing a username and password.
 + Request (application/json)
 
         {
-          "username": "Katumani",
-          "password": "Khj",
-          "id": 8118
+            "firstName": "Hezron",
+            "secondName": "Kimutai",
+            "userName": "Hezzie",
+            "email": "hez@gmail.com",
+            "phoneNumber": "2345778990",
+            "password": "my_password",
+            "confirmPassword": "my_password"
         }
 
 + Response 201 (application/json)
@@ -215,7 +234,11 @@ object containing a username and password.
     + Body
     
             {
-              "username": "Katumani",
-              "password": "Khj",
-              "id": 8118
+                "firstName": "Hezron",
+                "secondName": "Kimutai",
+                "userName": "Hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "2345778990",
+                "password": "my_password",
+                "confirmPassword": "my_password"
             }
