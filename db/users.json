@@ -1,10 +1,5 @@
 [
   {
-    "username": "Katumani",
-    "password": "Khj",
-    "id": 8118
-  },
-  {
     "firstName": "req.body.firstName",
     "secondName": "req.body.secondName",
     "userName": "req.body.userName",
@@ -12,6 +7,6 @@
     "phoneNumber": "req.body.phoneNumber",
     "password": "req.body.password",
     "confirmPassword": "req.body.confirmPassword",
-    "id": 8315
+    "id": 1062
   }
 ]
