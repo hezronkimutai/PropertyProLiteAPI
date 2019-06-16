@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 })
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
-  const upload = multer({ storage }).single('propertyUrl')
+  const upload = multer({ storage }).single('url')
   upload(req, res, async function(err) {
 
     if (err) {
@@ -41,11 +41,22 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
         if (err) return res.send(err)
         const fs = require('fs')
         fs.unlinkSync(path)
-        if (req.body.propertyName && req.body.propertyType ) {
+        if (req.body.category && req.body.name &&
+           req.body.reason && req.body.price &&
+           req.body.state && req.body.city &&
+           req.body.address && req.body.map &&
+            req.body.description) {
           const property = await records.createProperty({
-            propertyName: req.body.propertyName,
-            propertyType: req.body.propertyType,
-            propertyUrl:image.secure_url
+            category: req.body.category,
+            name: req.body.name,
+            reason: req.body.reason,
+            price: req.body.price,
+            state: req.body.state,
+            city: req.body.city,
+            address: req.body.address,
+            map: req.body.map,
+            description: req.body.description,
+            url:image.secure_url
           });
           res.status(201).json(property);
         } else {
@@ -119,8 +130,15 @@ properties.get('/type/:type', asyncHandler(async (req, res) => {
 properties.put('/:id', asyncHandler(async (req, res) => {
   const property = await records.getProperty(req.params.id);
   if (property) {
-    property.username = req.body.propertyName;
-    property.password = req.body.propertyType;
+    property.category = req.body.category,
+    property.name = req.body.name,
+    property.reason = req.body.reason,
+    property.price = req.body.price,
+    property.state = req.body.state,
+    property.city = req.body.city,
+    property.address = req.body.address,
+    property.map = req.body.map,
+    property.description = req.body.description
 
     await records.updateProperty(property);
 

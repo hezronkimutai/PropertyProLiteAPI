@@ -37,10 +37,15 @@ users.get('/:id', asyncHandler(async (req, res) => {
 
 // send a post request to signup a user
 users.post('/signup', asyncHandler(async (req, res) => {
-  if (req.body.username && req.body.password) {
+  if (req.body.firstName && req.body.secondName && req.body.userName && req.body.email && req.body.phoneNumber && req.body.password && req.body.confirmPassword) {
     const user = await records.createUser({
-      username: req.body.username,
+      firstName: req.body.firstName,
+      secondName: req.body.secondName,
+      userName: req.body.userName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
       password: req.body.password,
+      confirmPassword: req.body.confirmPassword
     });
     res.status(201).json(user);
   } else {
@@ -50,16 +55,13 @@ users.post('/signup', asyncHandler(async (req, res) => {
 
 // send a post request to signin a user
 users.post('/login', asyncHandler(async (req, res) => {
-  if (req.body.username && req.body.password) {
-    const gdb = await records.getData();
-    const { users } = gdb;
-    console.log(users);
+  if (req.body.email && req.body.password) {
+    const users = await records.getUsers();
 
     for (let i = 0; i < users.length; i++) {
-      console.log(`${req.body.username}===${users[i].username}`);
-      if (users[i].username === req.body.username && users[i].password === req.body.password) {
+      if (users[i].email === req.body.email && users[i].password === req.body.password) {
         res.status(201).json({
-          msg: 'User logged in',
+          msg: 'Succesfully logged in',
         });
       }
     }
@@ -67,7 +69,7 @@ users.post('/login', asyncHandler(async (req, res) => {
       msg: 'Incorrect details',
     });
   } else {
-    res.status(400).json({ message: 'password and Username required.' });
+    res.status(400).json({ message: 'password and email required.' });
   }
 }));
 
@@ -75,8 +77,13 @@ users.post('/login', asyncHandler(async (req, res) => {
 users.put('/:id', asyncHandler(async (req, res) => {
   const user = await records.getUser(req.params.id);
   if (user) {
-    user.username = req.body.username;
-    user.password = req.body.password;
+    user.firstName = req.body.firstName,
+    user.secondName = req.body.secondName,
+    user.userName = req.body.userName,
+    user.email = req.body.email,
+    user.phoneNumber = req.body.phoneNumber,
+    user.password = req.body.password,
+    user.confirmPassword = req.body.confirmPassword
 
     await records.updateUser(user);
 
