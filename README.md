@@ -83,7 +83,7 @@ Hezron Kimutai - Github-[hezronkimutai](https://github.com/hezronkimutai)
 
 ## License
 
-This project is licensed under the MIT license. See [LICENSE](https://github.com/hezronkimutai/politico-api/blob/develop/LICENSE) for details.
+This project is licensed under the MIT license. See [LICENSE](https://github.com/hezronkimutai/PropertyProLiteAPI/blob/develop/LICENSE) for details.
 
 ## Contribution
 
