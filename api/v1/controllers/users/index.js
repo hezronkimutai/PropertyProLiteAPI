@@ -35,19 +35,31 @@ users.get('/:id', asyncHandler(async (req, res) => {
 }));
 
 
+
 // send a post request to signup a user
 users.post('/signup', asyncHandler(async (req, res) => {
   if (req.body.firstName && req.body.secondName && req.body.userName && req.body.email && req.body.phoneNumber && req.body.password && req.body.confirmPassword) {
-    const user = await records.createUser({
-      firstName: req.body.firstName,
-      secondName: req.body.secondName,
-      userName: req.body.userName,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      password: req.body.password,
-      confirmPassword: req.body.confirmPassword
-    });
-    res.status(201).json(user);
+    if (req.body.password.length < 6 || req.body.password != req.body.confirmPassword){
+      res.status(400).json({msg:'Password should be longer than 6'})
+    }else if (isNaN(req.body.phoneNumber) || req.body.phoneNumber.length !=10) {
+      res.status(400).json({msg:'Phone number should be a digit'})
+    }else if (req.body.email.indexOf('@') == -1 || req.body.email.indexOf('.') == -1) {
+      res.status(400).json({msg:'invalid email'})
+    }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
+      res.status(400).json({msg:"username, firstName and secondName should be a string"})
+    }
+      const user = await records.createUser({
+        firstName: req.body.firstName,
+        secondName: req.body.secondName,
+        userName: req.body.userName,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword
+      });
+      res.status(201).json(user);
+
+
   } else {
     res.status(400).json({ message: 'password and Username required.' });
   }

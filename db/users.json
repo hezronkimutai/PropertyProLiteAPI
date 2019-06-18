@@ -1,12 +1,2 @@
 [
-  {
-    "firstName": "req.body.firstName",
-    "secondName": "req.body.secondName",
-    "userName": "req.body.userName",
-    "email": "req.body.email",
-    "phoneNumber": "req.body.phoneNumber",
-    "password": "req.body.password",
-    "confirmPassword": "req.body.confirmPassword",
-    "id": 1062
-  }
 ]
