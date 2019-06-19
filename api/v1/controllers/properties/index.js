@@ -46,6 +46,15 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
            req.body.state && req.body.city &&
            req.body.address && req.body.map &&
             req.body.description) {
+            // if (req.body.password.length < 6 || req.body.password != req.body.confirmPassword){
+            //   res.status(400).json({msg:'Password should be longer than 6'})
+            // }else if (isNaN(req.body.phoneNumber) || req.body.phoneNumber.length !=10) {
+            //   res.status(400).json({msg:'Phone number should be a digit'})
+            // }else if (req.body.email.indexOf('@') == -1 || req.body.email.indexOf('.') == -1) {
+            //   res.status(400).json({msg:'invalid email'})
+            // }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
+            //   res.status(400).json({msg:"username, firstName and secondName should be a string"})
+            // }
           const property = await records.createProperty({
             category: req.body.category,
             name: req.body.name,
