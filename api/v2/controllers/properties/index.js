@@ -1,7 +1,40 @@
-const express = require('express');
 
+const express = require('express');
+const pg = require('pg')
 const properties = express.Router();
 const records = require('../../models');
+const format = require('pg-format')
+const PGUSER = 'postgres'
+const PGDATABASE = 'ppl'
+const url = require('url')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+function asyncHandler(cb) {
+  return async (req, res, next) => {
+    try {
+      await cb(req, res, next);
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
+
+
+const params = url.parse(process.env.DATABASE_URL);
+
+const auth = params.auth.split(':');
+
+const config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
 
 // MULTER
 const multer = require('multer')
@@ -15,10 +48,15 @@ const storage = multer.diskStorage({
   }
 })
 
+const pool = new pg.Pool(config )
+
+
+pool.connect(function (err, client, done) {
+  if (err) {console.log(err)}
+
 properties.post('/post-property', asyncHandler(async (req, res) => {
   const upload = multer({ storage }).single('url')
   upload(req, res, async function(err) {
-
     if (err) {
       return res.send(err)
     }
@@ -45,38 +83,68 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
            req.body.reason && req.body.price &&
            req.body.state && req.body.city &&
            req.body.address && req.body.map &&
-            req.body.description) {
-          const property = await records.createProperty({
-            category: req.body.category,
-            name: req.body.name,
-            reason: req.body.reason,
-            price: req.body.price,
-            state: req.body.state,
-            city: req.body.city,
-            address: req.body.address,
-            map: req.body.map,
-            description: req.body.description,
-            url:image.secure_url
-          });
-          res.status(201).json(property);
+          req.body.description) {
+          const myClient = client
+          const propertyQuery = format(`INSERT INTO  properties(category,
+                                  name,reason, price, state, city, address, map, description,url)
+                                  VALUES('%s', '%s', '%s','%s', '%s', '%s','%s','%s','%s','%s')`,
+                                  req.body.category,
+                                  req.body.name,
+                                  req.body.reason,
+                                  req.body.price,
+                                  req.body.state,
+                                  req.body.city,
+                                  req.body.address,
+                                  req.body.map,
+                                  req.body.description,
+                                  image.secure_url);
+          const createTable =`CREATE TABLE IF NOT EXISTS properties(
+                                                          category VARCHAR NOT NULL,
+                                                          name VARCHAR NOT NULL,
+                                                          reason VARCHAR NOT NULL,
+                                                          price VARCHAR NOT NULL,
+                                                          state VARCHAR NOT NULL,
+                                                          city VARCHAR NOT NULL,
+                                                          address VARCHAR NOT NULL,
+                                                          map VARCHAR NOT NULL,
+                                                          description VARCHAR NOT NULL,
+                                                          url VARCHAR NOT NULL
+                                                          )`;
+          myClient.query(createTable)
+          myClient.query(propertyQuery, function (err, result) {
+            if (err) {
+              console.log(err)
+            }
+            res.status(201).json({
+              message:"user created Succesfully",
+              data:myClient.query(`SELECT * from properties`)
+            })
+          })
+
         } else {
-          res.status(400).json({ message: 'password, username and image required.' });
+          res.status(400).json({ message: 'All the fields must be filled.' });
         }
       }
     )
   })
 }));
 
-
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      next(err);
+// /Get request to get all users
+properties.get('/', asyncHandler(async (req, res) => {
+  const myClient = client
+  const propertiesQuery = format('SELECT * from properties')
+  myClient.query(propertiesQuery, function (err, result) {
+    if (err) {
+      console.log(err)
     }
-  };
-}
+    res.json(result.rows)
+  })
+}));
+});
+
+
+
+
 
 
 

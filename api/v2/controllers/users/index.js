@@ -1,3 +1,4 @@
+
 const express = require('express');
 const pg = require('pg')
 const users = express.Router();
@@ -5,8 +6,11 @@ const records = require('../../models');
 const format = require('pg-format')
 const PGUSER = 'postgres'
 const PGDATABASE = 'ppl'
-const age = 732
+const url = require('url')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 function asyncHandler(cb) {
   return async (req, res, next) => {
     try {
@@ -17,15 +21,22 @@ function asyncHandler(cb) {
   };
 }
 
-const config = {
-  user: PGUSER,
-  database: PGDATABASE,
-  max: 10,
-  idleTimeoutMillis: 30000,
-  password: "hheezziiee"
-}
 
-const pool = new pg.Pool(config)
+
+const params = url.parse(process.env.DATABASE_URL);
+
+const auth = params.auth.split(':');
+
+const config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
+
+const pool = new pg.Pool(config )
 
 
 pool.connect(function (err, client, done) {
@@ -72,6 +83,13 @@ pool.connect(function (err, client, done) {
                               req.body.email,
                               req.body.phoneNumber,
                               req.body.password)
+      const createTable =`CREATE TABLE IF NOT EXISTS users(firstName VARCHAR NOT NULL,
+                                                      secondName VARCHAR NOT NULL,
+                                                      username VARCHAR NOT NULL,
+                                                      email VARCHAR NOT NULL,
+                                                      phoneNumber VARCHAR NOT NULL,
+                                                      password VARCHAR NOT NULL  )`;
+    myClient.query(createTable)
     myClient.query(userQuery, function (err, result) {
       if (err) {
         console.log(err)
