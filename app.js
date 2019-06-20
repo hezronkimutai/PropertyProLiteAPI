@@ -3,9 +3,11 @@ const records = require('./api/v1/models');
 
 const app = express();
 app.use(express.json());
-const controllers = require('./api/v1/controllers');
+const controllersv1 = require('./api/v1/controllers');
 
-app.use('/api', controllers);
+app.use('/api/v1', controllersv1);
+const controllersv2 = require('./api/v2/controllers');
+app.use('/api/v2', controllersv2);
 
 
 app.use((req, res, next) => {
@@ -23,3 +25,15 @@ app.listen(process.env.PORT || 3000, () => console.log('PropertyProLiteAPI liste
 
 
 module.exports = app;
+
+
+// const express = require('express');
+// const records = require('./api/v2/models');
+// const app = express();
+// app.use(express.json());
+
+
+
+// app.listen(3000, function () {
+//   console.log('listening on 3000')
+// })
