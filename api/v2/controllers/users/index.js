@@ -22,7 +22,7 @@ function asyncHandler(cb) {
 }
 
 
-console.log("--------here--------",process.env.DATABASE_URL);
+
 const params = url.parse(process.env.DATABASE_URL);
 
 const auth = params.auth.split(':');
@@ -41,7 +41,6 @@ const pool = new pg.Pool(config )
 
 pool.connect(function (err, client, done) {
   if (err) {console.log(err)}
-  console.log("----------here-----",client)
 
   // /Get request to get all users
   users.get('/', asyncHandler(async (req, res) => {

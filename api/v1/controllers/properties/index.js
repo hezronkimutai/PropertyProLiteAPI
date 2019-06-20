@@ -16,12 +16,14 @@ const storage = multer.diskStorage({
 })
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
+
   const upload = multer({ storage }).single('url')
   upload(req, res, async function(err) {
 
     if (err) {
       return res.send(err)
     }
+
 
     // SEND FILE TO CLOUDINARY
     const cloudinary = require('cloudinary').v2
@@ -32,7 +34,10 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
     })
 
     const path = req.file.path
+
     const uniqueFilename = new Date().toISOString()
+
+
 
     cloudinary.uploader.upload(
       path,
@@ -55,7 +60,7 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
             // }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
             //   res.status(400).json({msg:"username, firstName and secondName should be a string"})
             // }
-          const property = await records.createProperty({
+              const property = await records.createProperty({
             category: req.body.category,
             name: req.body.name,
             reason: req.body.reason,
