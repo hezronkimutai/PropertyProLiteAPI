@@ -61,7 +61,7 @@ users.post('/signup', asyncHandler(async (req, res) => {
 
 
   } else {
-    res.status(400).json({ message: 'password and Username required.' });
+    res.status(400).json({ message: 'Please fill all the required fields.' });
   }
 }));
 

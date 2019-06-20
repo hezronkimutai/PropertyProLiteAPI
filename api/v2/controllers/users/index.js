@@ -31,12 +31,11 @@ const pool = new pg.Pool(config)
 pool.connect(function (err, client, done) {
   if (err) {console.log(err)}
 
-
   // /Get request to get all users
   users.get('/', asyncHandler(async (req, res) => {
     const myClient = client
-    const ageQuery = format('SELECT * from numbers')
-    myClient.query(ageQuery, function (err, result) {
+    const usersQuery = format('SELECT * from users')
+    myClient.query(usersQuery, function (err, result) {
       if (err) {
         console.log(err)
       }
@@ -44,26 +43,44 @@ pool.connect(function (err, client, done) {
     })
   }));
 
+  // /Post request to create users
   users.post('/signup', asyncHandler(async (req, res) => {
-    const myClient = client
 
-    const firstName= req.body.firstName;
-    const secondName= req.body.secondName;
-    const userName=req.body.userName;
-    const email= req.body.email;
-    const phoneNumber= req.body.phoneNumber;
-    const password= req.body.password;
-    const confirmPassword= req.body.confirmPassword;
-    const ageQuery = format(`INSERT INTO  users(firstname,
-                            secondname,username, email, phonenumber, password)
-                            VALUES('%s', '%s', '%s','%s', '%s', '%s')`, firstName, secondName,userName, email, phoneNumber, password)
-    myClient.query(ageQuery, function (err, result) {
+    if (req.body.firstName &&
+        req.body.secondName &&
+        req.body.userName &&
+        req.body.email &&
+        req.body.phoneNumber &&
+        req.body.password &&
+        req.body.confirmPassword) {
+      if (req.body.password.length < 6 || req.body.password != req.body.confirmPassword){
+        res.status(400).json({msg:'Password should be longer than 6'})
+      }else if (isNaN(req.body.phoneNumber) || req.body.phoneNumber.length !=10) {
+        res.status(400).json({msg:'Phone number should be a digit'})
+      }else if (req.body.email.indexOf('@') == -1 || req.body.email.indexOf('.') == -1) {
+        res.status(400).json({msg:'invalid email'})
+      }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
+        res.status(400).json({msg:"username, firstName and secondName should be a string"})
+      }
+      const myClient = client
+      const userQuery = format(`INSERT INTO  users(firstname,
+                              secondname,username, email, phonenumber, password)
+                              VALUES('%s', '%s', '%s','%s', '%s', '%s')`,
+                              req.body.firstName,
+                              req.body.secondName,
+                              req.body.userName,
+                              req.body.email,
+                              req.body.phoneNumber,
+                              req.body.password)
+    myClient.query(userQuery, function (err, result) {
       if (err) {
         console.log(err)
       }
       res.json({msg:"success"})
     })
-
+  } else {
+    res.status(400).json({ message: 'Please fill all the required fields' });
+  }
   }));
 
 })
