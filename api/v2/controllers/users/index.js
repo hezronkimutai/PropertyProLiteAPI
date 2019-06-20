@@ -1,3 +1,4 @@
+
 const express = require('express');
 const pg = require('pg')
 const users = express.Router();
@@ -5,8 +6,11 @@ const records = require('../../models');
 const format = require('pg-format')
 const PGUSER = 'postgres'
 const PGDATABASE = 'ppl'
-const age = 732
+const url = require('url')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 function asyncHandler(cb) {
   return async (req, res, next) => {
     try {
@@ -17,20 +21,22 @@ function asyncHandler(cb) {
   };
 }
 
-//  postgres://postgres:hheezziiee@127.0.0.1:5432/ppl
-//
-// postgres://awvenhllmnuthv:eda7d30bc695245d5ef5cea33709f449c59ad0bf7a21d71853bb9482c054bb5d@ec2-75-101-128-10.compute-1.amazonaws.com:5432/db4vqsm5q4tius
+
+console.log("--------here--------",process.env.DATABASE_URL);
+const params = url.parse(process.env.DATABASE_URL);
+
+const auth = params.auth.split(':');
+
 const config = {
-  user: PGUSER || 'awvenhllmnuthv',
-  database: PGDATABASE || '5432/db4vqsm5q4tius',
-  max: 10,
-  idleTimeoutMillis: 30000,
-  password: "hheezziiee" ||'eda7d30bc695245d5ef5cea33709f449c59ad0bf7a21d71853bb9482c054bb5d'
-}
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
 
-const DATABASE_URL = process.env.DATABASE_URL
-
-const pool = new pg.Pool(DATABASE_URL || config )
+const pool = new pg.Pool(config )
 
 
 pool.connect(function (err, client, done) {
