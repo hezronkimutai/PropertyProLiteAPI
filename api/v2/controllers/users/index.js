@@ -84,6 +84,15 @@ pool.connect(function (err, client, done) {
                               req.body.email,
                               req.body.phoneNumber,
                               req.body.password)
+    myClient.query(`CREATE TABLE IF NOT EXISTS
+                  users(
+                    firstName VARCHAR NOT NULL,
+                    secondName VARCHAR NOT NULL,
+                    username VARCHAR NOT NULL,
+                    email VARCHAR NOT NULL,
+                    phoneNumber VARCHAR NOT NULL,
+                    password VARCHAR NOT NULL
+                  )`;)
     myClient.query(userQuery, function (err, result) {
       if (err) {
         console.log(err)
