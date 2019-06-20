@@ -3,9 +3,9 @@ const pg = require('pg')
 const users = express.Router();
 const records = require('../../models');
 const format = require('pg-format')
-const PGUSER = 'postgres'
-const PGDATABASE = 'ppl'
-const age = 732
+// const PGUSER = 'postgres'
+// const PGDATABASE = 'ppl'
+// const age = 732
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -17,15 +17,20 @@ function asyncHandler(cb) {
   };
 }
 
-const config = {
-  user: PGUSER,
-  database: PGDATABASE,
-  max: 10,
-  idleTimeoutMillis: 30000,
-  password: "hheezziiee"
-}
+//  postgres://postgres:hheezziiee@127.0.0.1:5432/ppl
+//
+// postgres://awvenhllmnuthv:eda7d30bc695245d5ef5cea33709f449c59ad0bf7a21d71853bb9482c054bb5d@ec2-75-101-128-10.compute-1.amazonaws.com:5432/db4vqsm5q4tius
+// const config = {
+//   user: PGUSER,
+//   database: PGDATABASE,
+//   max: 10,
+//   idleTimeoutMillis: 30000,
+//   password: "hheezziiee"
+// }
 
-const pool = new pg.Pool(config)
+const DATABASE_URL = process.env.DATABASE_URL
+
+const pool = new pg.Pool(DATABASE_URL )
 
 
 pool.connect(function (err, client, done) {
