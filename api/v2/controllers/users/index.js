@@ -87,7 +87,9 @@ pool.connect(function (err, client, done) {
                               req.body.email,
                               req.body.phoneNumber,
                               req.body.password)
-      const createTable =`CREATE TABLE IF NOT EXISTS users(firstName VARCHAR NOT NULL,
+      const createTable =`CREATE TABLE IF NOT EXISTS users(
+                                                      id serial PRIMARY KEY,
+                                                      firstName VARCHAR NOT NULL,
                                                       secondName VARCHAR NOT NULL,
                                                       username VARCHAR NOT NULL,
                                                       email VARCHAR NOT NULL,
@@ -109,6 +111,24 @@ pool.connect(function (err, client, done) {
        message: 'Please fill all the required fields'
   });
   }
+  }));
+
+
+
+  // /Get request to get a single user
+  users.get('/:id', asyncHandler(async (req, res) => {
+    const myClient = client
+    const userQuery = format(`SELECT * from users where id='%s'`,req.params.id)
+    myClient.query(userQuery, function (err, result) {
+      if (err) {
+        console.log(err)
+      }
+      res.status(200).json({
+        status:"200",
+        message:"User retrieved succesfully",
+        data:result.rows
+      })
+    })
   }));
 
 })

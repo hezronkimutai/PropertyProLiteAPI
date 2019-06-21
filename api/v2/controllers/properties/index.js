@@ -99,16 +99,17 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
                                   req.body.description,
                                   image.secure_url);
           const createTable =`CREATE TABLE IF NOT EXISTS properties(
-                                                          category VARCHAR NOT NULL,
-                                                          name VARCHAR NOT NULL,
-                                                          reason VARCHAR NOT NULL,
-                                                          price VARCHAR NOT NULL,
-                                                          state VARCHAR NOT NULL,
-                                                          city VARCHAR NOT NULL,
-                                                          address VARCHAR NOT NULL,
-                                                          map VARCHAR NOT NULL,
-                                                          description VARCHAR NOT NULL,
-                                                          url VARCHAR NOT NULL
+                                                          id serial PRIMARY KEY,
+                                                          category varchar,
+                                                          name varchar,
+                                                          reason varchar,
+                                                          price varchar,
+                                                          state varchar,
+                                                          city varchar,
+                                                          address varchar,
+                                                          map varchar,
+                                                          description varchar,
+                                                          url varchar
                                                           )`;
           myClient.query(createTable)
           myClient.query(propertyQuery, function (err, result) {
@@ -118,7 +119,6 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
             res.status(201).json({
               status:"201",
               message:"Property created Succesfully",
-              data:myClient.query(`SELECT * from properties`)
             })
           })
 
@@ -136,7 +136,7 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
 // /Get request to get all users
 properties.get('/', asyncHandler(async (req, res) => {
   const myClient = client
-  const propertiesQuery = format('SELECT * from properties')
+  const propertiesQuery = format(`SELECT * from properties`)
   myClient.query(propertiesQuery, function (err, result) {
     if (err) {
       console.log(err)
@@ -148,6 +148,23 @@ properties.get('/', asyncHandler(async (req, res) => {
     })
   })
 }));
+
+// /Get request to get a single user
+properties.get('/:id', asyncHandler(async (req, res) => {
+  const myClient = client
+  const propertyQuery = format(`SELECT * from properties WHERE id='%s'`,req.params.id)
+  myClient.query(propertyQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
+    res.status(200).json({
+      status:"200",
+      message:"properties retrieved succesfully",
+      data:result.rows
+    })
+  })
+}));
+
 });
 
 
