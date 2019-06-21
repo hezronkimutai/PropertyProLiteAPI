@@ -38,14 +38,14 @@ const config = {
 
 // MULTER
 const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function(req, file, cb) {
-    cb(null, file.originalname)
-  }
-})
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, 'uploads/')
+//   },
+//   filename: function(req, file, cb) {
+//     cb(null, file.originalname)
+//   }
+// })
 
 const pool = new pg.Pool(config )
 
@@ -54,29 +54,17 @@ pool.connect(function (err, client, done) {
   if (err) {console.log(err)}
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
-  const upload = multer({ storage }).single('url')
-  upload(req, res, async function(err) {
-    if (err) {
-      return res.send(err)
-    }
-
-    // SEND FILE TO CLOUDINARY
-    // const cloudinary = require('cloudinary').v2
-    // cloudinary.config({
-    //   cloud_name: 'hezzie',
-    //   api_key: '769876422482872',
-    //   api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
-    // })
+  // const upload = multer({ storage }).single('url')
+  // upload(req, res, async function(err) {
+  //   if (err) {
+  //     return res.send(err)
+  //   }
 
     const path = req.file.path
     const uniqueFilename = new Date().toISOString()
 
     // cloudinary.uploader.
     cloudinary.image(path,{ public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
-  // )
-  //   upload(
-  //     path,
-  //     { public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
       async function(err, image) {
         if (err) return res.send(err)
         const fs = require('fs')
@@ -132,7 +120,7 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
         }
       }
     )
-  })
+  // })
 }));
 
 // /Get request to get all users
