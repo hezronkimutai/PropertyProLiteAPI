@@ -43,7 +43,6 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/')
   },
   filename: function(req, file, cb) {
-    console.log(file)
     cb(null, file.originalname)
   }
 })
@@ -62,17 +61,18 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
     }
 
     // SEND FILE TO CLOUDINARY
-    const cloudinary = require('cloudinary').v2
-    cloudinary.config({
-      cloud_name: 'hezzie',
-      api_key: '769876422482872',
-      api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
-    })
+    // const cloudinary = require('cloudinary').v2
+    // cloudinary.config({
+    //   cloud_name: 'hezzie',
+    //   api_key: '769876422482872',
+    //   api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
+    // })
 
     const path = req.file.path
     const uniqueFilename = new Date().toISOString()
 
-    cloudinary.uploader.upload(
+    // cloudinary.uploader.
+    upload(
       path,
       { public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
       async function(err, image) {
