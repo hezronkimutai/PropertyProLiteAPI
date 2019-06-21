@@ -15,6 +15,16 @@ const storage = multer.diskStorage({
   }
 })
 
+function asyncHandler(cb) {
+  return async (req, res, next) => {
+    try {
+      await cb(req, res, next);
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
 properties.post('/post-property', asyncHandler(async (req, res) => {
 
   const upload = multer({ storage }).single('url')
@@ -50,17 +60,8 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
            req.body.reason && req.body.price &&
            req.body.state && req.body.city &&
            req.body.address && req.body.map &&
-            req.body.description) {
-            // if (req.body.password.length < 6 || req.body.password != req.body.confirmPassword){
-            //   res.status(400).json({msg:'Password should be longer than 6'})
-            // }else if (isNaN(req.body.phoneNumber) || req.body.phoneNumber.length !=10) {
-            //   res.status(400).json({msg:'Phone number should be a digit'})
-            // }else if (req.body.email.indexOf('@') == -1 || req.body.email.indexOf('.') == -1) {
-            //   res.status(400).json({msg:'invalid email'})
-            // }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
-            //   res.status(400).json({msg:"username, firstName and secondName should be a string"})
-            // }
-              const property = await records.createProperty({
+          req.body.description) {
+          const property = await records.createProperty({
             category: req.body.category,
             name: req.body.name,
             reason: req.body.reason,
@@ -72,9 +73,16 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
             description: req.body.description,
             url:image.secure_url
           });
-          res.status(201).json(property);
+          res.status(201).json({
+            status:"201",
+            message:"Property created succesfully",
+            data:property
+          });
         } else {
-          res.status(400).json({ message: 'password, username and image required.' });
+          res.status(400).json({
+            status:"400",
+            message: 'password, username and image required.'
+          });
         }
       }
     )
@@ -82,36 +90,39 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
 }));
 
 
-function asyncHandler(cb) {
-  return async (req, res, next) => {
-    try {
-      await cb(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  };
-}
-
-
-
 // /users
 properties.get('/', asyncHandler(async (req, res) => {
   const properties = await records.getProperties();
   if (properties) {
-    res.json(properties);
+    res.status(200).json({
+      status:"200",
+      message:"properties succesfully retrieved",
+      data:properties
+    });
   } else {
-    res.status(400).json({ message: 'No properties found' });
+    res.status(400).json({
+      status:"400",
+       message: 'No properties found'
+     });
   }
 }));
+
 
 // Send a get request to retrieve a single property
 properties.get('/:id', asyncHandler(async (req, res) => {
   const property = await records.getProperty(req.params.id);
 
   if (property) {
-    res.json(property);
+    res.status(200).json({
+      status:"200",
+      message:"succesfully fetched the property",
+      data:property
+    });
   } else {
-    res.status(400).json({ message: 'Property not found' });
+    res.status(400).json({
+      status:"400",
+      message: 'Property not found'
+  });
   }
 }));
 
@@ -120,25 +131,18 @@ properties.get('/type/:type', asyncHandler(async (req, res) => {
   const property = await records.getPropertyType(req.params.type);
 
   if (property) {
-    res.json(property);
+    res.status(200).json({
+      status:"200",
+      message:"succesfully retrieved property type",
+      data:property
+    });
   } else {
-    res.status(400).json({ message: 'Property not found' });
+    res.status(404).json({
+      status:"404",
+      message: 'Property type not found'
+  });
   }
 }));
-
-
-// send a post request to pst a property
-// properties.post('/post-property', asyncHandler(async (req, res) => {
-//   if (req.body.propertyName && req.body.propertyType) {
-//     const property = await records.createProperty({
-//       propertyName: req.body.propertyName,
-//       propertyType: req.body.propertyType,
-//     });
-//     res.status(201).json(property);
-//   } else {
-//     res.status(400).json({ message: 'password and Username required.' });
-//   }
-// }));
 
 // send a put request to update a property
 properties.put('/:id', asyncHandler(async (req, res) => {
@@ -158,7 +162,10 @@ properties.put('/:id', asyncHandler(async (req, res) => {
 
     res.status(204).end();
   } else {
-    res.status(404).json({ message: "Property wasn't found" });
+    res.status(404).json({
+      status:"404",
+      message: 'Property not found'
+  });
   }
 }));
 
@@ -169,7 +176,10 @@ properties.delete('/:id', asyncHandler(async (req, res) => {
     await records.deleteProperty(property);
     res.status(204).end();
   } else {
-    res.status(404).json({ message: "Property wasn't found" });
+    res.status(404).json({
+      status:"404",
+      message: 'Property not found'
+  });
   }
 }));
 

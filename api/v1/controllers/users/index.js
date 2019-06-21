@@ -19,7 +19,10 @@ users.get('/', asyncHandler(async (req, res) => {
   if (users) {
     res.json(users);
   } else {
-    res.status(400).json({ message: 'No users found' });
+    res.status(400).json({
+      status: "400",
+      message: 'No users found'
+    });
   }
 }));
 
@@ -28,9 +31,16 @@ users.get('/:id', asyncHandler(async (req, res) => {
   const user = await records.getUser(req.params.id);
 
   if (user) {
-    res.json(user);
+    res.status(200).json({
+      status:"200",
+      message:"User succesfully retrieved",
+      data:user
+    });
   } else {
-    res.status(400).json({ message: 'Property not found' });
+    res.status(400).json({
+      status:"400",
+       message: 'Property not found'
+  });
   }
 }));
 
@@ -57,11 +67,18 @@ users.post('/signup', asyncHandler(async (req, res) => {
         password: req.body.password,
         confirmPassword: req.body.confirmPassword
       });
-      res.status(201).json(user);
+      res.status(201).json({
+        status:"201",
+        message:"User created succesfully",
+        data:user
+      });
 
 
   } else {
-    res.status(400).json({ message: 'Please fill all the required fields.' });
+    res.status(400).json({
+      status:"400",
+       message: 'Please fill all the required fields.'
+     });
   }
 }));
 
@@ -73,15 +90,20 @@ users.post('/login', asyncHandler(async (req, res) => {
     for (let i = 0; i < users.length; i++) {
       if (users[i].email === req.body.email && users[i].password === req.body.password) {
         res.status(201).json({
-          msg: 'Succesfully logged in',
+          status:"201",
+          message: 'user Succesfully logged in',
         });
       }
     }
-    res.status(201).json({
-      msg: 'Incorrect details',
+    res.status(400).json({
+      status:"400",
+      message: 'Incorrect details',
     });
   } else {
-    res.status(400).json({ message: 'password and email required.' });
+    res.status(400).json({
+      status: "400",
+       message: 'password and email required.'
+  });
   }
 }));
 
@@ -101,7 +123,10 @@ users.put('/:id', asyncHandler(async (req, res) => {
 
     res.status(204).end();
   } else {
-    res.status(404).json({ message: "Property wasn't found" });
+    res.status(404).json({
+      status:"404",
+       message: "user wasn't found"
+     });
   }
 }));
 
@@ -113,7 +138,10 @@ users.delete('/:id', asyncHandler(async (req, res) => {
     await records.deleteUser(user);
     res.status(204).end();
   } else {
-    res.status(404).json({ message: "User wasn't found" });
+    res.status(404).json({
+      status:"404",
+       message: "User wasn't found"
+     });
   }
 }));
 
