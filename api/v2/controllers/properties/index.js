@@ -72,9 +72,11 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
     const uniqueFilename = new Date().toISOString()
 
     // cloudinary.uploader.
-    upload(
-      path,
-      { public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
+    cloudinary.image(path,{ public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
+  // )
+  //   upload(
+  //     path,
+  //     { public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
       async function(err, image) {
         if (err) return res.send(err)
         const fs = require('fs')
