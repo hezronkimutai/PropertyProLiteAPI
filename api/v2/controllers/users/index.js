@@ -50,7 +50,11 @@ pool.connect(function (err, client, done) {
       if (err) {
         console.log(err)
       }
-      res.json(result.rows)
+      res.status(200).json({
+        status:"200",
+        message:"User retrieved succesfully",
+        data:result.rows
+      })
     })
   }));
 
@@ -94,110 +98,19 @@ pool.connect(function (err, client, done) {
       if (err) {
         console.log(err)
       }
-      res.json({msg:"success"})
+      res.status(201).json({
+        status:"201",
+        message:"successfully created the user"
+      })
     })
   } else {
-    res.status(400).json({ message: 'Please fill all the required fields' });
+    res.status(400).json({
+      status:"400",
+       message: 'Please fill all the required fields'
+  });
   }
   }));
 
 })
-
-
-
-
-
-// // /Get request to get all users
-// users.get('/', asyncHandler(async (req, res) => {
-//   const users = await records.getUsers();
-//   if (users) {
-//     res.json(users);
-//   } else {
-//     res.status(400).json({ message: 'No users found' });
-//   }
-// }));
-
-// Send a get request to retrieve a single property
-// users.get('/:id', asyncHandler(async (req, res) => {
-//   const user = await records.getUser(req.params.id);
-//
-//   if (user) {
-//     res.json(user);
-//   } else {
-//     res.status(400).json({ message: 'Property not found' });
-//   }
-// }));
-//
-//
-// // send a post request to signup a user
-// users.post('/signup', asyncHandler(async (req, res) => {
-//   if (req.body.firstName && req.body.secondName && req.body.userName && req.body.email && req.body.phoneNumber && req.body.password && req.body.confirmPassword) {
-//     const user = await records.createUser({
-//       firstName: req.body.firstName,
-//       secondName: req.body.secondName,
-//       userName: req.body.userName,
-//       email: req.body.email,
-//       phoneNumber: req.body.phoneNumber,
-//       password: req.body.password,
-//       confirmPassword: req.body.confirmPassword
-//     });
-//     res.status(201).json(user);
-//   } else {
-//     res.status(400).json({ message: 'password and Username required.' });
-//   }
-// }));
-//
-// // send a post request to signin a user
-// users.post('/login', asyncHandler(async (req, res) => {
-//   if (req.body.email && req.body.password) {
-//     const users = await records.getUsers();
-//
-//     for (let i = 0; i < users.length; i++) {
-//       if (users[i].email === req.body.email && users[i].password === req.body.password) {
-//         res.status(201).json({
-//           msg: 'Succesfully logged in',
-//         });
-//       }
-//     }
-//     res.status(201).json({
-//       msg: 'Incorrect details',
-//     });
-//   } else {
-//     res.status(400).json({ message: 'password and email required.' });
-//   }
-// }));
-//
-// // send a put request to update a user
-// users.put('/:id', asyncHandler(async (req, res) => {
-//   const user = await records.getUser(req.params.id);
-//   if (user) {
-//     user.firstName = req.body.firstName,
-//     user.secondName = req.body.secondName,
-//     user.userName = req.body.userName,
-//     user.email = req.body.email,
-//     user.phoneNumber = req.body.phoneNumber,
-//     user.password = req.body.password,
-//     user.confirmPassword = req.body.confirmPassword
-//
-//     await records.updateUser(user);
-//
-//     res.status(204).end();
-//   } else {
-//     res.status(404).json({ message: "Property wasn't found" });
-//   }
-// }));
-//
-// // send a delete request to delete a user
-// users.delete('/:id', asyncHandler(async (req, res) => {
-//   const user = await records.getUser(req.params.id);
-//
-//   if (user) {
-//     await records.deleteUser(user);
-//     res.status(204).end();
-//   } else {
-//     res.status(404).json({ message: "User wasn't found" });
-//   }
-// }));
-//
 
 module.exports = users;

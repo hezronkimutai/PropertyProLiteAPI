@@ -116,13 +116,17 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
               console.log(err)
             }
             res.status(201).json({
-              message:"user created Succesfully",
+              status:"201",
+              message:"Property created Succesfully",
               data:myClient.query(`SELECT * from properties`)
             })
           })
 
         } else {
-          res.status(400).json({ message: 'All the fields must be filled.' });
+          res.status(400).json({
+            status:"400",
+            message: 'All the fields must be filled.'
+         });
         }
       }
     )
@@ -137,95 +141,14 @@ properties.get('/', asyncHandler(async (req, res) => {
     if (err) {
       console.log(err)
     }
-    res.json(result.rows)
+    res.status(200).json({
+      status:"200",
+      message:"properties retrieved succesfully",
+      data:result.rows
+    })
   })
 }));
 });
 
-
-
-
-
-
-
-// // /users
-// properties.get('/', asyncHandler(async (req, res) => {
-//   const properties = await records.getProperties();
-//   if (properties) {
-//     res.json(properties);
-//   } else {
-//     res.status(400).json({ message: 'No properties found' });
-//   }
-// }));
-//
-// // Send a get request to retrieve a single property
-// properties.get('/:id', asyncHandler(async (req, res) => {
-//   const property = await records.getProperty(req.params.id);
-//
-//   if (property) {
-//     res.json(property);
-//   } else {
-//     res.status(400).json({ message: 'Property not found' });
-//   }
-// }));
-//
-// // Send a get request to retrieve a single property
-// properties.get('/type/:type', asyncHandler(async (req, res) => {
-//   const property = await records.getPropertyType(req.params.type);
-//
-//   if (property) {
-//     res.json(property);
-//   } else {
-//     res.status(400).json({ message: 'Property not found' });
-//   }
-// }));
-//
-//
-// // send a post request to pst a property
-// // properties.post('/post-property', asyncHandler(async (req, res) => {
-// //   if (req.body.propertyName && req.body.propertyType) {
-// //     const property = await records.createProperty({
-// //       propertyName: req.body.propertyName,
-// //       propertyType: req.body.propertyType,
-// //     });
-// //     res.status(201).json(property);
-// //   } else {
-// //     res.status(400).json({ message: 'password and Username required.' });
-// //   }
-// // }));
-//
-// // send a put request to update a property
-// properties.put('/:id', asyncHandler(async (req, res) => {
-//   const property = await records.getProperty(req.params.id);
-//   if (property) {
-//     property.category = req.body.category,
-//     property.name = req.body.name,
-//     property.reason = req.body.reason,
-//     property.price = req.body.price,
-//     property.state = req.body.state,
-//     property.city = req.body.city,
-//     property.address = req.body.address,
-//     property.map = req.body.map,
-//     property.description = req.body.description
-//
-//     await records.updateProperty(property);
-//
-//     res.status(204).end();
-//   } else {
-//     res.status(404).json({ message: "Property wasn't found" });
-//   }
-// }));
-//
-// // send a delete request to delete a property
-// properties.delete('/:id', asyncHandler(async (req, res) => {
-//   const property = await records.getProperty(req.params.id);
-//   if (property) {
-//     await records.deleteProperty(property);
-//     res.status(204).end();
-//   } else {
-//     res.status(404).json({ message: "Property wasn't found" });
-//   }
-// }));
-//
 
 module.exports = properties;
