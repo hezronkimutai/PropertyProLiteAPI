@@ -2,7 +2,7 @@
 const express = require('express');
 const pg = require('pg')
 const properties = express.Router();
-const records = require('../../models');
+// const records = require('../../models');
 const format = require('pg-format')
 const PGUSER = 'postgres'
 const PGDATABASE = 'ppl'

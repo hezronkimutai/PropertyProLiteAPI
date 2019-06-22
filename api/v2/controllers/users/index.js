@@ -2,7 +2,7 @@
 const express = require('express');
 const pg = require('pg')
 const users = express.Router();
-const records = require('../../models');
+// const records = require('../../models');
 const format = require('pg-format')
 const PGUSER = 'postgres'
 const PGDATABASE = 'ppl'
@@ -105,6 +105,40 @@ pool.connect(function (err, client, done) {
         message:"successfully created the user"
       })
     })
+  } else {
+    res.status(400).json({
+      status:"400",
+       message: 'Please fill all the required fields'
+  });
+  }
+  }));
+
+
+
+  // /Post request to create users
+  users.post('/login', asyncHandler(async (req, res) => {
+
+    if (req.body.email && req.body.password ) {
+      const myClient = client
+      const userQuery = format(`SELECT * from users where email='%s' and password='%s'`,req.body.email, req.body.password)
+      myClient.query(userQuery, function (err, result) {
+        if (err) {
+          console.log(err)
+        }
+        if (result.rows.length == 0){
+          res.status(400).json({
+            status:"400",
+            message:"Invalid credentials"
+          })
+        }else{
+          res.status(201).json({
+            status:"201",
+            message:"Succesfully logged in",
+            data:result.rows
+          })
+        }
+
+      })
   } else {
     res.status(400).json({
       status:"400",

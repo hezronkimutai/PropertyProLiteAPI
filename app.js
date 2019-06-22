@@ -1,6 +1,6 @@
 const express = require('express');
 const records = require('./api/v1/models');
-var cors = require('cors')
+const cors = require('cors')
 
 
 
@@ -36,15 +36,3 @@ app.listen(process.env.PORT || 3000, () => console.log('PropertyProLiteAPI liste
 
 
 module.exports = app;
-
-
-// const express = require('express');
-// const records = require('./api/v2/models');
-// const app = express();
-// app.use(express.json());
-
-
-
-// app.listen(3000, function () {
-//   console.log('listening on 3000')
-// })
