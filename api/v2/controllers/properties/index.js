@@ -7,8 +7,6 @@ const format = require('pg-format')
 const PGUSER = 'postgres'
 const PGDATABASE = 'ppl'
 const url = require('url')
-const cloudinaryStorage = require('multer-storage-cloudinary');
-const cloudinary = require('cloudinary')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -46,7 +44,6 @@ pool.connect(function (err, client, done) {
   if (err) {console.log(err)}
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
-  console.log("---------------------",req.body.name)
 
         if (req.body.category && req.body.name &&
            req.body.reason && req.body.price &&
@@ -97,9 +94,6 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
             message: 'All the fields must be filled.'
          });
         }
-      // }
-    // )
-  // })
 }));
 
 // /Get request to get all users
