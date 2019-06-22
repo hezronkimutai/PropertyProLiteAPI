@@ -7,6 +7,8 @@ const format = require('pg-format')
 const PGUSER = 'postgres'
 const PGDATABASE = 'ppl'
 const url = require('url')
+const cloudinaryStorage = require('multer-storage-cloudinary');
+  const cloudinary = require('cloudinary')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -21,7 +23,11 @@ function asyncHandler(cb) {
   };
 }
 
-
+cloudinary.config({
+  cloud_name: 'hezzie',
+  api_key: '769876422482872',
+  api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
+})
 
 const params = url.parse(process.env.DATABASE_URL);
 
@@ -38,47 +44,55 @@ const config = {
 
 // MULTER
 const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function(req, file, cb) {
-    console.log(file)
-    cb(null, file.originalname)
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, 'uploads/')
+//   },
+//   filename: function(req, file, cb) {
+//     cb(null, file.originalname)
+//   }
+// })
+const storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'folder-name',
+  allowedFormats: ['jpg', 'png'],
+  filename: function (req, file, cb) {
+    cb(undefined, 'my-file-name');
   }
-})
+});
+
 
 const pool = new pg.Pool(config )
 
 
 pool.connect(function (err, client, done) {
   if (err) {console.log(err)}
+var parser = multer({ storage: storage });
 
-properties.post('/post-property', asyncHandler(async (req, res) => {
-  const upload = multer({ storage }).single('url')
-  upload(req, res, async function(err) {
-    if (err) {
-      return res.send(err)
-    }
-
+properties.post('/post-property',  parser.array('url', 1),asyncHandler(async (req, res) => {
+  // const upload = multer({ storage }).single('url')
+  // upload(req, res, async function(err) {
+  //   if (err) {
+  //     return res.send(err)
+  //   }
     // SEND FILE TO CLOUDINARY
-    const cloudinary = require('cloudinary').v2
-    cloudinary.config({
-      cloud_name: 'hezzie',
-      api_key: '769876422482872',
-      api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
-    })
 
-    const path = req.file.path
+    // cloudinary.config({
+    //   cloud_name: 'hezzie',
+    //   api_key: '769876422482872',
+    //   api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
+    // })
+console.log("=======here========")
+console.log(req.files[0].url)
+    const path = req.files[0].url
     const uniqueFilename = new Date().toISOString()
 
-    cloudinary.uploader.upload(
-      path,
-      { public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
-      async function(err, image) {
-        if (err) return res.send(err)
-        const fs = require('fs')
-        fs.unlinkSync(path)
+    // cloudinary.uploader.
+    // cloudinary.uploader.upload(path,{ public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
+    //   async function(err, image) {
+    //     if (err) return res.send(err)
+    //     const fs = require('fs')
+    //     fs.unlinkSync(path)
         if (req.body.category && req.body.name &&
            req.body.reason && req.body.price &&
            req.body.state && req.body.city &&
@@ -97,7 +111,7 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
                                   req.body.address,
                                   req.body.map,
                                   req.body.description,
-                                  image.secure_url);
+                                  req.files[0].secure_url);
           const createTable =`CREATE TABLE IF NOT EXISTS properties(
                                                           id serial PRIMARY KEY,
                                                           category varchar,
@@ -128,9 +142,9 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
             message: 'All the fields must be filled.'
          });
         }
-      }
-    )
-  })
+      // }
+    // )
+  // })
 }));
 
 // /Get request to get all users
