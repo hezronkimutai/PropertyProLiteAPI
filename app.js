@@ -15,7 +15,7 @@ app.use('/api/v2', controllersv2);
 
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'example.com');
+    res.header('Access-Control-Allow-Origin', 'file:///home/hezron/ANDELA-KIGALI/propertyliteui/UI/post-property.html');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
