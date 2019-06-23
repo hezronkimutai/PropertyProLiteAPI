@@ -79,23 +79,6 @@ pool.connect(function (err, client, done) {
       }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
         res.status(400).json({msg:"username, firstName and secondName should be a string"})
       }
-      // const emailQuery = format(`SELECT * from users where email='%s'`,req.body.email)
-      // const usernameQuery = format(`SELECT * from users where username='%s'`,req.body.userName)
-      // const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`,req.body.phoneNumber)
-      //
-      //
-      //   myClient.query(phonenumberQuery, function (err, result) {
-      //    if (err) {
-      //      console.log(err)
-      //    }
-      //    if ( result.rows.length != 0){
-      //     return res.json({
-      //        status:"400",
-      //        message:"A user with same phone number exist"
-      //      })
-      //    }
-      //
-      //  })
       const userQuery = format(`INSERT INTO  users(firstname,
                               secondname,username, email, phonenumber, password)
                               VALUES('%s', '%s', '%s','%s', '%s', '%s')`,
@@ -115,15 +98,47 @@ pool.connect(function (err, client, done) {
                                                       password VARCHAR NOT NULL  )`;
 
     myClient.query(createTable)
-
-    myClient.query(userQuery, function (err, result) {
+    const emailQuery = format(`SELECT * from users where email='%s'`,req.body.email)
+    const usernameQuery = format(`SELECT * from users where username='%s'`,req.body.userName)
+    const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`,req.body.phoneNumber)
+    myClient.query(emailQuery, function (err, ress) {
       if (err) {
         console.log(err)
       }
-      res.status(201).json({
-        status:"201",
-        message:"successfully created the user"
-      })
+      if (ress.rows.length != 0){
+        console.log("-------",ress.rows.length)
+        res.status(400).json({
+          status:"400",
+          message:"A user with same email exist"
+        })
+      }else{
+        myClient.query(usernameQuery, function (err, resu) {
+          if (resu.rows.length != 0){
+            console.log("-------",ress.rows.length)
+            res.status(400).json({
+              status:"400",
+              message:"A user with same userName exist"
+            })
+          }else{
+            myClient.query(phonenumberQuery, function (err, resul) {
+              if (resul.rows.length != 0){
+                console.log("-------",ress.rows.length)
+                res.status(400).json({
+                  status:"400",
+                  message:"A user with same phoneNumber exist"
+                })
+              }else{
+                myClient.query(userQuery, function (err, result) {
+                  res.status(201).json({
+                    status:"201",
+                    message:"successfully created the user"
+                  })
+                })
+              }
+            })
+          }
+        })
+      }
     })
 
   } else {
@@ -155,21 +170,7 @@ pool.connect(function (err, client, done) {
       }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
         res.status(400).json({msg:"username, firstName and secondName should be a string"})
       }
-      // const emailQuery = format(`SELECT * from users where email='%s'`,req.body.email)
-      // const usernameQuery = format(`SELECT * from users where username='%s'`,req.body.userName)
-      // const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`,req.body.phoneNumber)
-      // myClient.query(emailQuery, function (err, result) {
-      //   if (err) {
-      //     console.log(err)
-      //   }
-      //   if (result.rows.length != 0){
-      //     res.status(400).json({
-      //       status:"400",
-      //       message:"A user with same email exist"
-      //     })
-      //   }
-      //
-      // })
+
 
 
       const updateUserQuery = format(`UPDATE users SET firstname = '%s',
@@ -182,15 +183,52 @@ pool.connect(function (err, client, done) {
                               req.body.phoneNumber,
                               req.body.password,
                               req.params.id)
-    myClient.query(updateUserQuery, function (err, result) {
-      if (err) {
-        console.log(err)
-      }
-      res.status(201).json({
-        status:"201",
-        message:"successfully updated the user"
+  const emailQuery = format(`SELECT * from users where email='%s'`,req.body.email)
+  const usernameQuery = format(`SELECT * from users where username='%s'`,req.body.userName)
+  const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`,req.body.phoneNumber)
+  myClient.query(emailQuery, function (err, ress) {
+    if (err) {
+      console.log(err)
+    }
+    if (ress.rows.length != 0){
+      console.log("-------",ress.rows.length)
+      res.status(400).json({
+        status:"400",
+        message:"A user with same email exist"
       })
-    })
+    }else{
+      myClient.query(usernameQuery, function (err, resu) {
+        if (resu.rows.length != 0){
+          console.log("-------",ress.rows.length)
+          res.status(400).json({
+            status:"400",
+            message:"A user with same userName exist"
+          })
+        }else{
+          myClient.query(phonenumberQuery, function (err, resul) {
+            if (resul.rows.length != 0){
+              console.log("-------",ress.rows.length)
+              res.status(400).json({
+                status:"400",
+                message:"A user with same phoneNumber exist"
+              })
+            }else{
+              myClient.query(updateUserQuery, function (err, result) {
+                if (err) {
+                  console.log(err)
+                }
+                res.status(201).json({
+                  status:"201",
+                  message:"successfully updated the user"
+                })
+              })
+            }
+          })
+        }
+      })
+    }
+  })
+
   } else {
     res.status(400).json({
       status:"400",

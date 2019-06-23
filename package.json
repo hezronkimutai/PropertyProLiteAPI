@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "nyc --reporter=text mocha --exit",
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "author": "Hezron Kimutai Chelimo",
   "license": "ISC",
