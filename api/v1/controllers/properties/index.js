@@ -28,7 +28,7 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
               message:"Make sure that the you provide a valid map cordinates"
             })
           }
-          console.log("+++++++++++++++++++++++++++++++++++++++++++++++++",req.body.map.split(",")[0])
+    
           if (isNaN(req.body.map.split(",")[0]) || isNaN(req.body.map.split(",")[1])){
             res.status(400).json({
               status:400,
