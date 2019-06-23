@@ -33,11 +33,15 @@ function saveUsers(data) {
  * @param None
  */
 function getUsers() {
+
   return new Promise((resolve, reject) => {
     fs.readFile('db/users.json', 'utf8', (err, data) => {
+
       if (err) {
+
         reject(err);
       } else {
+
         const json = JSON.parse(data);
         resolve(json);
       }
@@ -104,7 +108,9 @@ async function getUser(id) {
  * Creates a new user record
  * @param {Object} newRecord - Object containing info for new user: the username, password
  */
+
 async function createUser(newRecord) {
+
   const users = await getUsers();
 
   newRecord.id = generateRandomId();
@@ -118,6 +124,7 @@ async function createUser(newRecord) {
  * @param {Object} newRecord - Object containing info for new user: the username, password
  */
 async function createProperty(newRecord) {
+
   const properties = await getProperties();
 
   newRecord.id = generateRandomId();

@@ -1,153 +1,22 @@
 [
   {
-    "firstName": "Hezron",
-    "secondName": "Kimutai",
-    "userName": "kim",
-    "email": "re.qo@dy",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 3212
+    "firstName": "hezi",
+    "secondName": "kimu",
+    "userName": "hezkim",
+    "email": "hezkim@gmail.com",
+    "phoneNumber": "0799087321",
+    "password": "HHeezziiee",
+    "confirmPassword": "HHeezziiee",
+    "id": 4215
   },
   {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 7340
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 14
-  },
-  {
-    "firstName": "67",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 4801
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "req",
-    "confirmPassword": "req",
-    "id": 8209
-  },
-  {
-    "firstName": "Hezron",
-    "secondName": "Kimutai",
-    "userName": "kim",
-    "email": "re.qo@dy",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 6242
-  },
-  {
-    "firstName": "Hezron",
-    "secondName": "Kimutai",
-    "userName": "kim",
-    "email": "re.qo@dy",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 1767
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 593
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 9474
-  },
-  {
-    "firstName": "67",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 2391
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "req",
-    "confirmPassword": "req",
-    "id": 5632
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "kimki",
-    "password": "requiui",
-    "confirmPassword": "requiui",
-    "id": 9830
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 8392
-  },
-  {
-    "firstName": "67",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 9531
-  },
-  {
-    "firstName": "67",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 866
+    "firstName": "hezi",
+    "secondName": "kimu",
+    "userName": "hezkim",
+    "email": "hezkim@gmail.com",
+    "phoneNumber": "0799087321",
+    "password": "HHeezziiee",
+    "confirmPassword": "HHeezziiee",
+    "id": 5077
   }
-]  }
 ]
