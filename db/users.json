@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "firstName": "hezi",
+    "secondName": "kimu",
+    "userName": "hezkim",
+    "email": "hezkim@gmail.com",
+    "phoneNumber": "0799087321",
+    "password": "HHeezziiee",
+    "confirmPassword": "HHeezziiee",
+    "id": 4215
+  },
+  {
+    "firstName": "hezi",
+    "secondName": "kimu",
+    "userName": "hezkim",
+    "email": "hezkim@gmail.com",
+    "phoneNumber": "0799087321",
+    "password": "HHeezziiee",
+    "confirmPassword": "HHeezziiee",
+    "id": 5077
+  }
+]

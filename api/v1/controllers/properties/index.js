@@ -1,80 +1,6 @@
 const express = require('express');
-
 const properties = express.Router();
 const records = require('../../models');
-
-// MULTER
-const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function(req, file, cb) {
-    console.log(file)
-    cb(null, file.originalname)
-  }
-})
-
-properties.post('/post-property', asyncHandler(async (req, res) => {
-  const upload = multer({ storage }).single('url')
-  upload(req, res, async function(err) {
-
-    if (err) {
-      return res.send(err)
-    }
-
-    // SEND FILE TO CLOUDINARY
-    const cloudinary = require('cloudinary').v2
-    cloudinary.config({
-      cloud_name: 'hezzie',
-      api_key: '769876422482872',
-      api_secret: '6ZiDc1RURL4Pua1R4wSqDDOKL9I'
-    })
-
-    const path = req.file.path
-    const uniqueFilename = new Date().toISOString()
-
-    cloudinary.uploader.upload(
-      path,
-      { public_id: `PropertyProLiteAPI/${uniqueFilename}`, tags: `PropertyProLiteAPI` },
-      async function(err, image) {
-        if (err) return res.send(err)
-        const fs = require('fs')
-        fs.unlinkSync(path)
-        if (req.body.category && req.body.name &&
-           req.body.reason && req.body.price &&
-           req.body.state && req.body.city &&
-           req.body.address && req.body.map &&
-            req.body.description) {
-            // if (req.body.password.length < 6 || req.body.password != req.body.confirmPassword){
-            //   res.status(400).json({msg:'Password should be longer than 6'})
-            // }else if (isNaN(req.body.phoneNumber) || req.body.phoneNumber.length !=10) {
-            //   res.status(400).json({msg:'Phone number should be a digit'})
-            // }else if (req.body.email.indexOf('@') == -1 || req.body.email.indexOf('.') == -1) {
-            //   res.status(400).json({msg:'invalid email'})
-            // }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
-            //   res.status(400).json({msg:"username, firstName and secondName should be a string"})
-            // }
-          const property = await records.createProperty({
-            category: req.body.category,
-            name: req.body.name,
-            reason: req.body.reason,
-            price: req.body.price,
-            state: req.body.state,
-            city: req.body.city,
-            address: req.body.address,
-            map: req.body.map,
-            description: req.body.description,
-            url:image.secure_url
-          });
-          res.status(201).json(property);
-        } else {
-          res.status(400).json({ message: 'password, username and image required.' });
-        }
-      }
-    )
-  })
-}));
 
 
 function asyncHandler(cb) {
@@ -87,26 +13,87 @@ function asyncHandler(cb) {
   };
 }
 
+properties.post('/post-property', asyncHandler(async (req, res) => {
+        if (req.body.category && req.body.name &&
+           req.body.reason && req.body.price &&
+           req.body.state && req.body.city &&
+           req.body.address && req.body.map &&
+          req.body.description && req.body.url) {
+          if (!isNaN(req.body.category) || !isNaN(req.body.name) || !isNaN(req.body.state) || !isNaN(req.body.city) || !isNaN(req.body.reason) || !isNaN(req.body.description)) {
+            res.status(400).json({msg:"Make sure name reason, category city, state and description are strings"})
+          }
+          if(req.body.map.indexOf(',') == -1){
+            res.status(400).json({
+              status:400,
+              message:"Make sure that the you provide a valid map cordinates"
+            })
+          }
+          console.log("+++++++++++++++++++++++++++++++++++++++++++++++++",req.body.map.split(",")[0])
+          if (isNaN(req.body.map.split(",")[0]) || isNaN(req.body.map.split(",")[1])){
+            res.status(400).json({
+              status:400,
+              message:"Make sure that the you provide a valid map cordinates"
+            })
+          }
+          const property = await records.createProperty({
+            category: req.body.category,
+            name: req.body.name,
+            reason: req.body.reason,
+            price: req.body.price,
+            state: req.body.state,
+            city: req.body.city,
+            address: req.body.address,
+            map: req.body.map,
+            description: req.body.description,
+            url:req.body.url
+          });
+          res.status(201).json({
+            status:"201",
+            message:"Property created succesfully",
+            data:property
+          });
+        } else {
+          res.status(400).json({
+            status:"400",
+            message: 'password, username and image required.'
+          });
+        }
+}));
 
 
 // /users
 properties.get('/', asyncHandler(async (req, res) => {
   const properties = await records.getProperties();
   if (properties) {
-    res.json(properties);
+    res.status(200).json({
+      status:"200",
+      message:"properties succesfully retrieved",
+      data:properties
+    });
   } else {
-    res.status(400).json({ message: 'No properties found' });
+    res.status(400).json({
+      status:"400",
+       message: 'No properties found'
+     });
   }
 }));
+
 
 // Send a get request to retrieve a single property
 properties.get('/:id', asyncHandler(async (req, res) => {
   const property = await records.getProperty(req.params.id);
 
   if (property) {
-    res.json(property);
+    res.status(200).json({
+      status:"200",
+      message:"succesfully fetched the property",
+      data:property
+    });
   } else {
-    res.status(400).json({ message: 'Property not found' });
+    res.status(400).json({
+      status:"400",
+      message: 'Property not found'
+  });
   }
 }));
 
@@ -115,25 +102,18 @@ properties.get('/type/:type', asyncHandler(async (req, res) => {
   const property = await records.getPropertyType(req.params.type);
 
   if (property) {
-    res.json(property);
+    res.status(200).json({
+      status:"200",
+      message:"succesfully retrieved property type",
+      data:property
+    });
   } else {
-    res.status(400).json({ message: 'Property not found' });
+    res.status(404).json({
+      status:"404",
+      message: 'Property type not found'
+  });
   }
 }));
-
-
-// send a post request to pst a property
-// properties.post('/post-property', asyncHandler(async (req, res) => {
-//   if (req.body.propertyName && req.body.propertyType) {
-//     const property = await records.createProperty({
-//       propertyName: req.body.propertyName,
-//       propertyType: req.body.propertyType,
-//     });
-//     res.status(201).json(property);
-//   } else {
-//     res.status(400).json({ message: 'password and Username required.' });
-//   }
-// }));
 
 // send a put request to update a property
 properties.put('/:id', asyncHandler(async (req, res) => {
@@ -153,7 +133,10 @@ properties.put('/:id', asyncHandler(async (req, res) => {
 
     res.status(204).end();
   } else {
-    res.status(404).json({ message: "Property wasn't found" });
+    res.status(404).json({
+      status:"404",
+      message: 'Property not found'
+  });
   }
 }));
 
@@ -164,7 +147,10 @@ properties.delete('/:id', asyncHandler(async (req, res) => {
     await records.deleteProperty(property);
     res.status(204).end();
   } else {
-    res.status(404).json({ message: "Property wasn't found" });
+    res.status(404).json({
+      status:"404",
+      message: 'Property not found'
+  });
   }
 }));
 

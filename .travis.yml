@@ -6,6 +6,9 @@ cache:
   directories:
     - "node_modules"
 script:
+  - npm test
+before_script:
+  - psql -c 'CREATE DATABASE test;' -U postgres
   - npm install coveralls
 after_success:
   - npm run coveralls
