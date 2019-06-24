@@ -250,7 +250,7 @@ pool.connect(function (err, client, done) {
         if (result.rows.length == 0){
           res.status(400).json({
             status:"400",
-            message:"Invalid credentials"
+            message:"Invalid credentials",
           })
         }else{
           let token = jwt.sign({email: req.body.email},
@@ -262,7 +262,8 @@ pool.connect(function (err, client, done) {
           res.status(201).json({
             status:"201",
             message:"Succesfully logged in",
-            token:token
+            token:token,
+            data:result.rows
           })
         }
 

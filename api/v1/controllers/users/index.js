@@ -117,14 +117,17 @@ users.post('/login', asyncHandler(async (req, res) => {
         res.status(201).json({
           status:"201",
           message: 'user Succesfully logged in',
-          token:token
+          token:token,
+            data:users[i]
+        });
+      }else{
+        res.status(400).json({
+          status:"400",
+          message: 'Incorrect details'
         });
       }
     }
-    res.status(400).json({
-      status:"400",
-      message: 'Incorrect details',
-    });
+
   } else {
     res.status(400).json({
       status: "400",
