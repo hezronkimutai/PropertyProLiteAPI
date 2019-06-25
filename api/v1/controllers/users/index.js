@@ -19,7 +19,7 @@ function asyncHandler(cb) {
 }
 
 // /Get request to get all users
-users.get('/', middleware.checkToken,asyncHandler(async (req, res) => {
+users.get('/',asyncHandler(async (req, res) => {
   const users = await records.getUsers();
 
   if (users) {
@@ -83,7 +83,8 @@ users.post('/signup', asyncHandler(async (req, res) => {
         email: req.body.email,
         phoneNumber: req.body.phoneNumber,
         password: req.body.password,
-        confirmPassword: req.body.confirmPassword
+        profilePic:""
+
       });
 
       res.status(201).json({
@@ -117,14 +118,17 @@ users.post('/login', asyncHandler(async (req, res) => {
         res.status(201).json({
           status:"201",
           message: 'user Succesfully logged in',
-          token:token
+          token:token,
+            data:users[i]
+        });
+      }else{
+        res.status(400).json({
+          status:"400",
+          message: 'Incorrect details'
         });
       }
     }
-    res.status(400).json({
-      status:"400",
-      message: 'Incorrect details',
-    });
+
   } else {
     res.status(400).json({
       status: "400",

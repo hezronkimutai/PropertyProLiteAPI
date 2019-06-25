@@ -1,12 +1,16 @@
 const fs = require('fs');
 
+
+const env = process.env.NODE_ENV
+const db = env === 'test' ? 'dbtest' : 'db';
+
 function generateRandomId() {
   return Math.floor(Math.random() * 10000);
 }
 
 function saveProperties(data) {
   return new Promise((resolve, reject) => {
-    fs.writeFile('db/properties.json', JSON.stringify(data, null, 2), (err) => {
+    fs.writeFile(`${db}/properties.json`, JSON.stringify(data, null, 2), (err) => {
       if (err) {
         reject(err);
       } else {
@@ -18,7 +22,7 @@ function saveProperties(data) {
 
 function saveUsers(data) {
   return new Promise((resolve, reject) => {
-    fs.writeFile('db/users.json', JSON.stringify(data, null, 2), (err) => {
+    fs.writeFile(`${db}/users.json`, JSON.stringify(data, null, 2), (err) => {
       if (err) {
         reject(err);
       } else {
@@ -35,7 +39,7 @@ function saveUsers(data) {
 function getUsers() {
 
   return new Promise((resolve, reject) => {
-    fs.readFile('db/users.json', 'utf8', (err, data) => {
+    fs.readFile(`${db}/users.json`, 'utf8', (err, data) => {
 
       if (err) {
 
@@ -55,7 +59,7 @@ function getUsers() {
  */
 function getProperties() {
   return new Promise((resolve, reject) => {
-    fs.readFile('db/properties.json', 'utf8', (err, data) => {
+    fs.readFile(`${db}/properties.json`, 'utf8', (err, data) => {
       if (err) {
         reject(err);
       } else {
