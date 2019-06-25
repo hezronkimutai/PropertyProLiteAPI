@@ -83,7 +83,8 @@ users.post('/signup', asyncHandler(async (req, res) => {
         email: req.body.email,
         phoneNumber: req.body.phoneNumber,
         password: req.body.password,
-        confirmPassword: req.body.confirmPassword
+        profilePic:""
+
       });
 
       res.status(201).json({

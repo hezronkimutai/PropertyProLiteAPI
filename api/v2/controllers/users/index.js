@@ -79,15 +79,7 @@ pool.connect(function (err, client, done) {
       }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
         res.status(400).json({msg:"username, firstName and secondName should be a string"})
       }
-      const userQuery = format(`INSERT INTO  users(firstname,
-                              secondname,username, email, phonenumber, password)
-                              VALUES('%s', '%s', '%s','%s', '%s', '%s')`,
-                              req.body.firstName,
-                              req.body.secondName,
-                              req.body.userName,
-                              req.body.email,
-                              req.body.phoneNumber,
-                              req.body.password)
+
       const createTable =`CREATE TABLE IF NOT EXISTS users(
                                                       id serial PRIMARY KEY,
                                                       firstName VARCHAR NOT NULL,
@@ -95,9 +87,20 @@ pool.connect(function (err, client, done) {
                                                       username VARCHAR NOT NULL,
                                                       email VARCHAR NOT NULL,
                                                       phoneNumber VARCHAR NOT NULL,
-                                                      password VARCHAR NOT NULL  )`;
+                                                      password VARCHAR NOT NULL,
+                                                      profilePic VARCHAR NULL
+                                                      )`;
 
-    myClient.query(createTable)
+    myClient.query(createTable);
+    const userQuery = format(`INSERT INTO  users(firstname,
+                            secondname,username, email, phonenumber, password)
+                            VALUES('%s', '%s', '%s','%s', '%s', '%s')`,
+                            req.body.firstName,
+                            req.body.secondName,
+                            req.body.userName,
+                            req.body.email,
+                            req.body.phoneNumber,
+                            req.body.password)
     const emailQuery = format(`SELECT * from users where email='%s'`,req.body.email)
     const usernameQuery = format(`SELECT * from users where username='%s'`,req.body.userName)
     const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`,req.body.phoneNumber)
@@ -105,6 +108,7 @@ pool.connect(function (err, client, done) {
       if (err) {
         console.log(err)
       }
+
       if (ress.rows.length != 0){
         console.log("-------",ress.rows.length)
         res.status(400).json({
@@ -150,6 +154,34 @@ pool.connect(function (err, client, done) {
 
   }));
 
+
+
+
+  users.patch('/:id', asyncHandler(async (req, res) => {
+    if (req.body.url) {
+
+
+
+      const updateProfilePic = format(`UPDATE users SET profilepic = '%s' WHERE id ='%s'`,
+                              req.body.url,
+                              req.params.id);
+      myClient.query(updateProfilePic, function (err, result) {
+        if (err) {
+          console.log(err)
+        }
+        res.status(201).json({
+          status:"201",
+          message:"Profile updated the user"
+        })
+      })
+
+  } else {
+    res.status(400).json({
+      status:"400",
+       message: 'Please fill all the required fields'
+  });
+  }
+  }));
 
 
 
