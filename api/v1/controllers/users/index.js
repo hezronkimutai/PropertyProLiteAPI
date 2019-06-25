@@ -19,7 +19,7 @@ function asyncHandler(cb) {
 }
 
 // /Get request to get all users
-users.get('/', middleware.checkToken,asyncHandler(async (req, res) => {
+users.get('/',asyncHandler(async (req, res) => {
   const users = await records.getUsers();
 
   if (users) {

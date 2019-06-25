@@ -39,7 +39,7 @@ function saveUsers(data) {
 function getUsers() {
 
   return new Promise((resolve, reject) => {
-    fs.readFile('db/users.json', 'utf8', (err, data) => {
+    fs.readFile(`${db}/users.json`, 'utf8', (err, data) => {
 
       if (err) {
 
@@ -59,7 +59,7 @@ function getUsers() {
  */
 function getProperties() {
   return new Promise((resolve, reject) => {
-    fs.readFile('db/properties.json', 'utf8', (err, data) => {
+    fs.readFile(`${db}/properties.json`, 'utf8', (err, data) => {
       if (err) {
         reject(err);
       } else {
