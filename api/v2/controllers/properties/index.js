@@ -21,8 +21,13 @@ function asyncHandler(cb) {
   };
 }
 
+const env = process.env.NODE_ENV
 
-const params = url.parse(process.env.DATABASE_URL);
+const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
+
+
+
+const params = url.parse(databaseUrl);
 
 const auth = params.auth.split(':');
 

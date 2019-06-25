@@ -4,8 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=text mocha --exit",
-    "start": "nodemon app.js"
+    "test": "NODE_ENV=test nyc --reporter=text mocha --exit",
+    "start": "NODE_ENV=development nodemon",
+    "start:prod": "NODE_ENV=production nodemon",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Hezron Kimutai Chelimo",
   "license": "ISC",
