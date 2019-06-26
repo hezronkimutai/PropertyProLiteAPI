@@ -8,8 +8,9 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 const controllersv1 = require('./api/v1/controllers');
+app.use('/api/v1', controllersv1);
 
-// app.use('/api/v1', controllersv1);
+
 // const controllersv2 = require('./api/v2/controllers');
 // app.use('/api/v2', controllersv2);
 
