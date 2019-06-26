@@ -141,13 +141,17 @@ users.post('/login', asyncHandler(async (req, res) => {
 users.put('/:id', asyncHandler(async (req, res) => {
   const user = await records.getUser(req.params.id);
   if (user) {
+    user.id =req.params.id,
     user.firstName = req.body.firstName,
     user.secondName = req.body.secondName,
     user.userName = req.body.userName,
     user.email = req.body.email,
     user.phoneNumber = req.body.phoneNumber,
     user.password = req.body.password,
-    user.confirmPassword = req.body.confirmPassword
+    user.confirmPassword = req.body.confirmPassword,
+    user.profilePic=""
+
+
 
     await records.updateUser(user);
 
@@ -173,6 +177,12 @@ users.delete('/:id', asyncHandler(async (req, res) => {
        message: "User wasn't found"
      });
   }
+}));
+
+// send a delete request to delete a user
+users.delete('/', asyncHandler(async (req, res) => {
+    await records.deleteAllUsers();
+    res.status(204).end();
 }));
 
 
