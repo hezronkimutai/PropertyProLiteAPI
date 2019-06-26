@@ -2,7 +2,6 @@ const assert = require('assert');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app');
-// const records = require('api/v1/models');
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -232,8 +231,9 @@ describe('Users 400', () => {
       .send(user)
       .end((err, res) => {
         res.should.have.status(400);
+          done();
       });
-    done();
+
   });
 
 
@@ -253,8 +253,9 @@ describe('Users 400', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(400);
+                done();
             });
-          done();
+
         });
 
 
@@ -273,8 +274,9 @@ describe('Users 400', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(400);
+                done();
             });
-          done();
+
         });
 
       //   it('Should respond with a 400 status code while creating a user whose passwords are not equal', (done) => {
@@ -313,8 +315,9 @@ describe('Users 400', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(400);
+                done();
             });
-          done();
+
         });
 
 
