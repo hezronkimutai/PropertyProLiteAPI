@@ -231,8 +231,9 @@ describe('Users 400', () => {
       .send(user)
       .end((err, res) => {
         res.should.have.status(400);
+          done();
       });
-    done();
+
   });
 
 
@@ -252,8 +253,9 @@ describe('Users 400', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(400);
+                done();
             });
-          done();
+
         });
 
 
@@ -272,8 +274,9 @@ describe('Users 400', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(400);
+                done();
             });
-          done();
+
         });
 
       //   it('Should respond with a 400 status code while creating a user whose passwords are not equal', (done) => {
@@ -312,8 +315,9 @@ describe('Users 400', () => {
             .send(user)
             .end((err, res) => {
               res.should.have.status(400);
+                done();
             });
-          done();
+
         });
 
 
