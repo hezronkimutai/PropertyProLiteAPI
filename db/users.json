@@ -1,22 +1,13 @@
 [
   {
-    "firstName": "Emanauel",
-    "secondName": "Adebaayor",
-    "userName": "edeba",
-    "email": "ekul@gmail.com",
-    "phoneNumber": "0799067922",
-    "password": "HHeezzioee",
-    "profilePic": "",
-    "id": 3505
-  },
-  {
-    "firstName": "hezron",
+    "firstName": "heztron",
     "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "0937892356",
-    "password": "reqfhgtfhfgjfg",
+    "userName": "hzie",
+    "email": "hmo.hc@gmail.com",
+    "phoneNumber": "0700387221",
+    "password": "hheezziiee",
     "profilePic": "",
-    "id": 2624
+    "id": 8096,
+    "confirmPassword": "hheezziiee"
   }
 ]

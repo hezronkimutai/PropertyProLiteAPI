@@ -157,12 +157,17 @@ async function updateProperty(newProperty) {
  */
 async function updateUser(newUser) {
   const users = await getUsers();
-  const user = users.find(record => record.id === newUser.id);
+  users.forEach(async function(user) {
+    user.firstName = newUser.firstName,
+    user.secondName = newUser.secondName,
+    user.userName = newUser.userName,
+    user.email = newUser.email,
+    user.phoneNumber = newUser.phoneNumber,
+    user.password = newUser.password,
+    user.confirmPassword = newUser.confirmPassword,
+    await saveUsers(users);
+});
 
-  user.username = newUser.username;
-  user.password = newUser.password;
-
-  await saveUsers(users);
 }
 
 /**
@@ -172,6 +177,20 @@ async function updateUser(newUser) {
 async function deleteProperty(property) {
   const allProperties = await getProperties();
   const properties = allProperties.filter(record => record.id !== property.id);
+  await saveProperties(properties);
+}
+
+
+
+
+
+/**
+ * Deletes a single Property
+ * @param {Object} property - Accepts record to be deleted.
+ */
+async function deleteAllProperties() {
+  const allProperties = await getProperties();
+  const properties = [];
   await saveProperties(properties);
 }
 
@@ -185,8 +204,19 @@ async function deleteUser(user) {
   await saveUsers(users);
 }
 
+/**
+ * Deletes a single Property
+ * @param {Object} user - Accepts record to be deleted.
+ */
+async function deleteAllUsers() {
+  const allUsers = await getUsers();
+  const users = [];
+  await saveUsers(users);
+}
+
 
 module.exports = {
+  deleteAllUsers,
   getProperties,
   getUsers,
   createUser,
