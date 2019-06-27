@@ -155,16 +155,11 @@ async function updateProperty(newProperty) {
       property.city = newProperty.city,
       property.description = newProperty.description,
       property.url = property.url
-      await saveUsers(users);
+      await saveProperties(properties);
     }
 
 });
-  const property = properties.find(record => record.id === newProperty.id);
 
-  property.propertyName = newProperty.propertyName;
-  property.propertyType = newProperty.propertyType;
-
-  await saveProperties(properties);
 }
 
 /**
