@@ -5,18 +5,31 @@ const users = express.Router();
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const config = require('./config');
+const PGUSER = 'postgres'
+const PGDATABASE = 'ppl'
+const url = require('url')
 const middleware = require('./middleware');
 const format = require('pg-format')
-const records = require('../../models');
-const pool = records.pool;
-
-if (process.env.NODE_ENV !== 'production') {
+const env = process.env.NODE_ENV
+if (env !== 'production') {
   require('dotenv').config();
 }
 
+const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
+const params = url.parse(databaseUrl);
 
+const auth = params.auth.split(':');
 
+const _config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
 
+const pool = new pg.Pool(_config )
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -28,10 +41,30 @@ function asyncHandler(cb) {
   };
 }
 
+const ctu =`CREATE TABLE IF NOT EXISTS users(
+                                                id serial PRIMARY KEY,
+                                                firstName VARCHAR NOT NULL,
+                                                secondName VARCHAR NOT NULL,
+                                                username VARCHAR NOT NULL,
+                                                email VARCHAR NOT NULL,
+                                                phoneNumber VARCHAR NOT NULL,
+                                                password VARCHAR NOT NULL,
+                                                profilePic VARCHAR NULL
+                                                )`;
+
+
+const dtu = `DROP TABLE IF EXISTS users`;
+
 
 pool.connect(function (err, client, done) {
   const myClient = client
-  if (err) {console.log(err)}
+if (err) {console.log(err)}
+if (env === 'test') {
+  myClient.query(dtu);
+  myClient.query(ctu);
+}else{
+  myClient.query(ctu);
+}
   // /Get request to get all users
   users.get('/', asyncHandler(async (req, res) => {
     const usersQuery = format('SELECT * from users')

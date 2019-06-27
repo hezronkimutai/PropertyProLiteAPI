@@ -1,19 +1,31 @@
-
 const express = require('express');
 const pg = require('pg')
 const properties = express.Router();
-const records = require('../../models');
+const PGUSER = 'postgres'
+const PGDATABASE = 'ppl'
+const url = require('url')
 const format = require('pg-format')
-const pool = records.pool;
-
-
-
-if (process.env.NODE_ENV !== 'production') {
+const env = process.env.NODE_ENV
+if (env !== 'production') {
   require('dotenv').config();
 }
 
-// records.createTables();
+const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
+const params = url.parse(databaseUrl);
+console.log('+++++++++++++++++++++++++++++++',params)
+const auth = params.auth.split(':');
 
+
+const config = {
+  user: auth[0],
+  password: auth[1],
+  host: params.hostname,
+  port: params.port,
+  database: params.pathname.split('/')[1],
+  ssl: true
+};
+
+const pool = new pg.Pool(config )
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -25,32 +37,29 @@ function asyncHandler(cb) {
   };
 }
 
-// const env = process.env.NODE_ENV
-//
-// const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
-//
-//
-// const params = url.parse(databaseUrl);
-//
-// const auth = params.auth.split(':');
-//
-// const config = {
-//   user: auth[0],
-//   password: auth[1],
-//   host: params.hostname,
-//   port: params.port,
-//   database: params.pathname.split('/')[1],
-//   ssl: true
-// };
-//
-//
-//
-// const pool = new pg.Pool(config )
-
-
+const ctp =`CREATE TABLE IF NOT EXISTS properties(
+                                                id serial PRIMARY KEY,
+                                                category varchar,
+                                                name varchar,
+                                                reason varchar,
+                                                price varchar,
+                                                state varchar,
+                                                city varchar,
+                                                address varchar,
+                                                map varchar,
+                                                description varchar,
+                                                url varchar
+                                                )`;
+const dtp = `DROP TABLE IF EXISTS properties`;
 pool.connect(function (err, client, done) {
     const myClient = client
   if (err) {console.log(err)}
+  if (env === 'test') {
+    myClient.query(dtp);
+    myClient.query(ctp);
+  }else{
+    myClient.query(ctp);
+  }
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
 
