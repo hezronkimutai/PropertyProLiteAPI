@@ -16,41 +16,43 @@ const user = {
 describe('Create  user', () => {
 
 
-    it('Should add user to the db', () =>{
-      return async (done) => {
-    try {
+    it('Should add user to the db', () => {
+        return async (done) => {
+            try {
 
-        await  chai.request(server)
+                await chai.request(server)
 
-            .post('/api/v2/users/signup/')
-            .send(user)
-            .end((err, res) => {
-                  should.exist(res);
-                res.should.have.status(201);
+                    .post('/api/v2/users/signup/')
+                    .send(user)
+                    .end((err, res) => {
+                        should.exist(res);
+                        res.should.have.status(201);
 
-              });
+                    });
 
-        done();
-    } catch (err) {
-        done(err);
-    }}
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
     });
 
-   it('Should Fecth all the users',()=> {
-     return async (done) => {
-   try {
-     await chai.request(server)
+    it('Should Fecth all the users', () => {
+        return async (done) => {
+            try {
+                await chai.request(server)
 
-          .get('/api/v2/users/')
-          .end((err, result) => {
-              result.should.have.status(200);
+                    .get('/api/v2/users/')
+                    .end((err, result) => {
+                        result.should.have.status(200);
 
-            });
-            done();
-        } catch (err) {
-            done(err);
-        }}
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
 
     });
@@ -66,20 +68,21 @@ describe('Create  user', () => {
             "confirmPassword": "reqiuuu"
         };
         return async (done) => {
-      try {
+            try {
 
-          await  chai.request(server)
+                await chai.request(server)
 
-          .post('/api/v2/users/signup/')
-          .send(_user)
-          .end((err, res) => {
-              res.should.have.status(400);
-            });
+                    .post('/api/v2/users/signup/')
+                    .send(_user)
+                    .end((err, res) => {
+                        res.should.have.status(400);
+                    });
 
-          done();
-      } catch (err) {
-          done(err);
-      }}
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
 
 
@@ -96,18 +99,19 @@ describe('Create  user', () => {
         };
 
         return async (done) => {
-      try {
-        await chai.request(server)
+            try {
+                await chai.request(server)
 
-        .post('/api/v2/users/signup/')
-        .send(_user)
-        .end((err, res) => {
-            res.should.have.status(400);
-          });
-               done();
-           } catch (err) {
-               done(err);
-           }}
+                    .post('/api/v2/users/signup/')
+                    .send(_user)
+                    .end((err, res) => {
+                        res.should.have.status(400);
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
 
 
@@ -124,18 +128,19 @@ describe('Create  user', () => {
             "confirmPassword": "req"
         };
         return async (done) => {
-      try {
-        await chai.request(server)
+            try {
+                await chai.request(server)
 
-        .post('/api/v2/users/signup/')
-        .send(_user)
-        .end((err, res) => {
-            res.should.have.status(400);
-          });
-               done();
-           } catch (err) {
-               done(err);
-           }}
+                    .post('/api/v2/users/signup/')
+                    .send(_user)
+                    .end((err, res) => {
+                        res.should.have.status(400);
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
 
 
@@ -152,18 +157,19 @@ describe('Create  user', () => {
         };
 
         return async (done) => {
-      try {
-        await chai.request(server)
+            try {
+                await chai.request(server)
 
-        .post('/api/v2/users/signup/')
-        .send(_user)
-        .end((err, res) => {
-            res.should.have.status(400);
-        });
-               done();
-           } catch (err) {
-               done(err);
-           }}
+                    .post('/api/v2/users/signup/')
+                    .send(_user)
+                    .end((err, res) => {
+                        res.should.have.status(400);
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
 
     });
@@ -180,18 +186,19 @@ describe('Create  user', () => {
         };
 
         return async (done) => {
-      try {
-        await chai.request(server)
+            try {
+                await chai.request(server)
 
-        .post('/api/v2/users/signup/')
-        .send(_user)
-        .end((err, res) => {
-            res.should.have.status(400);
-        });
-               done();
-           } catch (err) {
-               done(err);
-           }}
+                    .post('/api/v2/users/signup/')
+                    .send(_user)
+                    .end((err, res) => {
+                        res.should.have.status(400);
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
     });
 
@@ -205,79 +212,102 @@ describe('Create  user', () => {
             .end((err, res) => {
                 if (err) {
                     console.log(err);
-                } else {
-                    chai.request(server)
-                        .delete(`/api/v2/users/${res.body.data.id}`)
-                        .end((err, result) => {
-
-                            result.should.have.status(204);
-                          });
-                          done();
                 }
+                return async (done) => {
+                    try {
+                        await chai.request(server)
+
+                            .delete(`/api/v2/users/${res.body.data.id}`)
+                            .end((err, result) => {
+
+                                result.should.have.status(204);
+                            });
+                        done();
+                    } catch (err) {
+                        done(err);
+                    }
+                }
+
+
             });
-              done();
+        done();
     });
 
 
 
-        it('Should update a user', (done) => {
+    it('Should update a user', (done) => {
 
-              const __user = {
-                  "firstName": "ui",
-                  "secondName": "fy",
-                  "userName": "hezzie",
-                  "email": "kim@gmail.com",
-                  "phoneNumber": "0937890356",
-                  "password": "reqfhgtfhfgjfg",
-                  "confirmPassword": "reqfhgtfhfgjfg"
-              };
+        const __user = {
+            "firstName": "ui",
+            "secondName": "fy",
+            "userName": "hezzie",
+            "email": "kim@gmail.com",
+            "phoneNumber": "0937890356",
+            "password": "reqfhgtfhfgjfg",
+            "confirmPassword": "reqfhgtfhfgjfg"
+        };
 
 
-            chai.request(server)
-                .post('/api/v2/users/signup/')
-                .send(user)
-                .end((err, res) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        chai.request(server)
-                            .put(`/api/v2/users/${res.body.data.id}`)
-                            .send(__user)
-                            .end((err, result) => {
-                                if (err) {
-                                    console.log(err);
-                                }
-                                result.should.have.status(204);
+        chai.request(server)
+            .post('/api/v2/users/signup/')
+            .send(user)
+            .end((err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    return async (done) => {
+                        try {
+                            await chai.request(server)
 
-                            });
-                              done();
+                                .put(`/api/v2/users/${res.body.data.id}`)
+                                .send(__user)
+                                .end((err, result) => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    result.should.have.status(204);
+
+                                });
+                            done();
+                        } catch (err) {
+                            done(err);
+                        }
                     }
-                });
-                  done();
-        });
+                }
+            });
+        done();
+    });
 
 
-        it('Should Fecth a single user', (done) => {
-            /**
-             * TEST GET A SINGLE  USER
-             */
-            chai.request(server)
-                .post('/api/v2/users/signup/')
-                .send(user)
-                .end((err, res) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                        chai.request(server)
+    it('Should Fecth a single user', (done) => {
+        /**
+         * TEST GET A SINGLE  USER
+         */
+        chai.request(server)
+            .post('/api/v2/users/signup/')
+            .send(user)
+            .end((err, res) => {
+                if (err) {
+                    console.log(err);
+                }
+                return async (done) => {
+                    try {
+                        await chai.request(server)
+
                             .get(`/api/v2/users/${res.body.data.id}`)
                             .end((err, result) => {
 
                                 result.should.have.status(200);
 
                             });
-              done();
-                });
-                done();
-        });
+                        done();
+                    } catch (err) {
+                        done(err);
+                    }
+                }
+
+            });
+        done();
+    });
 
 });
