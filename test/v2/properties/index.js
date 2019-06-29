@@ -126,16 +126,23 @@ describe('Create property', () => {
                         if (err) {
                             console.log(err);
                         } else {
-                            chai.request(server)
-                                .put(`/api/v2/properties/${res.body.data.id}`)
-                                .send(__property)
-                                .end((err, result) => {
-                                    if (err) {
-                                        console.log(err);
-                                    }
-                                    result.should.have.status(204);
+                            return async (done) => {
+                                try {
+                                    await chai.request(server)
+                                        .put(`/api/v2/properties/${res.body.data.id}`)
+                                        .send(__property)
+                                        .end((err, result) => {
+                                            if (err) {
+                                                console.log(err);
+                                            }
+                                            result.should.have.status(204);
+                                        });
                                     done();
-                                });
+                                } catch (err) {
+                                    done(err);
+                                }
+                            }
+
                         }
                     });
                 done();
@@ -160,13 +167,21 @@ describe('Create property', () => {
                         if (err) {
                             console.log(err);
                         } else {
-                            chai.request(server)
-                                .delete(`/api/v2/properties/${res.body.data.id}`)
-                                .end((err, result) => {
+                            return async (done) => {
+                                try {
+                                    await chai.request(server)
 
-                                    result.should.have.status(204);
+                                        .delete(`/api/v2/properties/${res.body.data.id}`)
+                                        .end((err, result) => {
+
+                                            result.should.have.status(204);
+                                            done();
+                                        });
                                     done();
-                                });
+                                } catch (err) {
+                                    done(err);
+                                }
+                            }
                         }
                     });
                 done();
