@@ -83,13 +83,18 @@ if (env === 'test') {
   // /Post request to create users
   users.post('/signup', asyncHandler(async (req, res) => {
 
-    if (req.body.firstName &&
-        req.body.secondName &&
-        req.body.userName &&
-        req.body.email &&
-        req.body.phoneNumber &&
-        req.body.password &&
-        req.body.confirmPassword) {
+    if (!req.body.firstName ||
+        !req.body.secondName ||
+        !req.body.userName ||
+        !req.body.email ||
+        !req.body.phoneNumber ||
+        !req.body.password ||
+        !req.body.confirmPassword) {
+          res.status(400).json({
+            status:"400",
+             message: 'Please fill all the required fields'
+        });
+        }
       if (req.body.password.length < 6 || req.body.password != req.body.confirmPassword){
         res.status(400).json({msg:'Password should be longer than 6'})
       }else if (isNaN(req.body.phoneNumber) || req.body.phoneNumber.length !=10) {
@@ -128,7 +133,7 @@ if (env === 'test') {
       }else{
         myClient.query(usernameQuery, function (err, resu) {
           if (resu.rows.length != 0){
-            console.log("-------",ress.rows.length)
+            console.log("-------",resu.rows.length)
             res.status(400).json({
               status:"400",
               message:"A user with same userName exist"
@@ -136,7 +141,7 @@ if (env === 'test') {
           }else{
             myClient.query(phonenumberQuery, function (err, resul) {
               if (resul.rows.length != 0){
-                console.log("-------",ress.rows.length)
+                console.log("-------",resul.rows.length)
                 res.status(400).json({
                   status:"400",
                   message:"A user with same phoneNumber exist"
@@ -155,12 +160,6 @@ if (env === 'test') {
       }
     })
 
-  } else {
-    res.status(400).json({
-      status:"400",
-       message: 'Please fill all the required fields'
-  });
-  }
 
   }));
 

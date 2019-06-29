@@ -12,7 +12,6 @@ if (env !== 'production') {
 
 const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
 const params = url.parse(databaseUrl);
-console.log('+++++++++++++++++++++++++++++++',params)
 const auth = params.auth.split(':');
 
 

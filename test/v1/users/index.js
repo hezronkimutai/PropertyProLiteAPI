@@ -91,9 +91,9 @@ describe('Test update user', () => {
     const __user = {
         "firstName": "ui",
         "secondName": "fy",
-        "userName": "hezzie",
-        "email": "kim@gmail.com",
-        "phoneNumber": "0937890356",
+        "userName": "hezztie",
+        "email": "ktim@gmail.com",
+        "phoneNumber": "0667890356",
         "password": "reqfhgtfhfgjfg",
         "confirmPassword": "reqfhgtfhfgjfg"
     };
@@ -176,9 +176,9 @@ describe('Test signup with a string first name', () => {
         const _user = {
             "firstName": '67',
             "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
+            "userName": "hezyyzie",
+            "email": "hyyez@gmail.com",
+            "phoneNumber": "0937898856",
             "password": "reqfhgtfhfgjfg",
             "confirmPassword": "reqfhgtfhfgjfg"
         };
@@ -207,9 +207,9 @@ describe('Creating a user with a short password', () => {
         const _user = {
             "firstName": "hezron",
             "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
+            "userName": "hezizie",
+            "email": "hiez@gmail.com",
+            "phoneNumber": "0978892356",
             "password": "req",
             "confirmPassword": "req"
         };
@@ -238,8 +238,8 @@ describe('Test user signup with a string phone number', () => {
         const _user = {
             "firstName": "hezron",
             "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
+            "userName": "hezozie",
+            "email": "heoz@gmail.com",
             "phoneNumber": "kimki",
             "password": "requiui",
             "confirmPassword": "requiui"
@@ -269,9 +269,9 @@ describe('Test signup with non matching passwords', () => {
         const _user = {
             "firstName": "hezron",
             "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
+            "userName": "hezpzie",
+            "email": "hepz@gmail.com",
+            "phoneNumber": "0939992356",
             "password": "reqfdhdf",
             "confirmPassword": "reqiuuu"
         };
@@ -299,9 +299,9 @@ describe('Test user signup with an invalid email', () => {
         const _user = {
             "firstName": "hezron",
             "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hezgmail.com",
-            "phoneNumber": "0937892356",
+            "userName": "hezzmie",
+            "email": "hemzgmail.com",
+            "phoneNumber": "0937562356",
             "password": "req",
             "confirmPassword": "req"
         };
