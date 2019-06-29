@@ -175,7 +175,7 @@ describe('Create property', () => {
                                         .end((err, result) => {
 
                                             result.should.have.status(204);
-                                            done();
+                      
                                         });
                                     done();
                                 } catch (err) {
