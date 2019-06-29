@@ -202,11 +202,13 @@ describe('Create  user', () => {
 
     });
 
-    it('Should delete a user', (done) => {
+    it('Should delete a user', () => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+         return async (done) => {
+             try {
+                 await chai.request(server)
             .post('/api/v2/users/signup/')
             .send(user)
             .end((err, res) => {
@@ -231,11 +233,15 @@ describe('Create  user', () => {
 
             });
         done();
+      } catch (err) {
+          done(err);
+      }
+      }
     });
 
 
 
-    it('Should update a user', (done) => {
+    it('Should update a user', () => {
 
         const __user = {
             "firstName": "ui",
@@ -247,8 +253,9 @@ describe('Create  user', () => {
             "confirmPassword": "reqfhgtfhfgjfg"
         };
 
-
-        chai.request(server)
+        return async (done) => {
+            try {
+              await chai.request(server)
             .post('/api/v2/users/signup/')
             .send(user)
             .end((err, res) => {
@@ -276,14 +283,20 @@ describe('Create  user', () => {
                 }
             });
         done();
+
+      } catch (err) {
+          done(err);
+      }}
     });
 
 
-    it('Should Fecth a single user', (done) => {
+    it('Should Fecth a single user', () => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+         return async (done) => {
+             try {
+               await chai.request(server)
             .post('/api/v2/users/signup/')
             .send(user)
             .end((err, res) => {
@@ -308,6 +321,9 @@ describe('Create  user', () => {
 
             });
         done();
+      } catch (err) {
+          done(err);
+      }}
     });
 
 });
