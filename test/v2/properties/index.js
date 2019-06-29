@@ -20,37 +20,39 @@ describe('Create property', () => {
 
     it('Should add property to the test db', () => {
 
-      return async (done) => {
-    try {
-      await chai.request(server)
+        return async (done) => {
+            try {
+                await chai.request(server)
 
-      .post('/api/v2/properties/post-property/')
-      .send(propertyy)
-      .end((err, res) => {
-          res.should.have.status(201);
+                    .post('/api/v2/properties/post-property/')
+                    .send(propertyy)
+                    .end((err, res) => {
+                        res.should.have.status(201);
 
-      });
-             done();
-         } catch (err) {
-             done(err);
-         }}
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
     });
 
 
     it('Should Fecth all the properties', () => {
 
-      return async (done) => {
-    try {
-      await chai.request(server)
+        return async (done) => {
+            try {
+                await chai.request(server)
 
-      .get('/api/v2/properties/')
-      .end((err, result) => {
-          result.should.have.status(200);
-      });
-             done();
-         } catch (err) {
-             done(err);
-         }}
+                    .get('/api/v2/properties/')
+                    .end((err, result) => {
+                        result.should.have.status(200);
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
 
 
@@ -60,28 +62,38 @@ describe('Create property', () => {
     it('Should Fecth a single property', () => {
 
 
-      return async (done) => {
-    try {
-      await chai.request(server)
+        return async (done) => {
+            try {
+                await chai.request(server)
 
-      .post('/api/v2/properties/post-property/')
-      .send(property)
-      .end((err, res) => {
-          if (err) {console.log(err);}
-          console.log(res.body);
-            chai.request(server)
+                    .post('/api/v2/properties/post-property/')
+                    .send(property)
+                    .end((err, res) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        console.log(res.body);
+                        return async (done) => {
+                            try {
+                                await chai.request(server)
 
-                  .get(`/api/v2/properties/${res.body.data.id}`)
-                  .end((err, result) => {
+                                    .get(`/api/v2/properties/${res.body.data.id}`)
+                                    .end((err, result) => {
 
-                      result.should.have.status(200);
-                      done();
-                  });
-      });
-             done();
-         } catch (err) {
-             done(err);
-         }}
+                                        result.should.have.status(200);
+
+                                    });
+                                done();
+                            } catch (err) {
+                                done(err);
+                            }
+                        }
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
     });
 
@@ -104,33 +116,33 @@ describe('Create property', () => {
 
 
 
-
         return async (done) => {
-      try {
-        await chai.request(server)
+            try {
+                await chai.request(server)
 
-        .post('/api/v2/properties/post-property/')
-        .send(__property)
-        .end((err, res) => {
-            if (err) {
-                console.log(err);
-            } else {
-                chai.request(server)
-                    .put(`/api/v2/properties/${res.body.data.id}`)
+                    .post('/api/v2/properties/post-property/')
                     .send(__property)
-                    .end((err, result) => {
+                    .end((err, res) => {
                         if (err) {
                             console.log(err);
+                        } else {
+                            chai.request(server)
+                                .put(`/api/v2/properties/${res.body.data.id}`)
+                                .send(__property)
+                                .end((err, result) => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    result.should.have.status(204);
+                                    done();
+                                });
                         }
-                        result.should.have.status(204);
-                        done();
                     });
+                done();
+            } catch (err) {
+                done(err);
             }
-        });
-               done();
-           } catch (err) {
-               done(err);
-           }}
+        }
 
 
 
@@ -138,29 +150,30 @@ describe('Create property', () => {
     });
 
     it('Should delete a property', () => {
-      return async (done) => {
-    try {
-      await chai.request(server)
+        return async (done) => {
+            try {
+                await chai.request(server)
 
-      .post('/api/v2/properties/post-property/')
-      .send(property)
-      .end((err, res) => {
-          if (err) {
-              console.log(err);
-          } else {
-              chai.request(server)
-                  .delete(`/api/v2/properties/${res.body.data.id}`)
-                  .end((err, result) => {
+                    .post('/api/v2/properties/post-property/')
+                    .send(property)
+                    .end((err, res) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            chai.request(server)
+                                .delete(`/api/v2/properties/${res.body.data.id}`)
+                                .end((err, result) => {
 
-                      result.should.have.status(204);
-                      done();
-                  });
-          }
-      });
-             done();
-         } catch (err) {
-             done(err);
-         }}
+                                    result.should.have.status(204);
+                                    done();
+                                });
+                        }
+                    });
+                done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
 
     });

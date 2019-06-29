@@ -12,19 +12,7 @@ if (env !== 'production') {
 
 const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
 const params = url.parse(databaseUrl);
-const auth = params.auth.split(':');
-
-
-const config = {
-  user: auth[0],
-  password: auth[1],
-  host: params.hostname,
-  port: params.port,
-  database: params.pathname.split('/')[1],
-  ssl: true
-};
-
-const pool = new pg.Pool(config )
+const pool = new pg.Pool({connectionString:databaseUrl})
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
