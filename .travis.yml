@@ -8,7 +8,7 @@ cache:
 script:
   - npm test
 before_script:
-  - psql -c 'CREATE DATABASE test;' -U postgres
-  - npm install coveralls
+  - npm install jsonwebtoken
+  - psql -c 'CREATE DATABASE ppltest;' -U postgres
 after_success:
-  - npm run coveralls
+  - npm install coveralls && npm run coverage

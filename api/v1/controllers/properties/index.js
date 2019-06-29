@@ -19,6 +19,22 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
            req.body.state && req.body.city &&
            req.body.address && req.body.map &&
           req.body.description && req.body.url) {
+          if (!isNaN(req.body.category) || !isNaN(req.body.name) || !isNaN(req.body.state) || !isNaN(req.body.city) || !isNaN(req.body.reason) || !isNaN(req.body.description)) {
+            res.status(400).json({msg:"Make sure name reason, category city, state and description are strings"})
+          }
+          if(req.body.map.indexOf(',') == -1){
+            res.status(400).json({
+              status:400,
+              message:"Make sure that the you provide a valid map cordinates"
+            })
+          }
+    
+          if (isNaN(req.body.map.split(",")[0]) || isNaN(req.body.map.split(",")[1])){
+            res.status(400).json({
+              status:400,
+              message:"Make sure that the you provide a valid map cordinates"
+            })
+          }
           const property = await records.createProperty({
             category: req.body.category,
             name: req.body.name,

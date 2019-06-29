@@ -4,8 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=text mocha --exit",
-    "start": "nodemon app.js"
+    "test": "NODE_ENV=test nyc --reporter=text mocha --exit",
+    "start": "NODE_ENV=development nodemon",
+    "start:prod": "NODE_ENV=production nodemon",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Hezron Kimutai Chelimo",
   "license": "ISC",
@@ -14,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.1",
     "multer-storage-cloudinary": "^2.2.1",
     "nodemon": "^1.19.1",

@@ -1,7 +1,12 @@
 const express = require('express');
-
 const users = express.Router();
 const records = require('../../models');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const config = require('./config');
+const middleware = require('./middleware');
+
+
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -14,10 +19,13 @@ function asyncHandler(cb) {
 }
 
 // /Get request to get all users
-users.get('/', asyncHandler(async (req, res) => {
+users.get('/',asyncHandler(async (req, res) => {
   const users = await records.getUsers();
+
   if (users) {
+
     res.json(users);
+
   } else {
     res.status(400).json({
       status: "400",
@@ -52,12 +60,22 @@ users.post('/signup', asyncHandler(async (req, res) => {
     if (req.body.password.length < 6 || req.body.password != req.body.confirmPassword){
       res.status(400).json({msg:'Password should be longer than 6'})
     }else if (isNaN(req.body.phoneNumber) || req.body.phoneNumber.length !=10) {
-      res.status(400).json({msg:'Phone number should be a digit'})
+      res.status(400).json({msg:'Phone number should be a digit and be 10 in length'})
     }else if (req.body.email.indexOf('@') == -1 || req.body.email.indexOf('.') == -1) {
       res.status(400).json({msg:'invalid email'})
     }else if (!isNaN(req.body.firstName) || !isNaN(req.body.secondName) || !isNaN(req.body.userName)) {
       res.status(400).json({msg:"username, firstName and secondName should be a string"})
     }
+    const users = await records.getUsers();
+    users.forEach(function(user) {
+      if (user.email == req.body.email || user.phoneNumber == req.body.phoneNumber || user.userName == req.body.userName){
+        res.status(400).json({
+          status:400,
+          message:"A user with the same credentials exist"
+        })
+      }
+});
+
       const user = await records.createUser({
         firstName: req.body.firstName,
         secondName: req.body.secondName,
@@ -65,8 +83,10 @@ users.post('/signup', asyncHandler(async (req, res) => {
         email: req.body.email,
         phoneNumber: req.body.phoneNumber,
         password: req.body.password,
-        confirmPassword: req.body.confirmPassword
+        profilePic:""
+
       });
+
       res.status(201).json({
         status:"201",
         message:"User created succesfully",
@@ -89,16 +109,26 @@ users.post('/login', asyncHandler(async (req, res) => {
 
     for (let i = 0; i < users.length; i++) {
       if (users[i].email === req.body.email && users[i].password === req.body.password) {
+        let token = jwt.sign({email: req.body.email},
+          config.secret,
+          { expiresIn: '24h' // expires in 24 hours
+          }
+        );
+
         res.status(201).json({
           status:"201",
           message: 'user Succesfully logged in',
+          token:token,
+            data:users[i]
+        });
+      }else{
+        res.status(400).json({
+          status:"400",
+          message: 'Incorrect details'
         });
       }
     }
-    res.status(400).json({
-      status:"400",
-      message: 'Incorrect details',
-    });
+
   } else {
     res.status(400).json({
       status: "400",
@@ -111,13 +141,17 @@ users.post('/login', asyncHandler(async (req, res) => {
 users.put('/:id', asyncHandler(async (req, res) => {
   const user = await records.getUser(req.params.id);
   if (user) {
+    user.id =req.params.id,
     user.firstName = req.body.firstName,
     user.secondName = req.body.secondName,
     user.userName = req.body.userName,
     user.email = req.body.email,
     user.phoneNumber = req.body.phoneNumber,
     user.password = req.body.password,
-    user.confirmPassword = req.body.confirmPassword
+    user.confirmPassword = req.body.confirmPassword,
+    user.profilePic=""
+
+
 
     await records.updateUser(user);
 
@@ -143,6 +177,12 @@ users.delete('/:id', asyncHandler(async (req, res) => {
        message: "User wasn't found"
      });
   }
+}));
+
+// send a delete request to delete a user
+users.delete('/', asyncHandler(async (req, res) => {
+    await records.deleteAllUsers();
+    res.status(204).end();
 }));
 
 

@@ -1,12 +1,16 @@
 const fs = require('fs');
 
+
+const env = process.env.NODE_ENV
+const db = env === 'test' ? 'dbtest' : 'db';
+
 function generateRandomId() {
   return Math.floor(Math.random() * 10000);
 }
 
 function saveProperties(data) {
   return new Promise((resolve, reject) => {
-    fs.writeFile('db/properties.json', JSON.stringify(data, null, 2), (err) => {
+    fs.writeFile(`${db}/properties.json`, JSON.stringify(data, null, 2), (err) => {
       if (err) {
         reject(err);
       } else {
@@ -18,7 +22,7 @@ function saveProperties(data) {
 
 function saveUsers(data) {
   return new Promise((resolve, reject) => {
-    fs.writeFile('db/users.json', JSON.stringify(data, null, 2), (err) => {
+    fs.writeFile(`${db}/users.json`, JSON.stringify(data, null, 2), (err) => {
       if (err) {
         reject(err);
       } else {
@@ -33,11 +37,15 @@ function saveUsers(data) {
  * @param None
  */
 function getUsers() {
+
   return new Promise((resolve, reject) => {
-    fs.readFile('db/users.json', 'utf8', (err, data) => {
+    fs.readFile(`${db}/users.json`, 'utf8', (err, data) => {
+
       if (err) {
+
         reject(err);
       } else {
+
         const json = JSON.parse(data);
         resolve(json);
       }
@@ -51,7 +59,7 @@ function getUsers() {
  */
 function getProperties() {
   return new Promise((resolve, reject) => {
-    fs.readFile('db/properties.json', 'utf8', (err, data) => {
+    fs.readFile(`${db}/properties.json`, 'utf8', (err, data) => {
       if (err) {
         reject(err);
       } else {
@@ -104,7 +112,9 @@ async function getUser(id) {
  * Creates a new user record
  * @param {Object} newRecord - Object containing info for new user: the username, password
  */
+
 async function createUser(newRecord) {
+
   const users = await getUsers();
 
   newRecord.id = generateRandomId();
@@ -118,6 +128,7 @@ async function createUser(newRecord) {
  * @param {Object} newRecord - Object containing info for new user: the username, password
  */
 async function createProperty(newRecord) {
+
   const properties = await getProperties();
 
   newRecord.id = generateRandomId();
@@ -132,12 +143,23 @@ async function createProperty(newRecord) {
  */
 async function updateProperty(newProperty) {
   const properties = await getProperties();
-  const property = properties.find(record => record.id === newProperty.id);
+  properties.forEach(async function(property) {
+    if (property.id == newProperty.id){
+      property.name = newProperty.name,
+      property.category = newProperty.category,
+      property.price = newProperty.price,
+      property.map = newProperty.map,
+      property.reason = newProperty.reason,
+      property.address = newProperty.address,
+      property.state = newProperty.state,
+      property.city = newProperty.city,
+      property.description = newProperty.description,
+      property.url = property.url
+      await saveProperties(properties);
+    }
 
-  property.propertyName = newProperty.propertyName;
-  property.propertyType = newProperty.propertyType;
+});
 
-  await saveProperties(properties);
 }
 
 /**
@@ -146,12 +168,20 @@ async function updateProperty(newProperty) {
  */
 async function updateUser(newUser) {
   const users = await getUsers();
-  const user = users.find(record => record.id === newUser.id);
+  users.forEach(async function(user) {
+    if(user.id == newUser.id){
+      user.firstName = newUser.firstName,
+      user.secondName = newUser.secondName,
+      user.userName = newUser.userName,
+      user.email = newUser.email,
+      user.phoneNumber = newUser.phoneNumber,
+      user.password = newUser.password,
+      user.confirmPassword = newUser.confirmPassword,
+      await saveUsers(users);
+    }
 
-  user.username = newUser.username;
-  user.password = newUser.password;
+});
 
-  await saveUsers(users);
 }
 
 /**
@@ -161,6 +191,20 @@ async function updateUser(newUser) {
 async function deleteProperty(property) {
   const allProperties = await getProperties();
   const properties = allProperties.filter(record => record.id !== property.id);
+  await saveProperties(properties);
+}
+
+
+
+
+
+/**
+ * Deletes a single Property
+ * @param {Object} property - Accepts record to be deleted.
+ */
+async function deleteAllProperties() {
+  const allProperties = await getProperties();
+  const properties = [];
   await saveProperties(properties);
 }
 
@@ -174,8 +218,20 @@ async function deleteUser(user) {
   await saveUsers(users);
 }
 
+/**
+ * Deletes a single Property
+ * @param {Object} user - Accepts record to be deleted.
+ */
+async function deleteAllUsers() {
+  const allUsers = await getUsers();
+  const users = [];
+  await saveUsers(users);
+}
+
 
 module.exports = {
+  deleteAllProperties,
+  deleteAllUsers,
   getProperties,
   getUsers,
   createUser,
