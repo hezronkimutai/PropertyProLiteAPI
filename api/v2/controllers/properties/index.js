@@ -1,10 +1,12 @@
-const express = require('express');
-const pg = require('pg')
-const properties = express.Router();
-const PGUSER = 'postgres'
+import express from 'express';
+import pg from 'pg';
+import url from 'url';
+import format from 'pg-format';
+
+
 const PGDATABASE = 'ppl'
-const url = require('url')
-const format = require('pg-format')
+const PGUSER = 'postgres'
+const properties = express.Router();
 const env = process.env.NODE_ENV
 if (env !== 'production') {
   require('dotenv').config();

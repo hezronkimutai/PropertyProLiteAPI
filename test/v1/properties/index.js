@@ -1,6 +1,9 @@
-const records = require('../../../api/v1/models');
-const chai = require('chai');
-const server = require('../../../app');
+import records from '../../../api/v1/models';
+import chai from 'chai';
+import server from '../../../app';
+
+
+
 const property = {
     "category": "Sifn fgle room",
     "name": "Houscbhfxce",

@@ -1,15 +1,18 @@
+import express from 'express';
+import pg from 'pg';
+import middleware from './middleware';
+import format from 'pg-format';
+import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
+import config from './config';
 
-const express = require('express');
-const pg = require('pg')
+
 const users = express.Router();
-const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const config = require('./config');
-const PGUSER = 'postgres'
+const  PGUSER = 'postgres'
 const PGDATABASE = 'ppl'
 const url = require('url')
-const middleware = require('./middleware');
-const format = require('pg-format')
+
+
 const env = process.env.NODE_ENV
 if (env !== 'production') {
   require('dotenv').config();

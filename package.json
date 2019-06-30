@@ -4,10 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "NODE_ENV=test nyc --reporter=text mocha --exit",
-    "start": "NODE_ENV=development nodemon",
-    "start:prod": "NODE_ENV=production nodemon",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "start": "NODE_ENV=development nodemon --exec babel-node app.js",
+     "start:prod": "NODE_ENV=production babel-node app.js",
+     "test": "NODE_ENV=test nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./test/*",
+     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Hezron Kimutai Chelimo",
   "license": "ISC",
@@ -19,19 +19,24 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.1",
     "multer-storage-cloudinary": "^2.2.1",
-    "nodemon": "^1.19.1",
     "pg": "^7.11.0",
-    "pg-format": "^1.0.4",
-    "swagger-ui": "^3.22.3"
+    "pg-format": "^1.0.4"
   },
   "devDependencies": {
-    "chai": "4.2.0",
-    "chai-http": "4.3.0",
     "coveralls": "^3.0.4",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
-    "mocha": "6.1.4",
-    "nyc": "14.1.1"
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   }
 }

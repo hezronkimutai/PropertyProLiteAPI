@@ -1,9 +1,14 @@
-const routes = require('express').Router();
+import express from 'express';
 
-const properties = require('./properties');
-const users = require('./users')
+import properties from './properties';
+import users from './users';
+
+
+const routes = express.Router();
+
 
 routes.use('/properties', properties);
 routes.use('/users', users);
+
 
 module.exports = routes;

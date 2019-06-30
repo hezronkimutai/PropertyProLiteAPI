@@ -1,11 +1,12 @@
-const express = require('express');
-const users = express.Router();
-const records = require('../../models');
-const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const config = require('./config');
-const middleware = require('./middleware');
+import express from 'express';
+import records from '../../models';
+import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
+import config from './config';
+import middleware from './middleware';
 
+
+const users = express.Router();
 
 
 function asyncHandler(cb) {

@@ -1,6 +1,6 @@
-const express = require('express');
-const records = require('./api/v1/models');
-const cors = require('cors')
+import  express from 'express';
+import records from './api/v1/models';
+import cors from 'cors';
 
 
 
