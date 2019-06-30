@@ -1,5 +1,5 @@
 const chai = require('chai');
-const server = require('../../../app');
+const server = require('../../../api');
 
 
 const propertyy = {
@@ -175,7 +175,7 @@ describe('Create property', () => {
                                         .end((err, result) => {
 
                                             result.should.have.status(204);
-                      
+
                                         });
                                     done();
                                 } catch (err) {

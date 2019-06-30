@@ -1,6 +1,6 @@
 const records = require('../../../api/v1/models');
 const chai = require('chai');
-const server = require('../../../app');
+const server = require('../../../api');
 const property = {
     "category": "Sifn fgle room",
     "name": "Houscbhfxce",

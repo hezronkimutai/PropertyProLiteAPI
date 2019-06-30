@@ -1,16 +1,19 @@
-const express = require('express');
-const records = require('./api/v1/models');
-const cors = require('cors')
+import  express from 'express';
+import records from './v1/models';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
+dotenv.config();
+const env = process.env.NODE_ENV
 
+console.log('+++++++++++++++++++++++++++++++++++',env)
 
 const app = express();
 app.use(cors())
 app.use(express.json());
-const controllersv1 = require('./api/v1/controllers');
+const controllersv1 = require('./v1/controllers');
 app.use('/api/v1', controllersv1);
-
-const controllersv2 = require('./api/v2/controllers');
+const controllersv2 = require('./v2');
 app.use('/api/v2', controllersv2);
 
 

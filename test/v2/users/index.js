@@ -1,5 +1,5 @@
 const chai = require('chai');
-const server = require('../../../app');
+const server = require('../../../api');
 const superagent = require('superagent');
 
 const user = {

@@ -1,24 +1,38 @@
-
-const express = require('express');
-const pg = require('pg')
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import moment from 'moment';
+import db from './database/query';
+import jwt from 'jsonwebtoken';
+import config from './config';
+import middleware from './middleware';
+import format from 'pg-format';
 const users = express.Router();
-const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const config = require('./config');
-const PGUSER = 'postgres'
-const PGDATABASE = 'ppl'
-const url = require('url')
-const middleware = require('./middleware');
-const format = require('pg-format')
-const env = process.env.NODE_ENV
-if (env !== 'production') {
-  require('dotenv').config();
-}
-
-const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
 
 
-const pool = new pg.Pool({connectionString:databaseUrl})
+// Set up body parsers
+users.use(bodyParser.json());
+// Extend url parser urlencoded
+users.use(bodyParser.urlencoded({
+    extended: false
+}));
+// Set up cross origin
+users.use(cors())
+//
+// const  PGUSER = 'postgres'
+// const PGDATABASE = 'ppl'
+// const url = require('url')
+//
+//
+// const env = process.env.NODE_ENV
+// if (env !== 'production') {
+//   require('dotenv').config();
+// }
+//
+// const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
+//
+//
+// const pool = new pg.Pool({connectionString:databaseUrl})
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -30,34 +44,21 @@ function asyncHandler(cb) {
   };
 }
 
-const ctu =`CREATE TABLE IF NOT EXISTS users(
-                                                id serial PRIMARY KEY,
-                                                firstName VARCHAR NOT NULL,
-                                                secondName VARCHAR NOT NULL,
-                                                username VARCHAR NOT NULL,
-                                                email VARCHAR NOT NULL,
-                                                phoneNumber VARCHAR NOT NULL,
-                                                password VARCHAR NOT NULL,
-                                                profilePic VARCHAR NULL
-                                                )`;
 
 
-const dtu = `DROP TABLE IF EXISTS users`;
-
-
-pool.connect(function (err, client, done) {
-  const myClient = client
-if (err) {console.log(err)}
-if (env === 'test') {
-  myClient.query(dtu);
-  myClient.query(ctu);
-}else{
-  myClient.query(ctu);
-}
+// pool.connect(function (err, client, done) {
+//   const db = client
+// if (err) {console.log(err)}
+// if (env === 'test') {
+//   db.query(dtu);
+//   db.query(ctu);
+// }else{
+//   db.query(ctu);
+// }
   // /Get request to get all users
   users.get('/', asyncHandler(async (req, res) => {
     const usersQuery = format('SELECT * from users')
-    myClient.query(usersQuery, function (err, result) {
+    db.query(usersQuery, function (err, result) {
       if (err) {
         console.log(err)
       }
@@ -106,7 +107,7 @@ if (env === 'test') {
     const emailQuery = format(`SELECT * from users where email='%s'`,req.body.email)
     const usernameQuery = format(`SELECT * from users where username='%s'`,req.body.userName)
     const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`,req.body.phoneNumber)
-    myClient.query(emailQuery, function (err, ress) {
+    db.query(emailQuery, function (err, ress) {
 
       if (err) {
         console.log(err)
@@ -120,7 +121,7 @@ if (env === 'test') {
           message:"A user with same email exist"
         })
       }else{
-        myClient.query(usernameQuery, function (err, resu) {
+        db.query(usernameQuery, function (err, resu) {
           if (resu.rows.length != 0){
             console.log("-------",resu.rows.length)
             res.status(400).json({
@@ -128,7 +129,7 @@ if (env === 'test') {
               message:"A user with same userName exist"
             })
           }else{
-            myClient.query(phonenumberQuery, function (err, resul) {
+            db.query(phonenumberQuery, function (err, resul) {
               if (resul.rows.length != 0){
                 console.log("-------",resul.rows.length)
                 res.status(400).json({
@@ -136,7 +137,7 @@ if (env === 'test') {
                   message:"A user with same phoneNumber exist"
                 })
               }else{
-                myClient.query(userQuery, function (err, result) {
+                db.query(userQuery, function (err, result) {
                   res.status(201).json({
                     status:"201",
                     message:"successfully created the user"
@@ -163,7 +164,7 @@ if (env === 'test') {
       const updateProfilePic = format(`UPDATE users SET profilepic = '%s' WHERE id ='%s'`,
                               req.body.url,
                               req.params.id);
-      myClient.query(updateProfilePic, function (err, result) {
+      db.query(updateProfilePic, function (err, result) {
         if (err) {
           console.log(err)
         }
@@ -216,7 +217,7 @@ if (env === 'test') {
   const emailQuery = format(`SELECT * from users where email='%s'`,req.body.email)
   const usernameQuery = format(`SELECT * from users where username='%s'`,req.body.userName)
   const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`,req.body.phoneNumber)
-  myClient.query(emailQuery, function (err, ress) {
+  db.query(emailQuery, function (err, ress) {
     if (err) {
       console.log(err)
     }
@@ -227,7 +228,7 @@ if (env === 'test') {
         message:"A user with same email exist"
       })
     }else{
-      myClient.query(usernameQuery, function (err, resu) {
+      db.query(usernameQuery, function (err, resu) {
         if (resu.rows.length != 0){
           console.log("-------",ress.rows.length)
           res.status(400).json({
@@ -235,7 +236,7 @@ if (env === 'test') {
             message:"A user with same userName exist"
           })
         }else{
-          myClient.query(phonenumberQuery, function (err, resul) {
+          db.query(phonenumberQuery, function (err, resul) {
             if (resul.rows.length != 0){
               console.log("-------",ress.rows.length)
               res.status(400).json({
@@ -243,7 +244,7 @@ if (env === 'test') {
                 message:"A user with same phoneNumber exist"
               })
             }else{
-              myClient.query(updateUserQuery, function (err, result) {
+              db.query(updateUserQuery, function (err, result) {
                 if (err) {
                   console.log(err)
                 }
@@ -273,7 +274,7 @@ if (env === 'test') {
   users.post('/login', asyncHandler(async (req, res) => {
     if (req.body.email && req.body.password ) {
       const userQuery = format(`SELECT * from users where email='%s' and password='%s'`,req.body.email, req.body.password)
-      myClient.query(userQuery, function (err, result) {
+      db.query(userQuery, function (err, result) {
         if (err) {
           console.log(err)
         }
@@ -311,7 +312,7 @@ if (env === 'test') {
   // /Get request to get a single user
   users.get('/:id', asyncHandler(async (req, res) => {
     const userQuery = format(`SELECT * from users where id='%s'`,req.params.id)
-    myClient.query(userQuery, function (err, result) {
+    db.query(userQuery, function (err, result) {
       if (err) {
         console.log(err)
       }
@@ -326,7 +327,7 @@ if (env === 'test') {
 
   users.delete('/:id', asyncHandler(async (req, res) => {
     const deleteUserQuery = format(`DELETE FROM users WHERE id='%s'`,req.params.id)
-    myClient.query(deleteUserQuery, function (err, result) {
+    db.query(deleteUserQuery, function (err, result) {
       if (err) {
         console.log(err)
       }
@@ -336,6 +337,8 @@ if (env === 'test') {
       })
     })
   }));
-})
+// })
+//
+// module.exports = users;
 
-module.exports = users;
+export default users;

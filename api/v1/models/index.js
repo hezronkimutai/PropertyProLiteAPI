@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 
 const env = process.env.NODE_ENV

@@ -1,18 +1,11 @@
-const express = require('express');
-const pg = require('pg')
-const properties = express.Router();
-const PGUSER = 'postgres'
-const PGDATABASE = 'ppl'
-const url = require('url')
-const format = require('pg-format')
-const env = process.env.NODE_ENV
-if (env !== 'production') {
-  require('dotenv').config();
-}
 
-const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
-const params = url.parse(databaseUrl);
-const pool = new pg.Pool({connectionString:databaseUrl})
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import moment from 'moment';
+import db from './database/query';
+import format from 'pg-format';
+const properties = express.Router();
 
 function asyncHandler(cb) {
   return async (req, res, next) => {
@@ -24,29 +17,8 @@ function asyncHandler(cb) {
   };
 }
 
-const ctp =`CREATE TABLE IF NOT EXISTS properties(
-                                                id serial PRIMARY KEY,
-                                                category varchar,
-                                                name varchar,
-                                                reason varchar,
-                                                price varchar,
-                                                state varchar,
-                                                city varchar,
-                                                address varchar,
-                                                map varchar,
-                                                description varchar,
-                                                url varchar
-                                                )`;
-const dtp = `DROP TABLE IF EXISTS properties`;
-pool.connect(function (err, client, done) {
-    const myClient = client
-  if (err) {console.log(err)}
-  if (env === 'test') {
-    myClient.query(dtp);
-    myClient.query(ctp);
-  }else{
-    myClient.query(ctp);
-  }
+
+
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
 
@@ -83,7 +55,7 @@ properties.post('/post-property', asyncHandler(async (req, res) => {
                                   req.body.map,
                                   req.body.description,
                                   req.body.url);
-          myClient.query(propertyQuery, function (err, result) {
+          db.query(propertyQuery, function (err, result) {
             if (err) {
               console.log(err)
             }
@@ -136,7 +108,7 @@ properties.put('/:id', asyncHandler(async (req, res) => {
                                   req.body.description,
                                   req.body.url,
                                   req.params.id);
-          myClient.query(updatePropertyQuery, function (err, result) {
+          db.query(updatePropertyQuery, function (err, result) {
             if (err) {
               console.log(err)
             }
@@ -157,11 +129,10 @@ properties.put('/:id', asyncHandler(async (req, res) => {
 // /Get request to get all users
 properties.get('/', asyncHandler(async (req, res) => {
   const propertiesQuery = format(`SELECT * from properties`)
-  myClient.query(propertiesQuery, function (err, result) {
+  db.query(propertiesQuery, function (err, result) {
     if (err) {
       console.log(err)
     }
-    console.log("========++++++++++++++++++++=========",result.rows)
     res.status(200).json({
       status:"200",
       message:"properties retrieved succesfully",
@@ -172,7 +143,7 @@ properties.get('/', asyncHandler(async (req, res) => {
 
 properties.delete('/:id', asyncHandler(async (req, res) => {
   const deletePropertyQuery = format(`DELETE FROM properties WHERE id='%s'`,req.params.id)
-  myClient.query(deletePropertyQuery, function (err, result) {
+  db.query(deletePropertyQuery, function (err, result) {
     if (err) {
       console.log(err)
     }
@@ -186,7 +157,7 @@ properties.delete('/:id', asyncHandler(async (req, res) => {
 // /Get request to get a single user
 properties.get('/:id', asyncHandler(async (req, res) => {
   const propertyQuery = format(`SELECT * from properties WHERE id='%s'`,req.params.id)
-  myClient.query(propertyQuery, function (err, result) {
+  db.query(propertyQuery, function (err, result) {
     if (err) {
       console.log(err)
     }
@@ -198,7 +169,7 @@ properties.get('/:id', asyncHandler(async (req, res) => {
   })
 }));
 
-});
 
 
-module.exports = properties;
+
+export default properties;
