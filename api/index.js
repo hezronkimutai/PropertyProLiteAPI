@@ -8,8 +8,8 @@ app.use(express.json());
 const controllersv1 = require('./v1/controllers');
 app.use('/api/v1', controllersv1);
 
-const controllersv2 = require('./v2');
-app.use('/api/v2', controllersv2);
+// const controllersv2 = require('./v2');
+// app.use('/api/v2', controllersv2);
 
 
 var allowCrossDomain = function(req, res, next) {
