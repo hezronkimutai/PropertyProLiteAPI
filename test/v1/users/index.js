@@ -49,6 +49,7 @@ const user___ = {
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg"
 };
+const _user_ = {};
 
 
 describe('Signup a user', () => {
@@ -56,68 +57,237 @@ describe('Signup a user', () => {
     /**
      * TEST USER SIGNUP
      */
-    it('Should add user to the db', (done) => {
-        chai.request(app)
+    it('Should add user to the db', () => {
+      return async (done) => {
+          try {
+              await chai.request(server)
             .post('/api/v1/users/signup/')
             .send(user)
             .end((err, res) => {
                 res.should.have.status(201);
-                done();
-            });
+              });
+                  done();
+            } catch (err) {
+                done(err);
+            }
+        }
 
     });
+
+
+    it('Should not add null user to the db', () => {
+      return async (done) => {
+          try {
+              await chai.request(server)
+            .post('/api/v1/users/signup/')
+            .send(_user_)
+            .end((err, res) => {
+                res.should.have.status(400);
+              });
+                  done();
+            } catch (err) {
+                done(err);
+            }
+        }
+
+    });
+
+
+        it('Should respond with a 400 status code while creating a user whose firstname is a number', () => {
+            const _user = {
+                "firstName": '67',
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "0937892356",
+                "password": "reqfhgtfhfgjfg",
+                "confirmPassword": "reqfhgtfhfgjfg"
+            };
+            return async (done) => {
+                try {
+                    await chai.request(server)
+                .post('/api/v1/users/signup/')
+                .send(_user)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                  });
+                      done();
+                } catch (err) {
+                    done(err);
+                }
+            }
+        });
+        it('Should respond with a 400 status code while creating a user whose password is less than 6', () => {
+            const _user = {
+                "firstName": "hezron",
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "0937892356",
+                "password": "req",
+                "confirmPassword": "req"
+            };
+            return async (done) => {
+                try {
+                    await chai.request(server)
+                .post('/api/v1/users/signup/')
+                .send(_user)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                  });
+                      done();
+                } catch (err) {
+                    done(err);
+                }
+            }
+
+        });
+        it('Should respond with a 400 status code while creating a user whose phone number is a string', () => {
+            const _user = {
+                "firstName": "hezron",
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "kimki",
+                "password": "requiui",
+                "confirmPassword": "requiui"
+            };
+            return async (done) => {
+                try {
+                    await chai.request(server)
+                .post('/api/v1/users/signup/')
+                .send(_user)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                  });
+                      done();
+                } catch (err) {
+                    done(err);
+                }
+            }
+
+        });
+
+        it('Should respond with a 400 status code while creating a user whose passwords are not equal', () => {
+            const _user = {
+                "firstName": "hezron",
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "0937892356",
+                "password": "reqfdhdf",
+                "confirmPassword": "reqiuuu"
+            };
+            return async (done) => {
+                try {
+                    await chai.request(server)
+                .post('/api/v1/users/signup/')
+                .send(_user)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                  });
+                      done();
+                } catch (err) {
+                    done(err);
+                }
+            }
+        });
+
+        it('Should respond with a 400 status code while creating a user whose email is invalid', () => {
+            const _user = {
+                "firstName": "hezron",
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hezgmail.com",
+                "phoneNumber": "0937892356",
+                "password": "req",
+                "confirmPassword": "req"
+            };
+            return async (done) => {
+                try {
+                    await chai.request(server)
+                .post('/api/v1/users/signup/')
+                .send(_user)
+                .end((err, res) => {
+                    res.should.have.status(400);
+                  });
+                      done();
+                } catch (err) {
+                    done(err);
+                }
+            }
+        });
+
+
+
 });
-describe('Fetch all users', () => {
+describe('Test fetch users users', () => {
     /**
      * TEST GET ALL USERS
      */
 
 
-    it('Should Fecth all the users', (done) => {
-        chai.request(app)
+    it('Should Fecth all the users', () => {
+      return async (done) => {
+          try {
+              await chai.request(server)
             .get('/api/v1/users/')
             .end((err, result) => {
                 result.should.have.status(200);
-                done();
-            });
+              });
+                  done();
+            } catch (err) {
+                done(err);
+            }
+        }
     });
 
 
 
+        it('Should Fecth a single user', () => {
+            /**
+             * TEST GET A SINGLE  USER
+             */
+             return async (done) => {
+                 try {
+                     await chai.request(server)
+                .post('/api/v1/users/signup/')
+                .send(user_)
+                .end((err, res) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                      return async (done) => {
+                          try {
+                              await chai.request(server)
+                            .get(`/api/v1/users/${res.body.data.id}`)
+                            .end((err, result) => {
+
+                                result.should.have.status(200);
+                              });
+                                  done();
+                            } catch (err) {
+                                done(err);
+                            }
+                        }
+                    }
+                });
+
+                  done();
+            } catch (err) {
+                done(err);
+            }
+        }
+
+        });
+
+
 });
 
-describe('Test fetch a single user', () => {
 
 
 
-
-
-    it('Should Fecth a single user', (done) => {
-        /**
-         * TEST GET A SINGLE  USER
-         */
-        chai.request(app)
-            .post('/api/v1/users/signup/')
-            .send(user_)
-            .end((err, res) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    chai.request(app)
-                        .get(`/api/v1/users/${res.body.data.id}`)
-                        .end((err, result) => {
-
-                            result.should.have.status(200);
-                            done();
-                        });
-                }
-            });
-    });
-
-});
-
-
-describe('Test update user', () => {
+describe('Test manipulte a user', () => {
 
 
     const __user = {
@@ -131,18 +301,22 @@ describe('Test update user', () => {
     };
 
 
-    it('Should update a user', (done) => {
+    it('Should update a user', () => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(app)
+         return async (done) => {
+             try {
+                 await chai.request(server)
             .post('/api/v1/users/signup/')
             .send(user__)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(app)
+                  return async (done) => {
+                      try {
+                          await chai.request(server)
                         .put(`/api/v1/users/${res.body.data.id}`)
                         .send(__user)
                         .end((err, result) => {
@@ -150,169 +324,56 @@ describe('Test update user', () => {
                                 console.log(err);
                             }
                             result.should.have.status(204);
-                            done();
-                        });
-
+                          });
+                              done();
+                        } catch (err) {
+                            done(err);
+                        }
+                    }
                 }
             });
+
+        } catch (err) {
+            done(err);
+        }
+    }
     });
 
 
-
-});
-
-
-
-
-describe('Test delete user', () => {
-
-
-    it('Should delete a user', (done) => {
+    it('Should delete a user', () => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(app)
+         return async (done) => {
+             try {
+                 await chai.request(server)
             .post('/api/v1/users/signup/')
             .send(user___)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(app)
+                  return async (done) => {
+                      try {
+                          await chai.request(server)
                         .delete(`/api/v1/users/${res.body.data.id}`)
                         .end((err, result) => {
 
                             result.should.have.status(204);
-                            done();
-                        });
+                          });
+                              done();
+                        } catch (err) {
+                            done(err);
+                        }
+                    }
                 }
             });
+
+        } catch (err) {
+            done(err);
+        }
+    }
     });
-
-
-
-});
-
-
-
-describe('Test signup with a string first name', () => {
-
-    it('Should respond with a 400 status code while creating a user whose firstname is a number', (done) => {
-        const _user = {
-            "firstName": '67',
-            "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
-            "password": "reqfhgtfhfgjfg",
-            "confirmPassword": "reqfhgtfhfgjfg"
-        };
-        chai.request(app)
-            .post('/api/v1/users/signup/')
-            .send(_user)
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
-
-    });
-});
-describe('Creating a user with a short password', () => {
-
-    it('Should respond with a 400 status code while creating a user whose password is less than 6', (done) => {
-        const _user = {
-            "firstName": "hezron",
-            "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
-            "password": "req",
-            "confirmPassword": "req"
-        };
-        chai.request(app)
-            .post('/api/v1/users/signup/')
-            .send(_user)
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
-
-    });
-});
-
-describe('Test user signup with a string phone number', () => {
-
-
-    it('Should respond with a 400 status code while creating a user whose phone number is a string', (done) => {
-        const _user = {
-            "firstName": "hezron",
-            "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
-            "phoneNumber": "kimki",
-            "password": "requiui",
-            "confirmPassword": "requiui"
-        };
-        chai.request(app)
-            .post('/api/v1/users/signup/')
-            .send(_user)
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
-
-    });
-});
-
-describe('Test signup with non matching passwords', () => {
-
-    it('Should respond with a 400 status code while creating a user whose passwords are not equal', (done) => {
-        const _user = {
-            "firstName": "hezron",
-            "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
-            "password": "reqfdhdf",
-            "confirmPassword": "reqiuuu"
-        };
-        chai.request(app)
-            .post('/api/v1/users/signup/')
-            .send(_user)
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
-
-    });
-});
-
-
-
-
-describe('Test user signup with an invalid email', () => {
-
-
-    it('Should respond with a 400 status code while creating a user whose email is invalid', (done) => {
-        const _user = {
-            "firstName": "hezron",
-            "secondName": "kimutai",
-            "userName": "hezzie",
-            "email": "hezgmail.com",
-            "phoneNumber": "0937892356",
-            "password": "req",
-            "confirmPassword": "req"
-        };
-        chai.request(app)
-            .post('/api/v1/users/signup/')
-            .send(_user)
-            .end((err, res) => {
-                res.should.have.status(400);
-                done();
-            });
-
-    });
-
 
 
 
