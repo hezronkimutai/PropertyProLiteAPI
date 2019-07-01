@@ -1,5 +1,6 @@
 const express = require('express');
 const properties = express.Router();
+
 import{
   postPropertiesController,
   getPropertiesController,
