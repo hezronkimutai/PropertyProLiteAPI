@@ -6,8 +6,8 @@ cache:
   directories:
     - "node_modules"
 script:
-  - npm run testv1
   - npm run testv2
+
 before_script:
   - npm install jsonwebtoken
   - psql -c 'CREATE DATABASE ppltest;' -U postgres

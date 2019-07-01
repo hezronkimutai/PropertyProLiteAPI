@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezzie",
+    "email": "hez@gmail.com",
+    "phoneNumber": "0937892356",
+    "password": "reqfhgtfhfgjfg",
+    "profilePic": "",
+    "id": 511
+  },
+  {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezziue",
+    "email": "huez@gmail.com",
+    "phoneNumber": "0936792356",
+    "password": "reqfhgtfhfgjfg",
+    "profilePic": "",
+    "id": 8830
+  },
+  {
+    "firstName": "ui",
+    "secondName": "fy",
+    "userName": "hezzie",
+    "email": "kim@gmail.com",
+    "phoneNumber": "0937890356",
+    "password": "reqfhgtfhfgjfg",
+    "profilePic": "",
+    "id": 9292,
+    "confirmPassword": "reqfhgtfhfgjfg"
+  }
+]
