@@ -5,8 +5,8 @@ import cors from 'cors';
 const app = express();
 app.use(cors())
 app.use(express.json());
-const controllersv1 = require('./v1/controllers');
-app.use('/api/v1', controllersv1);
+const viewsV1 = require('./v1/views');
+app.use('/api/v1', viewsV1);
 
 
 var allowCrossDomain = function(req, res, next) {
