@@ -1,9 +1,14 @@
+
+
 import fs from 'fs';
+import dotenv from 'dotenv';
+
+dotenv.config();
+const en = process.env.NODE_ENV
 
 
-const env = process.env.NODE_ENV
-const db = env === 'test' ? 'dbtest' : 'db';
-
+// const env = process.env.NODE_ENV
+const db = en === 'test' ? 'dbtest' : 'db';
 function generateRandomId() {
   return Math.floor(Math.random() * 10000);
 }
@@ -198,15 +203,6 @@ async function deleteProperty(property) {
 
 
 
-/**
- * Deletes a single Property
- * @param {Object} property - Accepts record to be deleted.
- */
-async function deleteAllProperties() {
-  const allProperties = await getProperties();
-  const properties = [];
-  await saveProperties(properties);
-}
 
 /**
  * Deletes a single Property
@@ -218,19 +214,23 @@ async function deleteUser(user) {
   await saveUsers(users);
 }
 
+
+
 /**
  * Deletes a single Property
- * @param {Object} user - Accepts record to be deleted.
+ * Accepts record to be deleted.
  */
 async function deleteAllUsers() {
+  const allProperties = await getProperties();
   const allUsers = await getUsers();
+  const properties = [];
   const users = [];
   await saveUsers(users);
+  await saveProperties(properties);
 }
 
 
 module.exports = {
-  deleteAllProperties,
   deleteAllUsers,
   getProperties,
   getUsers,
@@ -244,3 +244,4 @@ module.exports = {
   deleteUser,
   getPropertyType,
 };
+require('make-runnable');

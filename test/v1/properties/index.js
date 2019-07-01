@@ -1,6 +1,19 @@
-const records = require('../../../api/v1/models');
-const chai = require('chai');
-const server = require('../../../api');
+
+
+
+
+
+
+import assert from 'assert';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import records from '../../../api/v1/models';
+import {app} from'../../../api';
+
+
+const should = chai.should();
+chai.use(chaiHttp);
+
 const property = {
     "category": "Sifn fgle room",
     "name": "Houscbhfxce",
@@ -19,22 +32,11 @@ describe('Post a Property', () => {
 
 
 
-    beforeEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
-    afterEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
-
     /**
      * TEST USER SIGNUP
      */
     it('Should add property to the db', (done) => {
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/properties/post-property/')
             .send(property)
             .end((err, res) => {
@@ -50,7 +52,7 @@ describe('Fetch all properties', () => {
      */
 
     it('Should Fecth all the properties', (done) => {
-        chai.request(server)
+        chai.request(app)
             .get('/api/v1/properties/')
             .end((err, result) => {
                 result.should.have.status(200);
@@ -66,30 +68,18 @@ describe('Test fetch a single property', () => {
 
 
 
-
-    beforeEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
-    afterEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
-
     it('Should Fecth a single property', (done) => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/properties/post-property/')
             .send(property)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(server)
+                    chai.request(app)
                         .get(`/api/v1/properties/${res.body.data.id}`)
                         .end((err, result) => {
 
@@ -120,28 +110,18 @@ describe('Test update property', () => {
     };
 
 
-    beforeEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
-    afterEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
     it('Should update a property', (done) => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/properties/post-property/')
             .send(__property)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(server)
+                    chai.request(app)
                         .put(`/api/v1/properties/${res.body.data.id}`)
                         .send(__property)
                         .end((err, result) => {
@@ -165,29 +145,18 @@ describe('Test update property', () => {
 
 describe('Property', () => {
 
-
-    beforeEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
-    afterEach(async function() {
-        // runs before each test in this block
-        await records.deleteAllProperties();
-    });
-
     it('Should delete a property', (done) => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/properties/post-property/')
             .send(property)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(server)
+                    chai.request(app)
                         .delete(`/api/v1/properties/${res.body.data.id}`)
                         .end((err, result) => {
 

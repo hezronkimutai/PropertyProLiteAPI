@@ -1,6 +1,18 @@
-const records = require('../../../api/v1/models');
-const chai = require('chai');
-const server = require('../../../api');
+
+
+
+
+
+import assert from 'assert';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import records from '../../../api/v1/models';
+import {app} from'../../../api';
+
+
+const should = chai.should();
+chai.use(chaiHttp);
+
 const user = {
     "firstName": "hezron",
     "secondName": "kimutai",
@@ -10,27 +22,42 @@ const user = {
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg"
 };
+const user_ = {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezziue",
+    "email": "huez@gmail.com",
+    "phoneNumber": "0936792356",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg"
+};
+const user__ = {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezdie",
+    "email": "hedz@gmail.com",
+    "phoneNumber": "0978892356",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg"
+};
+const user___ = {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezzieg",
+    "email": "hgez@gmail.com",
+    "phoneNumber": "0937452356",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg"
+};
 
 
 describe('Signup a user', () => {
-
-
-
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
 
     /**
      * TEST USER SIGNUP
      */
     it('Should add user to the db', (done) => {
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
             .send(user)
             .end((err, res) => {
@@ -45,19 +72,9 @@ describe('Fetch all users', () => {
      * TEST GET ALL USERS
      */
 
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
 
     it('Should Fecth all the users', (done) => {
-        chai.request(server)
+        chai.request(app)
             .get('/api/v1/users/')
             .end((err, result) => {
                 result.should.have.status(200);
@@ -74,30 +91,19 @@ describe('Test fetch a single user', () => {
 
 
 
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-
 
     it('Should Fecth a single user', (done) => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
-            .send(user)
+            .send(user_)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(server)
+                    chai.request(app)
                         .get(`/api/v1/users/${res.body.data.id}`)
                         .end((err, result) => {
 
@@ -125,28 +131,18 @@ describe('Test update user', () => {
     };
 
 
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
     it('Should update a user', (done) => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
-            .send(user)
+            .send(user__)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(server)
+                    chai.request(app)
                         .put(`/api/v1/users/${res.body.data.id}`)
                         .send(__user)
                         .end((err, result) => {
@@ -171,28 +167,18 @@ describe('Test update user', () => {
 describe('Test delete user', () => {
 
 
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
     it('Should delete a user', (done) => {
         /**
          * TEST GET A SINGLE  USER
          */
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
-            .send(user)
+            .send(user___)
             .end((err, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    chai.request(server)
+                    chai.request(app)
                         .delete(`/api/v1/users/${res.body.data.id}`)
                         .end((err, result) => {
 
@@ -210,15 +196,7 @@ describe('Test delete user', () => {
 
 
 describe('Test signup with a string first name', () => {
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
 
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
     it('Should respond with a 400 status code while creating a user whose firstname is a number', (done) => {
         const _user = {
             "firstName": '67',
@@ -229,7 +207,7 @@ describe('Test signup with a string first name', () => {
             "password": "reqfhgtfhfgjfg",
             "confirmPassword": "reqfhgtfhfgjfg"
         };
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
             .send(_user)
             .end((err, res) => {
@@ -240,15 +218,6 @@ describe('Test signup with a string first name', () => {
     });
 });
 describe('Creating a user with a short password', () => {
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
 
     it('Should respond with a 400 status code while creating a user whose password is less than 6', (done) => {
         const _user = {
@@ -260,7 +229,7 @@ describe('Creating a user with a short password', () => {
             "password": "req",
             "confirmPassword": "req"
         };
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
             .send(_user)
             .end((err, res) => {
@@ -272,15 +241,6 @@ describe('Creating a user with a short password', () => {
 });
 
 describe('Test user signup with a string phone number', () => {
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
 
 
     it('Should respond with a 400 status code while creating a user whose phone number is a string', (done) => {
@@ -293,7 +253,7 @@ describe('Test user signup with a string phone number', () => {
             "password": "requiui",
             "confirmPassword": "requiui"
         };
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
             .send(_user)
             .end((err, res) => {
@@ -305,15 +265,7 @@ describe('Test user signup with a string phone number', () => {
 });
 
 describe('Test signup with non matching passwords', () => {
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
 
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
     it('Should respond with a 400 status code while creating a user whose passwords are not equal', (done) => {
         const _user = {
             "firstName": "hezron",
@@ -324,7 +276,7 @@ describe('Test signup with non matching passwords', () => {
             "password": "reqfdhdf",
             "confirmPassword": "reqiuuu"
         };
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
             .send(_user)
             .end((err, res) => {
@@ -339,15 +291,6 @@ describe('Test signup with non matching passwords', () => {
 
 
 describe('Test user signup with an invalid email', () => {
-    before(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
-
-    after(async function() {
-        // runs before each test in this block
-        await records.deleteAllUsers();
-    });
 
 
     it('Should respond with a 400 status code while creating a user whose email is invalid', (done) => {
@@ -360,7 +303,7 @@ describe('Test user signup with an invalid email', () => {
             "password": "req",
             "confirmPassword": "req"
         };
-        chai.request(server)
+        chai.request(app)
             .post('/api/v1/users/signup/')
             .send(_user)
             .end((err, res) => {
