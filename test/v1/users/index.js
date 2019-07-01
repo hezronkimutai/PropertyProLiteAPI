@@ -49,6 +49,7 @@ const user___ = {
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg"
 };
+const _user_ = {};
 
 
 describe('Signup a user', () => {
@@ -72,6 +73,25 @@ describe('Signup a user', () => {
         }
 
     });
+
+
+    it('Should not add null user to the db', () => {
+      return async (done) => {
+          try {
+              await chai.request(server)
+            .post('/api/v1/users/signup/')
+            .send(_user_)
+            .end((err, res) => {
+                res.should.have.status(400);
+              });
+                  done();
+            } catch (err) {
+                done(err);
+            }
+        }
+
+    });
+
 
         it('Should respond with a 400 status code while creating a user whose firstname is a number', () => {
             const _user = {

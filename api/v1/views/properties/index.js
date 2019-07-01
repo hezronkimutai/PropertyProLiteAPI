@@ -1,6 +1,6 @@
 const express = require('express');
 const properties = express.Router();
-const records = require('../../models');
+
 import{
   postPropertiesController,
   getPropertiesController,
