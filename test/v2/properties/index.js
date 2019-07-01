@@ -1,6 +1,12 @@
-const chai = require('chai');
-const server = require('../../../api');
+import assert from 'assert';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+// import records from '../../../api/v1/models';
+import server from'../../../api';
 
+
+const should = chai.should();
+chai.use(chaiHttp);
 
 const propertyy = {
     "category": "Sifn fgle room",
