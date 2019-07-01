@@ -1,18 +1,13 @@
 import  express from 'express';
-import records from './v1/models';
+// import records from './v1/models';
 import cors from 'cors';
-import dotenv from 'dotenv';
-
-dotenv.config();
-const env = process.env.NODE_ENV
-
-console.log('+++++++++++++++++++++++++++++++++++',env)
 
 const app = express();
 app.use(cors())
 app.use(express.json());
 const controllersv1 = require('./v1/controllers');
 app.use('/api/v1', controllersv1);
+
 const controllersv2 = require('./v2');
 app.use('/api/v2', controllersv2);
 
@@ -38,4 +33,4 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT || 3000, () => console.log('PropertyProLiteAPI listening on port 3000!'));
 
 
-module.exports = app;
+module.exports = {app};

@@ -1,7 +1,3 @@
-/**
- * Function to help query database
- */
-
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
@@ -18,22 +14,15 @@ const pool = new Pool({
 });
 
 export default {
-    // /**
-    //  * @param {object} req
-    //  * @param {object} res
-    //  * @param {object} object
-    //  */
+    /**
+     * @param {object} req
+     * @param {object} res
+     * @param {object} object
+     */
     query(text, params) {
         return new Promise((resolve, reject) => {
 
             pool.query(text, params)
-                // .then(res => {
-                //
-                //     resolve(res)
-                // })
-                // .catch(err => {
-                //     reject(err)
-                // })
         })
     }
 }
