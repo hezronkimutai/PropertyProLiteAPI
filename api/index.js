@@ -5,7 +5,7 @@ import cors from 'cors';
 const app = express();
 app.use(cors())
 app.use(express.json());
-const viewsV1 = require('./v1/views');
+const viewsV1 = require('./v1/routes');
 app.use('/api/v1', viewsV1);
 
 
@@ -30,4 +30,4 @@ app.use((err, req, res, next) => {
 app.listen(process.env.PORT || 3000, () => console.log('PropertyProLiteAPI listening on port 3000!'));
 
 
-module.exports = {app};
+module.exports = app;

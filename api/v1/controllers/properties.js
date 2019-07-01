@@ -1,42 +1,24 @@
 
 
-const records = require('../models');
 
+import records from '../models';
+import {inputPValidator} from '../helpers/validator'
 
- async function postPropertiesController(inputs,res,req) {
-  if (inputs.length !=10) {
-    res.status(400).json({
-      status:"400",
-      message: 'password, username and image required.'
-    });
-  }
-    if (!isNaN(inputs[0]) || !isNaN(inputs[1]) || !isNaN(inputs[4]) || !isNaN(inputs[5]) || !isNaN(inputs[2]) || !isNaN(inputs[8])) {
-      res.status(400).json({msg:"Make sure name reason, category city, state and description are strings"})
-    }
-    if(inputs[7].indexOf(',') == -1){
-      res.status(400).json({
-        status:400,
-        message:"Make sure that the you provide a valid map cordinates"
-      })
-    }
+async function postPropertiesController(res,inputs) {
+  //   console.log("=============yuiuytr===========",inputs[0])
+  // inputPValidator(res, inputs)
 
-    if (isNaN(inputs[7].split(",")[0]) || isNaN(inputs[7].split(",")[1])){
-      res.status(400).json({
-        status:400,
-        message:"Make sure that the you provide a valid map cordinates"
-      })
-    }
     const property = await records.createProperty({
-      category: inputs[0],
-      name: inputs[1],
-      reason: inputs[2],
-      price: inputs[3],
-      state: inputs[4],
-      city: inputs[5],
-      address: inputs[6],
-      map: inputs[7],
-      description: inputs[8],
-      url:inputs[9]
+      category: inputs.category,
+      name: inputs.name,
+      reason: inputs.reason,
+      price: inputs.price,
+      state: inputs.state,
+      city: inputs.city,
+      address: inputs.address,
+      map: inputs.map,
+      description: inputs.description,
+      url:inputs.url
     });
     res.status(201).json({
       status:"201",
@@ -62,7 +44,7 @@ async function getPropertiesController(res,req){
 }
 
 
-async function getPropertyController (req, res, id) {
+async function getPropertyController (res, id) {
   const property = await records.getProperty(id);
 
   if (property) {
@@ -79,7 +61,7 @@ async function getPropertyController (req, res, id) {
   }
 }
 
-async function getPropertyTypeController(req, res,type) {
+async function getPropertyTypeController(res,type) {
   const property = await records.getPropertyType(type);
 
   if (property) {
@@ -96,7 +78,9 @@ async function getPropertyTypeController(req, res,type) {
   }
 }
 
-async function  updatePropertyController(req, res, inputs, id){
+async function  updatePropertyController(res, inputs, id){
+
+  inputPValidator(res, inputs)
   const property = await records.getProperty(id);
   if (property) {
     property.category = inputs[0],
@@ -121,7 +105,7 @@ async function  updatePropertyController(req, res, inputs, id){
 };
 
 // send a delete request to delete a property
- async function deletePropertyController (req, res, id){
+ async function deletePropertyController (res, id){
   const property = await records.getProperty(id);
   if (property) {
     await records.deleteProperty(property);

@@ -7,7 +7,7 @@ import assert from 'assert';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import records from '../../../api/v1/models';
-import {app} from'../../../api';
+import server from'../../../api';
 
 
 const should = chai.should();
@@ -57,43 +57,31 @@ describe('Signup a user', () => {
     /**
      * TEST USER SIGNUP
      */
-    it('Should add user to the db', () => {
-      return async (done) => {
-          try {
-              await chai.request(server)
+    it('Should add user to the db', (done) => {
+     chai.request(server)
             .post('/api/v1/users/signup/')
             .send(user)
             .end((err, res) => {
                 res.should.have.status(201);
               });
                   done();
-            } catch (err) {
-                done(err);
-            }
-        }
 
     });
 
 
-    it('Should not add null user to the db', () => {
-      return async (done) => {
-          try {
-              await chai.request(server)
+    it('Should not add null user to the db', (done) => {
+      chai.request(server)
             .post('/api/v1/users/signup/')
             .send(_user_)
             .end((err, res) => {
                 res.should.have.status(400);
               });
                   done();
-            } catch (err) {
-                done(err);
-            }
-        }
 
     });
 
 
-        it('Should respond with a 400 status code while creating a user whose firstname is a number', () => {
+        it('Should respond with a 400 status code while creating a user whose firstname is a number', (done) => {
             const _user = {
                 "firstName": '67',
                 "secondName": "kimutai",
@@ -103,21 +91,15 @@ describe('Signup a user', () => {
                 "password": "reqfhgtfhfgjfg",
                 "confirmPassword": "reqfhgtfhfgjfg"
             };
-            return async (done) => {
-                try {
-                    await chai.request(server)
+            chai.request(server)
                 .post('/api/v1/users/signup/')
                 .send(_user)
                 .end((err, res) => {
                     res.should.have.status(400);
                   });
                       done();
-                } catch (err) {
-                    done(err);
-                }
-            }
         });
-        it('Should respond with a 400 status code while creating a user whose password is less than 6', () => {
+        it('Should respond with a 400 status code while creating a user whose password is less than 6', (done) => {
             const _user = {
                 "firstName": "hezron",
                 "secondName": "kimutai",
@@ -127,22 +109,18 @@ describe('Signup a user', () => {
                 "password": "req",
                 "confirmPassword": "req"
             };
-            return async (done) => {
-                try {
-                    await chai.request(server)
+
+                 chai.request(server)
                 .post('/api/v1/users/signup/')
                 .send(_user)
                 .end((err, res) => {
                     res.should.have.status(400);
                   });
                       done();
-                } catch (err) {
-                    done(err);
-                }
-            }
+
 
         });
-        it('Should respond with a 400 status code while creating a user whose phone number is a string', () => {
+        it('Should respond with a 400 status code while creating a user whose phone number is a string', (done) => {
             const _user = {
                 "firstName": "hezron",
                 "secondName": "kimutai",
@@ -152,23 +130,16 @@ describe('Signup a user', () => {
                 "password": "requiui",
                 "confirmPassword": "requiui"
             };
-            return async (done) => {
-                try {
-                    await chai.request(server)
+            chai.request(server)
                 .post('/api/v1/users/signup/')
                 .send(_user)
                 .end((err, res) => {
                     res.should.have.status(400);
                   });
                       done();
-                } catch (err) {
-                    done(err);
-                }
-            }
-
         });
 
-        it('Should respond with a 400 status code while creating a user whose passwords are not equal', () => {
+        it('Should respond with a 400 status code while creating a user whose passwords are not equal', (done) => {
             const _user = {
                 "firstName": "hezron",
                 "secondName": "kimutai",
@@ -178,22 +149,16 @@ describe('Signup a user', () => {
                 "password": "reqfdhdf",
                 "confirmPassword": "reqiuuu"
             };
-            return async (done) => {
-                try {
-                    await chai.request(server)
+            chai.request(server)
                 .post('/api/v1/users/signup/')
                 .send(_user)
                 .end((err, res) => {
                     res.should.have.status(400);
                   });
                       done();
-                } catch (err) {
-                    done(err);
-                }
-            }
         });
 
-        it('Should respond with a 400 status code while creating a user whose email is invalid', () => {
+        it('Should respond with a 400 status code while creating a user whose email is invalid', (done) => {
             const _user = {
                 "firstName": "hezron",
                 "secondName": "kimutai",
@@ -203,19 +168,15 @@ describe('Signup a user', () => {
                 "password": "req",
                 "confirmPassword": "req"
             };
-            return async (done) => {
-                try {
-                    await chai.request(server)
+            chai.request(server)
                 .post('/api/v1/users/signup/')
                 .send(_user)
                 .end((err, res) => {
                     res.should.have.status(400);
+                    done();
                   });
-                      done();
-                } catch (err) {
-                    done(err);
-                }
-            }
+
+
         });
 
 
@@ -227,57 +188,35 @@ describe('Test fetch users users', () => {
      */
 
 
-    it('Should Fecth all the users', () => {
-      return async (done) => {
-          try {
-              await chai.request(server)
+    it('Should Fecth all the users', (done) => {
+    chai.request(server)
             .get('/api/v1/users/')
             .end((err, result) => {
                 result.should.have.status(200);
+                done();
               });
-                  done();
-            } catch (err) {
-                done(err);
-            }
-        }
+
+
     });
 
 
 
-        it('Should Fecth a single user', () => {
-            /**
-             * TEST GET A SINGLE  USER
-             */
-             return async (done) => {
-                 try {
-                     await chai.request(server)
+        it('Should Fecth a single user', (done) => {
+          chai.request(server)
                 .post('/api/v1/users/signup/')
                 .send(user_)
                 .end((err, res) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                      return async (done) => {
-                          try {
-                              await chai.request(server)
+                    if (err) {console.log(err);}
+                         chai.request(server)
                             .get(`/api/v1/users/${res.body.data.id}`)
                             .end((err, result) => {
-
                                 result.should.have.status(200);
-                              });
                                   done();
-                            } catch (err) {
-                                done(err);
-                            }
-                        }
-                    }
+                              });
+
                 });
 
-                  done();
-            } catch (err) {
-                done(err);
-            }
-        }
+
 
         });
 
@@ -301,22 +240,13 @@ describe('Test manipulte a user', () => {
     };
 
 
-    it('Should update a user', () => {
-        /**
-         * TEST GET A SINGLE  USER
-         */
-         return async (done) => {
-             try {
-                 await chai.request(server)
+    it('Should update a user', (done) => {
+         chai.request(server)
             .post('/api/v1/users/signup/')
             .send(user__)
             .end((err, res) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                  return async (done) => {
-                      try {
-                          await chai.request(server)
+                if (err) {console.log(err);}
+                  chai.request(server)
                         .put(`/api/v1/users/${res.body.data.id}`)
                         .send(__user)
                         .end((err, result) => {
@@ -324,55 +254,26 @@ describe('Test manipulte a user', () => {
                                 console.log(err);
                             }
                             result.should.have.status(204);
+                            done();
                           });
-                              done();
-                        } catch (err) {
-                            done(err);
-                        }
-                    }
-                }
             });
-
-        } catch (err) {
-            done(err);
-        }
-    }
     });
 
 
-    it('Should delete a user', () => {
-        /**
-         * TEST GET A SINGLE  USER
-         */
-         return async (done) => {
-             try {
-                 await chai.request(server)
+    it('Should delete a user', (done) => {
+        chai.request(server)
             .post('/api/v1/users/signup/')
             .send(user___)
             .end((err, res) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                  return async (done) => {
-                      try {
-                          await chai.request(server)
+                if (err) {console.log(err);}
+                    chai.request(server)
                         .delete(`/api/v1/users/${res.body.data.id}`)
                         .end((err, result) => {
-
                             result.should.have.status(204);
+                            done();
                           });
-                              done();
-                        } catch (err) {
-                            done(err);
-                        }
-                    }
-                }
             });
 
-        } catch (err) {
-            done(err);
-        }
-    }
     });
 
 

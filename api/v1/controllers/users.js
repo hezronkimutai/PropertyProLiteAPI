@@ -1,10 +1,9 @@
-
-
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const config = require('./config');
-const middleware = require('./middleware');
+const config = require('../config/config');
+const middleware = require('../middlewares/middleware');
 const records = require('../models');
+import {inputValidator} from '../helpers/validator'
 
 
 // /Get request to get all users
@@ -45,24 +44,10 @@ async function getUserController(res, id) {
 
 // send a post request to signup a user
 async function signupUserController(res, inputs) {
-  if (inputs.length != 7) {
-      res.status(400).json({
-        status:"400",
-         message: 'Please fill all the required fields.'
-       });
-    }
-    if (inputs[5].length < 6 || inputs[5] != inputs[6]){
-      res.status(400).json({msg:'Password should be longer than 6'})
-    }else if (isNaN(inputs[4]) || inputs[4].length !=10) {
-      res.status(400).json({msg:'Phone number should be a digit and be 10 in length'})
-    }else if (inputs[3].indexOf('@') == -1 || inputs[3].indexOf('.') == -1) {
-      res.status(400).json({msg:'invalid email'})
-    }else if (!isNaN(inputs[0]) || !isNaN(inputs[1]) || !isNaN(inputs[2])) {
-      res.status(400).json({msg:"username, firstName and secondName should be a string"})
-    }
+// inputValidator(res, inputs)
     const users = await records.getUsers();
     users.forEach(function(user) {
-      if (user.email in inputs || user.phoneNumber in inputs || user.userName in inputs){
+      if (user.email == inputs.email || user.phoneNumber == inputs.phoneNumber || user.userName == inputs.userName){
         res.status(400).json({
           status:400,
           message:"A user with the same credentials exist"
@@ -71,12 +56,12 @@ async function signupUserController(res, inputs) {
 });
 
       const user = await records.createUser({
-        firstName: inputs[0],
-        secondName: inputs[1],
-        userName: inputs[2],
-        email: inputs[3],
-        phoneNumber: inputs[4],
-        password: inputs[5],
+        firstName: inputs.firstName,
+        secondName: inputs.secondName,
+        userName: inputs.userName,
+        email: inputs.email,
+        phoneNumber: inputs.phoneNumber,
+        password: inputs.password,
         profilePic:""
 
       });
@@ -93,7 +78,7 @@ async function signupUserController(res, inputs) {
 
 // send a post request to signin a user
 async function signinUserController(res, inputs) {
-  if (inputs[0] && inputs[1]) {
+  if (inputs.email && inputs.password) {
     const users = await records.getUsers();
 
     for (let i = 0; i < users.length; i++) {
@@ -127,16 +112,17 @@ async function signinUserController(res, inputs) {
 }
 
 async function updateUserController(res, inputs, id) {
+// inputValidator(res, inputs)
   const user = await records.getUser(id);
   if (user) {
     user.id = id,
-    user.firstName = inputs[0],
-    user.secondName = inputs[1],
-    user.userName = inputs[2],
-    user.email = inputs[3],
-    user.phoneNumber = inputs[4],
-    user.password = inputs[5],
-    user.confirmPassword = inputs[6],
+    user.firstName = inputs.firstName,
+    user.secondName = inputs.secondName,
+    user.userName = inputs.userName,
+    user.email = inputs.email,
+    user.phoneNumber = inputs.phoneNumber,
+    user.password = inputs.password,
+    user.confirmPassword = inputs.confirmPassword,
 
 
 
