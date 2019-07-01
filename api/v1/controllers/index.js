@@ -1,4 +1,8 @@
-const routes = require('express').Router();
+
+
+
+import express from 'express';
+const routes = express.Router();
 
 const properties = require('./properties');
 const users = require('./users')
