@@ -1,5 +1,6 @@
 const express = require('express');
 import{asyncHandler} from '../middlewares/middleware';
+import {inputValidator} from '../helpers/validator';
 import {
   signupUserController,
   signinUserController,
@@ -26,15 +27,8 @@ getUserController(res, req.params.id)
 
 // send a post request to signup a user
 users.post('/signup', asyncHandler(async (req, res) => {
-signupUserController( res, [
-   req.body.firstName,
-  req.body.secondName,
- req.body.userName,
-req.body.email,
- req.body.phoneNumber,
- req.body.password,
-req.body.confirmPassword
-]);
+  inputValidator(res, req.body)
+
 }));
 
 // send a post request to signin a user
@@ -47,16 +41,7 @@ req.body.email,
 
 // send a put request to update a user
 users.put('/:id', asyncHandler(async (req, res) => {
-updateUserController(res,[
-   req.body.firstName,
-  req.body.secondName,
- req.body.userName,
-req.body.email,
- req.body.phoneNumber,
- req.body.password,
-req.body.confirmPassword
-],
-req.params.id);
+  updateUserController(res,req.body,req.params.id);
 }));
 
 // send a delete request to delete a user

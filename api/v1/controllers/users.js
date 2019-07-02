@@ -44,10 +44,10 @@ async function getUserController(res, id) {
 
 // send a post request to signup a user
 async function signupUserController(res, inputs) {
-inputValidator(res, inputs)
+// inputValidator(res, inputs)
     const users = await records.getUsers();
     users.forEach(function(user) {
-      if (user.email in inputs || user.phoneNumber in inputs || user.userName in inputs){
+      if (user.email == inputs.email || user.phoneNumber == inputs.phoneNumber || user.userName == inputs.userName){
         res.status(400).json({
           status:400,
           message:"A user with the same credentials exist"
@@ -56,12 +56,12 @@ inputValidator(res, inputs)
 });
 
       const user = await records.createUser({
-        firstName: inputs[0],
-        secondName: inputs[1],
-        userName: inputs[2],
-        email: inputs[3],
-        phoneNumber: inputs[4],
-        password: inputs[5],
+        firstName: inputs.firstName,
+        secondName: inputs.secondName,
+        userName: inputs.userName,
+        email: inputs.email,
+        phoneNumber: inputs.phoneNumber,
+        password: inputs.password,
         profilePic:""
 
       });
@@ -78,7 +78,7 @@ inputValidator(res, inputs)
 
 // send a post request to signin a user
 async function signinUserController(res, inputs) {
-  if (inputs[0] && inputs[1]) {
+  if (inputs.email && inputs.password) {
     const users = await records.getUsers();
 
     for (let i = 0; i < users.length; i++) {
@@ -112,17 +112,17 @@ async function signinUserController(res, inputs) {
 }
 
 async function updateUserController(res, inputs, id) {
-  inputValidator(res, inputs)
+// inputValidator(res, inputs)
   const user = await records.getUser(id);
   if (user) {
     user.id = id,
-    user.firstName = inputs[0],
-    user.secondName = inputs[1],
-    user.userName = inputs[2],
-    user.email = inputs[3],
-    user.phoneNumber = inputs[4],
-    user.password = inputs[5],
-    user.confirmPassword = inputs[6],
+    user.firstName = inputs.firstName,
+    user.secondName = inputs.secondName,
+    user.userName = inputs.userName,
+    user.email = inputs.email,
+    user.phoneNumber = inputs.phoneNumber,
+    user.password = inputs.password,
+    user.confirmPassword = inputs.confirmPassword,
 
 
 

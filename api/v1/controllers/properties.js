@@ -2,21 +2,23 @@
 
 
 import records from '../models';
-import {inputValidator} from '../helpers/validator'
+import {inputPValidator} from '../helpers/validator'
 
 async function postPropertiesController(res,inputs) {
-  inputValidator(res, inputs)
+  //   console.log("=============yuiuytr===========",inputs[0])
+  // inputPValidator(res, inputs)
+
     const property = await records.createProperty({
-      category: inputs[0],
-      name: inputs[1],
-      reason: inputs[2],
-      price: inputs[3],
-      state: inputs[4],
-      city: inputs[5],
-      address: inputs[6],
-      map: inputs[7],
-      description: inputs[8],
-      url:inputs[9]
+      category: inputs.category,
+      name: inputs.name,
+      reason: inputs.reason,
+      price: inputs.price,
+      state: inputs.state,
+      city: inputs.city,
+      address: inputs.address,
+      map: inputs.map,
+      description: inputs.description,
+      url:inputs.url
     });
     res.status(201).json({
       status:"201",
@@ -77,6 +79,8 @@ async function getPropertyTypeController(res,type) {
 }
 
 async function  updatePropertyController(res, inputs, id){
+
+  inputPValidator(res, inputs)
   const property = await records.getProperty(id);
   if (property) {
     property.category = inputs[0],

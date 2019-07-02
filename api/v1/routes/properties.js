@@ -1,5 +1,6 @@
 import express from 'express';
 import{asyncHandler} from '../middlewares/middleware';
+import {inputValidator} from '../helpers/validator';
 import{
   postPropertiesController,
   getPropertiesController,
@@ -14,14 +15,7 @@ const properties = express.Router();
 
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
-  postPropertiesController(res, [
-    req.body.category, req.body.name,
-    req.body.reason, req.body.price,
-    req.body.state, req.body.city,
-    req.body.address, req.body.map,
-    req.body.description, req.body.url,
-
- ], )
+  inputValidator(res, req.body)
 }));
 
 
@@ -43,14 +37,7 @@ getPropertyTypeController(res, req.params.type)
 
 // send a put request to update a property
 properties.put('/:id', asyncHandler(async (req, res) => {
-updatePropertyController(res, [
-  req.body.category, req.body.name,
-  req.body.reason, req.body.price,
-  req.body.state, req.body.city,
-  req.body.address, req.body.map,
-  req.body.description, req.body.url,
-
-], req.params.id);
+updatePropertyController(res, req.body, req.params.id)
 }));
 
 // send a delete request to delete a property
