@@ -4,10 +4,6 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "nyc": {
-      "include": "",
-      "exclude": "api"
-    },
     "start": "NODE_ENV=development nodemon --exec babel-node api/index.js",
     "start:prod": "NODE_ENV=production npm run create && babel-node api/index.js",
     "testv1": "NODE_ENV=test npm run _drop && NODE_ENV=test nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./test/v1/*",
