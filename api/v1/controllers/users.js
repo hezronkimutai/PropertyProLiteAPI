@@ -55,16 +55,7 @@ async function signupUserController(res, inputs) {
       }
 });
 
-      const user = await records.createUser({
-        firstName: inputs.firstName,
-        secondName: inputs.secondName,
-        userName: inputs.userName,
-        email: inputs.email,
-        phoneNumber: inputs.phoneNumber,
-        password: inputs.password,
-        profilePic:""
-
-      });
+  const user = await records.createUser(inputs);
 
       res.status(201).json({
         status:"201",
