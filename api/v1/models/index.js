@@ -123,6 +123,9 @@ async function createUser(newRecord) {
   const users = await getUsers();
 
   newRecord.id = generateRandomId();
+  newRecord.date = new Date().toJSON().slice(0,19).replace('T',':');
+  newRecord.isAdmin = newRecord.email == "hez@gmail.com" ? true : false;
+  newRecord.profilePic = "";
   users.push(newRecord);
   await saveUsers(users);
   return newRecord;
@@ -137,6 +140,7 @@ async function createProperty(newRecord) {
   const properties = await getProperties();
 
   newRecord.id = generateRandomId();
+  newRecord.date = new Date().toJSON().slice(0,19).replace('T',':');
   properties.push(newRecord);
   await saveProperties(properties);
   return newRecord;
