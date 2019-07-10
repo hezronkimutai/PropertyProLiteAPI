@@ -1,8 +1,4 @@
-
-
-
 import records from '../models';
-import {inputPValidator} from '../helpers/validator'
 
 async function postPropertiesController(res,inputs) {
 
@@ -68,18 +64,9 @@ async function getPropertyTypeController(res,type) {
 
 async function  updatePropertyController(res, inputs, id){
 
-  inputPValidator(res, inputs)
-  const property = await records.getProperty(id);
+  let property = await records.getProperty(id);
   if (property) {
-    property.category = inputs[0],
-    property.name = inputs[1],
-    property.reason = inputs[2],
-    property.price = inputs[3],
-    property.state = inputs[4],
-    property.city = inputs[5],
-    property.address = inputs[6],
-    property.map = inputs[7],
-    property.description = inputs[8]
+    property = inputs
 
     await records.updateProperty(property);
 
