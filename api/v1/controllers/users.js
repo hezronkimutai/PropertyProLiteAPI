@@ -1,9 +1,8 @@
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const middleware = require('../middlewares/middleware');
 const records = require('../models');
-
+import jwt from 'jsonwebtoken';
 
 // /Get request to get all users
 async function getUsersController(res)  {
