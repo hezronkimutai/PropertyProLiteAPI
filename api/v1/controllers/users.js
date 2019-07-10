@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const middleware = require('../middlewares/middleware');
 const records = require('../models');
-import {validateUserInputs} from '../helpers/valid';
 
 
 // /Get request to get all users
@@ -73,8 +72,8 @@ async function signinUserController(res, inputs) {
     const users = await records.getUsers();
 
     for (let i = 0; i < users.length; i++) {
-      if (users[i].email === inputs[0] && users[i].password === inputs[1]) {
-        let token = jwt.sign({email: inputs[0]},
+      if (users[i].email === inputs.email && users[i].password === inputs.password) {
+        let token = jwt.sign({email: inputs.email},
           config.secret,
           { expiresIn: '24h' // expires in 24 hours
           }

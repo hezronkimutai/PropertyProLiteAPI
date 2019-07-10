@@ -1,5 +1,6 @@
 import express from 'express';
 import{asyncHandler} from '../middlewares/middleware';
+import validator from '../helpers/valid';
 import{
   postPropertiesController,
   getPropertiesController,
@@ -14,6 +15,16 @@ const properties = express.Router();
 
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
+  validator.isAllPropertyInputs(res, req.body);
+  validator.isVAlidMap(res, req.body.map);
+  validator.isValidName(res, req.body.name);
+  validator.isVAlidCity(res, req.body.city);
+  validator.isValidState(res, req.body.state);
+  validator.isValidPrice(res, req.body.price);
+  validator.isValidReason(res, req.body.reason);
+  validator.isValidPAddress(res,req.body.address);
+  validator.isValidDescription(res, req.body.description);
+  validator.isValidCategory(res, req.body.category);
   postPropertiesController(res, req.body)
 }));
 
@@ -36,6 +47,16 @@ getPropertyTypeController(res, req.params.type)
 
 // send a put request to update a property
 properties.put('/:id', asyncHandler(async (req, res) => {
+  validator.isAllPropertyInputs(res, req.body);
+  validator.isVAlidMap(res, req.body.map);
+  validator.isValidName(res, req.body.name);
+  validator.isVAlidCity(res, req.body.city);
+  validator.isValidState(res, req.body.state);
+  validator.isValidPrice(res, req.body.price);
+  validator.isValidReason(res, req.body.reason);
+  validator.isValidPAddress(res,req.body.address);
+  validator.isValidDescription(res, req.body.description);
+  validator.isValidCategory(res, req.body.category);
   updatePropertyController(res, req.body, req.params.id)
 }));
 
