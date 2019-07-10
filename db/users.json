@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hediye",
+    "email": "heyz@gmail.com",
+    "phoneNumber": "023t892356",
+    "address": "979790790",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg",
+    "id": 9574,
+    "date": "2019-07-11:14:09:55",
+    "isAdmin": false,
+    "profilePic": ""
+  },
+  {
+    "userName": "hezron",
+    "address": "979790790",
+    "id": 4868,
+    "date": "2019-07-11:14:10:22",
+    "isAdmin": false,
+    "profilePic": ""
+  },
+  {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hediye",
+    "email": "heyz@gmail.com",
+    "phoneNumber": "023t892356",
+    "address": "979790790",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg",
+    "id": 6880,
+    "date": "2019-07-11:15:15:37",
+    "isAdmin": false,
+    "profilePic": ""
+  }
+]

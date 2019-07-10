@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 let validProperty = {
     "category": "Electronics",
-    "name": "HP laptop",
+    "name": "laptop",
     "reason": "sell",
     "price": "7000.00",
     "state": "Tanzania",
@@ -22,7 +22,7 @@ let validProperty = {
 }
 let invalidCategoryProperty = {
     "category": "56",
-    "name": "HP laptop",
+    "name": "HP ",
     "reason": "sell",
     "price": "7000.00",
     "state": "Tanzania",
