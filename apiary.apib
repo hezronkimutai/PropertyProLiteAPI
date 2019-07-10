@@ -12,18 +12,19 @@ Property Pro Lite is a platform where people can create and/or search properties
 + Response 200 (application/json)
 
         [
-            {
-                "propertyName": "macerdees benz truck",
-                "propertyType": "heavy truck",
-                "propertyUrl": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png",
-                "id": 2563
-            },{
-                "propertyName": "samsung g4c",
-                "propertyType": "phones",
-                "propertyUrl": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png",
-                "id": 2563
-            }
-
+              {
+                "category": "Sifn fgle room",
+                "name": "Houscbhfxce",
+                "reason": "renfhfcbct",
+                "price": "7000",
+                "state": "tancbvbczania",
+                "city": "arusha",
+                "address": "76768",
+                "map": "90800,89900",
+                "description": "Very coovbvbvl house",
+                "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
+                "id": 9023
+              }
         ]
 
 
@@ -33,12 +34,19 @@ Property Pro Lite is a platform where people can create and/or search properties
 
 + Response 200 (application/json)
 
-        {
-            "propertyName": "macerdees benz truck",
-            "propertyType": "heavy truck",
-            "propertyUrl": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png",
-            "id": 2563
-        }
+          {
+            "category": "Sifn fgle room",
+            "name": "Houscbhfxce",
+            "reason": "renfhfcbct",
+            "price": "7000",
+            "state": "tancbvbczania",
+            "city": "arusha",
+            "address": "76768",
+            "map": "90800,89900",
+            "description": "Very coovbvbvl house",
+            "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
+            "id": 9023
+          }
 
 ### Create a New Property [POST]
 
@@ -47,12 +55,18 @@ object containing a property name, propertytype, and an uploaded image.
 
 + Request (application/json)
 
-        {
-            "propertyName": "samsung g4c",
-            "propertyType": "phones",
-            "propertyUrl": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png",
-            "id": 2563
-        }
+          {
+            "category": "Sifn fgle room",
+            "name": "Houscbhfxce",
+            "reason": "renfhfcbct",
+            "price": "7000",
+            "state": "tancbvbczania",
+            "city": "arusha",
+            "address": "76768",
+            "map": "90800,89900",
+            "description": "Very coovbvbvl house",
+            "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
+          }
 
 + Response 201 (application/json)
 
@@ -62,12 +76,19 @@ object containing a property name, propertytype, and an uploaded image.
 
     + Body
 
-            {
-                "propertyName": "samsung g4c",
-                "propertyType": "phones",
-                "propertyUrl": "https://res.cloudinary.com/hezzie/image/upload/v1560592303/PropertyProLiteAPI/2019-06-15T09:51:41.924Z.png",
-                "id": 2563
-            }
+              {
+                "category": "Sifn fgle room",
+                "name": "Houscbhfxce",
+                "reason": "renfhfcbct",
+                "price": "7000",
+                "state": "tancbvbczania",
+                "city": "arusha",
+                "address": "76768",
+                "map": "90800,89900",
+                "description": "Very coovbvbvl house",
+                "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
+                "id": 9023
+              }
 
 ## Users collection [/users]
 
@@ -76,16 +97,25 @@ object containing a property name, propertytype, and an uploaded image.
 + Response 200 (application/json)
 
         [
-            {
-              "username": "Katumani",
-              "password": "Khj",
-              "id": 8118
-            },{
-              "username": "Katumani",
-              "password": "Khj",
-              "id": 8118
-            }
-
+              {
+                "firstName": "hezron",
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "0937892356",
+                "password": "reqfhgtfhfgjfg",
+                "confirmPassword": "reqfhgtfhfgjfg",
+                "id": 5209
+              }{
+                "firstName": "hezron",
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "0937892356",
+                "password": "reqfhgtfhfgjfg",
+                "confirmPassword": "reqfhgtfhfgjfg",
+                "id": 5209
+              }
         ]
 
 
@@ -95,11 +125,16 @@ object containing a property name, propertytype, and an uploaded image.
 
 + Response 200 (application/json)
 
-        {
-          "username": "Katumani",
-          "password": "Khj",
-          "id": 8118
-        }
+          {
+            "firstName": "hezron",
+            "secondName": "kimutai",
+            "userName": "hezzie",
+            "email": "hez@gmail.com",
+            "phoneNumber": "0937892356",
+            "password": "reqfhgtfhfgjfg",
+            "confirmPassword": "reqfhgtfhfgjfg",
+            "id": 5209
+          }
 
 ### Create a New user [POST]
 
@@ -108,11 +143,15 @@ object containing a username and password.
 
 + Request (application/json)
 
-        {
-          "username": "Katumani",
-          "password": "Khj",
-          "id": 8118
-        }
+          {
+            "firstName": "hezron",
+            "secondName": "kimutai",
+            "userName": "hezzie",
+            "email": "hez@gmail.com",
+            "phoneNumber": "0937892356",
+            "password": "reqfhgtfhfgjfg",
+            "confirmPassword": "reqfhgtfhfgjfg",
+          }
 
 + Response 201 (application/json)
 
@@ -122,8 +161,13 @@ object containing a username and password.
 
     + Body
     
-            {
-              "username": "Katumani",
-              "password": "Khj",
-              "id": 8118
-            }
+              {
+                "firstName": "hezron",
+                "secondName": "kimutai",
+                "userName": "hezzie",
+                "email": "hez@gmail.com",
+                "phoneNumber": "0937892356",
+                "password": "reqfhgtfhfgjfg",
+                "confirmPassword": "reqfhgtfhfgjfg",
+                "id": 5209
+              }
