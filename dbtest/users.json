@@ -1,1 +1,64 @@
-[]
+[
+  {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezzie",
+    "email": "hez@gmail.com",
+    "phoneNumber": "0937892356",
+    "address": "0980989",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg",
+    "id": 9022,
+    "date": "2019-07-11:11:59:24",
+    "isAdmin": true,
+    "profilePic": ""
+  },
+  {
+    "id": 301,
+    "date": "2019-07-11:11:59:24",
+    "isAdmin": false,
+    "profilePic": ""
+  },
+  {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezzie",
+    "email": "hez@gmail.com",
+    "phoneNumber": "kimki",
+    "address": "0980989",
+    "password": "requiui",
+    "confirmPassword": "requiui",
+    "id": 7152,
+    "date": "2019-07-11:11:59:24",
+    "isAdmin": true,
+    "profilePic": ""
+  },
+  {
+    "firstName": "hezron",
+    "secondName": "kimutai",
+    "userName": "hezziue",
+    "email": "huez@gmail.com",
+    "phoneNumber": "0936792356",
+    "address": "0980989",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg",
+    "id": 502,
+    "date": "2019-07-11:11:59:24",
+    "isAdmin": false,
+    "profilePic": ""
+  },
+  {
+    "firstName": "ui",
+    "secondName": "fy",
+    "userName": "hezzie",
+    "email": "kim@gmail.com",
+    "phoneNumber": "0937890356",
+    "address": "0980989",
+    "password": "reqfhgtfhfgjfg",
+    "confirmPassword": "reqfhgtfhfgjfg",
+    "id": 3572,
+    "date": "2019-07-11:11:59:24",
+    "isAdmin": false,
+    "profilePic": ""
+  }
+]
