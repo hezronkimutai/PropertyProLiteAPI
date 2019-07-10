@@ -7,29 +7,15 @@
     "phoneNumber": "0937892356",
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 4222
+    "id": 2883,
+    "date": "2019-07-10:16:14:22",
+    "isAdmin": true,
+    "profilePic": ""
   },
   {
-    "id": 3283
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezziue",
-    "email": "huez@gmail.com",
-    "phoneNumber": "0936792356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 6572
-  },
-  {
-    "firstName": "ui",
-    "secondName": "fy",
-    "userName": "hezzie",
-    "email": "kim@gmail.com",
-    "phoneNumber": "0937890356",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 3109
+    "id": 7385,
+    "date": "2019-07-10:16:14:23",
+    "isAdmin": false,
+    "profilePic": ""
   }
 ]
