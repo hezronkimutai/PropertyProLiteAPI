@@ -1,10 +1,8 @@
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const middleware = require('../middlewares/middleware');
 const records = require('../models');
-import {inputValidator} from '../helpers/validator'
-
+import jwt from 'jsonwebtoken';
 
 // /Get request to get all users
 async function getUsersController(res)  {
@@ -44,7 +42,7 @@ async function getUserController(res, id) {
 
 // send a post request to signup a user
 async function signupUserController(res, inputs) {
-// inputValidator(res, inputs)
+  // validateUserInputs(res, inputs);
     const users = await records.getUsers();
     users.forEach(function(user) {
       if (user.email == inputs.email || user.phoneNumber == inputs.phoneNumber || user.userName == inputs.userName){
@@ -73,8 +71,8 @@ async function signinUserController(res, inputs) {
     const users = await records.getUsers();
 
     for (let i = 0; i < users.length; i++) {
-      if (users[i].email === inputs[0] && users[i].password === inputs[1]) {
-        let token = jwt.sign({email: inputs[0]},
+      if (users[i].email === inputs.email && users[i].password === inputs.password) {
+        let token = jwt.sign({email: inputs.email},
           config.secret,
           { expiresIn: '24h' // expires in 24 hours
           }
@@ -103,7 +101,7 @@ async function signinUserController(res, inputs) {
 }
 
 async function updateUserController(res, inputs, id) {
-// inputValidator(res, inputs)
+  // validateUserInputs(res, inputs)
   const user = await records.getUser(id);
   if (user) {
     user.id = id,
