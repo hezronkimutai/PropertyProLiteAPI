@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const middleware = require('../middlewares/middleware');
 const records = require('../models');
-import {inputValidator} from '../helpers/validator'
+import {validateUserInputs} from '../helpers/valid';
 
 
 // /Get request to get all users
@@ -44,7 +44,7 @@ async function getUserController(res, id) {
 
 // send a post request to signup a user
 async function signupUserController(res, inputs) {
-// inputValidator(res, inputs)
+  // validateUserInputs(res, inputs);
     const users = await records.getUsers();
     users.forEach(function(user) {
       if (user.email == inputs.email || user.phoneNumber == inputs.phoneNumber || user.userName == inputs.userName){
@@ -103,7 +103,7 @@ async function signinUserController(res, inputs) {
 }
 
 async function updateUserController(res, inputs, id) {
-// inputValidator(res, inputs)
+  // validateUserInputs(res, inputs)
   const user = await records.getUser(id);
   if (user) {
     user.id = id,

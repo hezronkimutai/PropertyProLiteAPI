@@ -2,8 +2,7 @@ import records from '../models';
 import {inputPValidator} from '../helpers/validator'
 
 async function postPropertiesController(res,inputs) {
-
-
+    // validatePropertyInputs(res, inputs)
     const property = await records.createProperty(inputs);
     res.status(201).json({
       status:"201",
@@ -64,8 +63,8 @@ async function getPropertyTypeController(res,type) {
 }
 
 async function  updatePropertyController(res, inputs, id){
-
-  // inputPValidator(res, inputs)
+  // 
+  // validatePropertyInputs(res, inputs)
   let property = await records.getProperty(id);
   if (property) {
     property = inputs
