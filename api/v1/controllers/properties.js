@@ -1,8 +1,6 @@
 import records from '../models';
 
 async function postPropertiesController(res,inputs) {
-
-
     const property = await records.createProperty(inputs);
     res.status(201).json({
       status:"201",
