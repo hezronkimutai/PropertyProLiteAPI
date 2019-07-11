@@ -19,6 +19,7 @@ const user = {
     "userName": "hezzie",
     "email": "hez@gmail.com",
     "phoneNumber": "0937892356",
+    "address": "0980989",
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg"
 };
@@ -28,6 +29,7 @@ const user_ = {
     "userName": "hezziue",
     "email": "huez@gmail.com",
     "phoneNumber": "0936792356",
+    "address": "0980989",
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg"
 };
@@ -37,6 +39,7 @@ const user__ = {
     "userName": "hezdie",
     "email": "hedz@gmail.com",
     "phoneNumber": "0978892356",
+    "address": "0980989",
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg"
 };
@@ -46,6 +49,7 @@ const user___ = {
     "userName": "hezzieg",
     "email": "hgez@gmail.com",
     "phoneNumber": "0937452356",
+    "address": "0980989",
     "password": "reqfhgtfhfgjfg",
     "confirmPassword": "reqfhgtfhfgjfg"
 };
@@ -88,6 +92,7 @@ describe('Signup a user', () => {
                 "userName": "hezzie",
                 "email": "hez@gmail.com",
                 "phoneNumber": "0937892356",
+                "address": "0980989",
                 "password": "reqfhgtfhfgjfg",
                 "confirmPassword": "reqfhgtfhfgjfg"
             };
@@ -106,6 +111,7 @@ describe('Signup a user', () => {
                 "userName": "hezzie",
                 "email": "hez@gmail.com",
                 "phoneNumber": "0937892356",
+                "address": "0980989",
                 "password": "req",
                 "confirmPassword": "req"
             };
@@ -127,6 +133,7 @@ describe('Signup a user', () => {
                 "userName": "hezzie",
                 "email": "hez@gmail.com",
                 "phoneNumber": "kimki",
+                "address": "0980989",
                 "password": "requiui",
                 "confirmPassword": "requiui"
             };
@@ -146,6 +153,7 @@ describe('Signup a user', () => {
                 "userName": "hezzie",
                 "email": "hez@gmail.com",
                 "phoneNumber": "0937892356",
+                "address": "0980989",
                 "password": "reqfdhdf",
                 "confirmPassword": "reqiuuu"
             };
@@ -165,6 +173,7 @@ describe('Signup a user', () => {
                 "userName": "hezzie",
                 "email": "hezgmail.com",
                 "phoneNumber": "0937892356",
+                "address": "0980989",
                 "password": "req",
                 "confirmPassword": "req"
             };
@@ -235,6 +244,7 @@ describe('Test manipulte a user', () => {
         "userName": "hezzie",
         "email": "kim@gmail.com",
         "phoneNumber": "0937890356",
+        "address": "0980989",
         "password": "reqfhgtfhfgjfg",
         "confirmPassword": "reqfhgtfhfgjfg"
     };
