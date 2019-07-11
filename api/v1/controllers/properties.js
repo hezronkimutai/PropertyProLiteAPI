@@ -1,13 +1,15 @@
 import records from '../models';
+import {validator} from '../helpers/valid';
 
 async function postPropertiesController(res,inputs) {
-    const property = await records.createProperty(inputs);
-    res.status(201).json({
-      status:"201",
-      message:"Property created succesfully",
-      data:property
-    });
-
+    if(validator(res, inputs) == true){
+      const property = await records.createProperty(inputs);
+      res.status(201).json({
+        status:"201",
+        message:"Property created succesfully",
+        data:property
+      });
+    }
 }
 async function getPropertiesController(res,req){
   const properties = await records.getProperties();
@@ -61,7 +63,7 @@ async function getPropertyTypeController(res,type) {
 }
 
 async function  updatePropertyController(res, inputs, id){
-
+if(validator(res, inputs)){
   let property = await records.getProperty(id);
   if (property) {
     property = inputs
@@ -75,6 +77,7 @@ async function  updatePropertyController(res, inputs, id){
       message: 'Property not found'
   });
   }
+}
 };
 
 // send a delete request to delete a property

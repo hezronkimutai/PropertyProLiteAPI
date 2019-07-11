@@ -223,7 +223,7 @@ describe('Test manipulate  property', () => {
     it('Should update a property', (done) => {
        chai.request(server)
             .post('/api/v1/properties/post-property/')
-            .send(__property)
+            .send(validProperty)
             .end((err, res) => {
                 if (err) {console.log(err);}
                         chai.request(server)

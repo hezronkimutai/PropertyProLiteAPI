@@ -154,16 +154,7 @@ async function updateProperty(newProperty) {
   const properties = await getProperties();
   properties.forEach(async function(property) {
     if (property.id == newProperty.id){
-      property.name = newProperty.name,
-      property.category = newProperty.category,
-      property.price = newProperty.price,
-      property.map = newProperty.map,
-      property.reason = newProperty.reason,
-      property.address = newProperty.address,
-      property.state = newProperty.state,
-      property.city = newProperty.city,
-      property.description = newProperty.description,
-      property.url = property.url
+      property = newProperty;
       await saveProperties(properties);
     }
 
@@ -179,13 +170,7 @@ async function updateUser(newUser) {
   const users = await getUsers();
   users.forEach(async function(user) {
     if(user.id == newUser.id){
-      user.firstName = newUser.firstName,
-      user.secondName = newUser.secondName,
-      user.userName = newUser.userName,
-      user.email = newUser.email,
-      user.phoneNumber = newUser.phoneNumber,
-      user.password = newUser.password,
-      user.confirmPassword = newUser.confirmPassword,
+      user = newUser;
       await saveUsers(users);
     }
 

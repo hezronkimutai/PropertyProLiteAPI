@@ -8,7 +8,7 @@ let positiveFloatsPattern =/^(([0-9]+(?:\.[0-9]+)?)|([0-9]*(?:\.[0-9]+)?))$/;
 let emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 function validator(res, inputs){
-  if(Object.keys(inputs).length == 8){
+  if(Object.keys(inputs).length == 7){
     let validAddress = inputs.address.match(addressPattern);
     let validFirstName = inputs.firstName.toLowerCase().match(stringPattern);
     let validSecondName = inputs.secondName.toLowerCase().match(stringPattern);
@@ -22,8 +22,6 @@ function validator(res, inputs){
       return res.status(400).json({Error:"Invalid email"})
     }else if (!validPassword || inputs.password.length < 6) {
       return res.status(400).json({Error:"Invalid password"})
-    }else if(inputs.password != inputs.confirmPassword){
-      return res.status(400).json({Error: "Passwords don't match"})
     }else if(!validAddress){
       return res.status(400).json({Error:"Invalid address"})
     }else if(!validUserName){
@@ -33,6 +31,7 @@ function validator(res, inputs){
     }else if(!validSecondName){
       return res.status(400).json({Error:"Invalid second name"})
     }
+    return true;
   }else if(Object.keys(inputs).length == 10) {
     let validCategory = inputs.category.toLowerCase().match(stringPattern)
     let validName = inputs.name.toLowerCase().match(stringPattern)
@@ -62,6 +61,7 @@ function validator(res, inputs){
     }else if(!validDescription) {
       return res.status(400).json({Error:"Invalid description"})
     }
+    return true;
   }else {
     return res.status(400).json({Error:"Please fill all the required fields"})
   }
