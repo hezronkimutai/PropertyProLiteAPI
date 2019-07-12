@@ -6,6 +6,8 @@ import bcrypt from 'bcrypt';
 import validator from '../helpers/valid';
 import jwt from 'jsonwebtoken';
 
+
+
 // /Get request to get all users
 async function getUsersController(res)  {
 
@@ -38,8 +40,8 @@ async function getUserController(res, id) {
       data:user
     });
   } else {
-    res.status(400).json({
-      status:"400",
+    res.status(404).json({
+      status:"404",
        message: 'Property not found'
   });
   }
@@ -49,44 +51,43 @@ async function getUserController(res, id) {
 
 // send a post request to signup a user
 async function signupUserController(res, inputs) {
-    if(validator.userValidator(res, inputs)){
+  if (Object.keys(inputs).length != 7){
+return res.status(400).json({
+ status:"400",
+ Error: "Please fill all the required inputs."
+})
+}else if(!validator.userValidator(res, inputs)){
 
       const users = await records.getUsers();
 
-      users.forEach(async function(user) {
-        if (user.email == inputs.email || user.phone_number == inputs.phone_number || user.user_name == inputs.user_name){
+let user = users.find(user => user.email === inputs.email)
+let user_ = users.find(user => user.email === inputs.email)
+let user__ = users.find(user => user.email === inputs.email)
+        if (user || user_ || user__){
         return  res.status(400).json({
             status:400,
             message:"A user with the same credentials exist"
           })
         }else{
           const user = await records.createUser(inputs);
-
+          delete user.password;
             return  res.status(201).json({
                 status:"201",
-                message:"User created succesfully"
+                message:"User created succesfully",
+                data: user
               });
           }
-
-  });
-
-}
-}
+        }
+      }
 
 // send a post request to signin a user
 async function signinUserController(res, inputs) {
   if (inputs.email && inputs.password) {
     const users = await records.getUsers();
-
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].email === inputs.email && bcrypt.compareSync(inputs.password, users[i].password) == true) {
+    let user = users.find(user => user.email === inputs.email)
+      if (user && bcrypt.compareSync(inputs.password, user.password)) {
         delete inputs.password;
-        let token = jwt.sign(inputs,
-          config.secret,
-          { expiresIn: '24h' // expires in 24 hours
-          }
-        );
-
+        let token = jwt.sign(user,config.secret,{expiresIn:'24h'});
         return res.status(201).json({
           status:"201",
           message: 'user Succesfully logged in',
@@ -98,7 +99,7 @@ async function signinUserController(res, inputs) {
           message: 'Incorrect details'
         });
       }
-    }
+
 
   } else {
     res.status(400).json({
@@ -109,21 +110,17 @@ async function signinUserController(res, inputs) {
 }
 
 async function updateUserController(res, inputs, id) {
-  if(true){
+  inputs.id = id;
     let user = await records.getUser(id);
-    if (user) {
-      Object.assign(user, inputs);
-      if(validator.userValidator(res, user)){
+    if (user && !validator.userValidator(res, user)) {
         await records.updateUser(user);
-      }
-      res.status(204).json({message:"User updated succesfully"});
+        res.status(204).json({message:"User updated succesfully"});
     }else{
       res.status(404).json({
         status:"404",
         Error: "user wasn't found"
        });
     }
-  }
 }
 
 // send a delete request to delete a user

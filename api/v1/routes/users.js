@@ -19,6 +19,7 @@ controller.getUserController(res, req.params.id)
 
 // send a post request to signup a user
 users.post('/signup', middleware.asyncHandler(async (req, res) => {
+
   controller.signupUserController(res, req.body)
 
 }));
