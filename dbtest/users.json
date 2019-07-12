@@ -1,28 +1,74 @@
 [
   {
-    "firstName": "Mark",
-    "secondName": "Lisaswa",
-    "userName": "Mariko",
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mariko",
     "email": "marik@gmail.com",
-    "phoneNumber": "0937892356",
+    "phone_number": "0987665566",
     "address": "0980989",
-    "password": "reqfhgtfhfgjfg",
-    "id": 4267,
-    "date": "2019-07-11:20:02:21",
-    "isAdmin": false,
-    "profilePic": ""
+    "password": "$2b$10$bWRSgf5ZLyBEXvcZF5KKmOas0cM8rpjE.yjwqcMXsLJmxJORbMypm",
+    "id": 9514,
+    "date": "2019-07-13:05:44:51",
+    "profile_picture": ""
   },
   {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "kimki",
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Marlliko",
+    "email": "mkkarik@gmail.com",
+    "phone_number": "0987664466",
     "address": "0980989",
-    "password": "requiui",
-    "id": 2326,
-    "date": "2019-07-11:20:02:21",
-    "isAdmin": true,
-    "profilePic": ""
+    "password": "$2b$10$5qFgTtROx51x7gQHV542EuJLX1DDTReIs2hopU8Gq5oefYjhkQeOK",
+    "id": 7182,
+    "date": "2019-07-13:05:44:51",
+    "profile_picture": ""
+  },
+  {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mppariko",
+    "email": "mauuyrik@gmail.com",
+    "phone_number": "9870005566",
+    "address": "0980989",
+    "password": "$2b$10$byukXktvaeiB45uk012V0eSLU/jPP6WRl9NQnSsNJzTT1jB1qzgJC",
+    "id": 1516,
+    "date": "2019-07-13:05:44:52",
+    "profile_picture": ""
+  },
+  {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mako",
+    "email": "mik@gmail.com",
+    "phone_number": "0987765566",
+    "address": "0980989",
+    "password": "$2b$10$iZk8bO5rEFR43/lLf7LCbO3QBilTUXZdIFijXVfSrsg0qxxZ.8iIy",
+    "id": 6265,
+    "date": "2019-07-13:05:44:52",
+    "profile_picture": ""
+  },
+  {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Marikotaman",
+    "email": "mariktaman@gmail.com",
+    "phone_number": "0989965566",
+    "address": "0980989",
+    "password": "$2b$10$yalMgno7GeIcLxL.oI7jGepOC3OfnveXX9eWigtekwUrgtqACT/7O",
+    "id": 7971,
+    "date": "2019-07-13:05:44:52",
+    "profile_picture": ""
+  },
+  {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mariman",
+    "email": "marman@gmail.com",
+    "phone_number": "0989900566",
+    "address": "0980989",
+    "password": "$2b$10$5Ncg17ZEVq7K1m8jYVmKuOBtMX/fTSR.G2oyJIjTzJuoZaybcLBwa",
+    "id": 9744,
+    "date": "2019-07-13:05:44:52",
+    "profile_picture": ""
   }
 ]

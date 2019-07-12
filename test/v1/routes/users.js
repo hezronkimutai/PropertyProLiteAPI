@@ -1,14 +1,18 @@
-
-
-
-
-
 import assert from 'assert';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import records from '../../../api/v1/models';
 import server from'../../../api';
+import config from '../../../api/v1/config/config';
 
+import jwt from 'jsonwebtoken';
+let token = jwt.sign({"email":"hez@gmail.com","password":"HHeezziiee1357"},
+  config.secret,
+  { expiresIn: '24h'
+  }
+);
+
+const Token = "Bearer" + token
 
 let should = chai.should();
 chai.use(chaiHttp);
@@ -18,48 +22,85 @@ let validUser = {
     "second_name": "Lisaswa",
     "user_name": "Mariko",
     "email": "marik@gmail.com",
-    "phone_number": "0937892356",
+    "phone_number": "0987665566",
     "address": "0980989",
-    "password": "reqfhgtfhfgjfg"
+    "password": "re%@u&@#23ERfg"
 };
-let uValidUser = {
-    "first_name": "hezron",
-    "second_name": "kimutai",
-    "user_name": "hezikiah",
-    "email": "bosire@gmail.com",
-    "phone_number": "0837092356",
+let lValidUser = {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Marikotaman",
+    "email": "mariktaman@gmail.com",
+    "phone_number": "0989965566",
     "address": "0980989",
-    "password": "reqfhgtfhfgjfg"
+    "password": "re%@u&@#23ERfg"
+};
+let lInValidUser = {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mariman",
+    "email": "marman@gmail.com",
+    "phone_number": "0989900566",
+    "address": "0980989",
+    "password": "re%@u&@#23ERfg"
 };
 let dValidUser = {
-    "first_name": "Denis",
-    "second_name": "Oliech",
-    "user_name": "Deno",
-    "email": "Deno@gmail.com",
-    "phone_number": "0937892356",
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mako",
+    "email": "mik@gmail.com",
+    "phone_number": "0987765566",
     "address": "0980989",
-    "password": "reqfhgtfhfgjfg"
+    "password": "re%@u&@#23ERfg"
 };
-let sValidUser = {
-    "first_name": "hezron",
-    "second_name": "kimutai",
-    "user_name": "hjkezziue",
-    "email": "hueuiz@gmail.com",
-    "phone_number": "7936792356",
+let gValidUser = {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Marlliko",
+    "email": "mkkarik@gmail.com",
+    "phone_number": "0987664466",
     "address": "0980989",
-    "password": "reqfhgtfhfgjfg"
+    "password": "re%@u&@#23ERfg"
 };
-let nullUser = {};
+let uValidUser = {
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mppariko",
+    "email": "mauuyrik@gmail.com",
+    "phone_number": "9870005566",
+    "address": "0980989",
+    "password": "re%@u&@#23ERfg"
+};
 
+let nullUser = {};
+    let inValidEmailUser = {
+        "first_name": "hezron",
+        "second_name": "kimutai",
+        "user_name": "hezzieinvalidemail",
+        "email": "invalidemail",
+        "phone_number": "8888888888",
+        "address": "0980989",
+        "password": "re%@u&@#23ERfg"
+    };
+    let inValidPhoneUser = {
+        "first_name": "hezron",
+        "second_name": "kimutai",
+        "user_name": "he",
+        "email": "he@gmail.com",
+        "phone_number": "kimki",
+        "address": "0980989",
+        "password": "re%#23ERfg"
+    };
 describe('Signup a user', () => {
+
     it('Should add user to the db', (done) => {
      chai.request(server)
             .post('/api/v1/users/signup/')
             .send(validUser)
             .end((err, res) => {
                 res.should.have.status(201);
+                done();
               });
-            done();
     });
 
 
@@ -69,8 +110,9 @@ describe('Signup a user', () => {
             .send(nullUser)
             .end((err, res) => {
                 res.should.have.status(400);
+                  done();
               });
-            done();
+
 
     });
     it('Should respond with a 400 status code while creating a user whose first_name is a number', (done) => {
@@ -81,15 +123,16 @@ describe('Signup a user', () => {
             "email": "hez@gmail.com",
             "phone_number": "0937892356",
             "address": "0980989",
-            "password": "reqfhgtfhfgjfg"
+            "password": "re%#23ERfg"
         };
         chai.request(server)
             .post('/api/v1/users/signup/')
             .send(_user)
             .end((err, res) => {
                 res.should.have.status(400);
+                  done();
               });
-            done();
+
     });
     it('Should respond with a 400 status code while creating a user whose password is less than 6', (done) => {
         let _user = {
@@ -107,68 +150,70 @@ describe('Signup a user', () => {
             .send(_user)
             .end((err, res) => {
                 res.should.have.status(400);
+                done();
               });
-            done();
+
     });
-    it('Should respond with a 400 status code while creating a user whose phone number is a string', (done) => {
-        let _user = {
-            "first_name": "hezron",
-            "second_name": "kimutai",
-            "user_name": "hezzie",
-            "email": "hez@gmail.com",
-            "phone_number": "kimki",
-            "address": "0980989",
-            "password": "requiui"
-        };
+    it('Should respond with a 400 status code while creating a user with invalid phone_number', (done) => {
+
         chai.request(server)
             .post('/api/v1/users/signup/')
-            .send(_user)
+            .send(inValidPhoneUser)
             .end((err, res) => {
                 res.should.have.status(400);
+                done();
               });
-            done();
+
     });
     it('Should respond with a 400 status code while creating a user whose email is invalid', (done) => {
-        let _user = {
-            "first_name": "hezron",
-            "second_name": "kimutai",
-            "user_name": "hezzie",
-            "email": "hezgmail.com",
-            "phone_number": "0937892356",
-            "address": "0980989",
-            "password": "req"
-        };
+
         chai.request(server)
             .post('/api/v1/users/signup/')
-            .send(_user)
+            .send(inValidEmailUser)
             .end((err, res) => {
                 res.should.have.status(400);
+                done();
               });
-            done();
+
     });
 });
+
+
 describe('Test fetch users users', () => {
+
     it('Should Fecth all the users', (done) => {
       chai.request(server)
               .get('/api/v1/users/')
               .end((err, result) => {
                   result.should.have.status(200);
+                    done();
                 });
-              done();
+
     });
     it('Should Fecth a single user', (done) => {
       chai.request(server)
             .post('/api/v1/users/signup/')
-            .send(sValidUser)
+            .send(gValidUser)
             .end((err, res) => {
                 if (err) {console.log(err);}
                      chai.request(server)
                         .get(`/api/v1/users/${res.body.data.id}`)
                         .end((err, result) => {
                             result.should.have.status(200);
+                            done();
                           });
             });
-            done();
+
+    });
+    it('Should not Fecth a non existing single user', (done) => {
+
+                     chai.request(server)
+                        .get(`/api/v1/users/45`)
+                        .end((err, result) => {
+                            result.should.have.status(404);
+                            done();
+                          });
+
     });
 });
 
@@ -176,16 +221,9 @@ describe('Test fetch users users', () => {
 
 
 describe('Test manipulte a user', () => {
+
     it('Should update a user', (done) => {
-      let __user = {
-          "first_name": "ui",
-          "second_name": "fy",
-          "user_name": "hezzie",
-          "email": "kim@gmail.com",
-          "phone_number": "0937890356",
-          "address": "0980989",
-          "password": "reqfhgtfhfgjfg"
-      };
+
          chai.request(server)
             .post('/api/v1/users/signup/')
             .send(uValidUser)
@@ -193,15 +231,17 @@ describe('Test manipulte a user', () => {
                 if (err) {console.log(err);}
                   chai.request(server)
                         .patch(`/api/v1/users/${res.body.data.id}`)
-                        .send(__user)
+                        .set("Authorization",Token)
+                        .send({"first_name": "ui"})
                         .end((err, result) => {
                             if (err) {
                                 console.log(err);
                             }
-                            result.should.have.status(204);
+                            result.should.have.status(200);
+                              done();
                           });
             });
-            done();
+
     });
 
 
@@ -213,13 +253,81 @@ describe('Test manipulte a user', () => {
                 if (err) {console.log(err);}
                     chai.request(server)
                         .delete(`/api/v1/users/${res.body.data.id}`)
+                        .set("Authorization",Token)
                         .end((err, result) => {
-                            result.should.have.status(204);
+                            result.should.have.status(200);
+                            done();
                           });
             });
-        done();
+
     });
 
 
 
+});
+describe('Test User login', () => {
+
+    it('Should login a user with valid inputs', (done) => {
+
+         chai.request(server)
+            .post('/api/v1/users/signup/')
+            .send(lValidUser)
+            .end((err, res) => {
+                if (err) {console.log(err);}
+                chai.request(server)
+                        .post(`/api/v1/users/login`)
+                        .send({"email": "mariktaman@gmail.com","password": "re%@u&@#23ERfg"})
+                        .end((err, result) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            result.should.have.status(201);
+                            done();
+                          });
+            });
+
+    });
+
+    it('Should not login a user with invalid inputs', (done) => {
+
+         chai.request(server)
+            .post('/api/v1/users/signup/')
+            .send(lInValidUser)
+            .end((err, res) => {
+                if (err) {console.log(err);}
+                chai.request(server)
+                        .post(`/api/v1/users/login`)
+                        .send({"email": "man@gmail.com","password": "re%@u&@#23ERfg"})
+                        .end((err, result) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            result.should.have.status(400);
+                              done();
+                          });
+            });
+
+    });
+
+
+});
+
+describe('Test all 404 and 500', () => {
+
+    it('Should catch all 404', (done) => {
+      chai.request(server)
+              .get('/api/v1/users/fivehundred')
+              .end((err, result) => {
+                  result.should.have.status(404);
+                  done();
+                });
+    });
+    it('Should catch all 500', (done) => {
+      chai.request(server)
+              .get('/api/v1/users-fivehundred')
+              .end((err, result) => {
+                  result.should.have.status(500);
+                  done();
+                });
+    });
 });

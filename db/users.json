@@ -1,38 +1,14 @@
 [
   {
-    "first_name": "hezrokhghjgjhgjhgjhgjhn",
-    "secondName": "kimutai",
-    "userName": "hediye",
-    "email": "heyz@gmail.com",
-    "phoneNumber": "023t892356",
-    "address": "979790790",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 9574,
-    "date": "2019-07-11:14:09:55",
-    "isAdmin": false,
-    "profilePic": ""
-  },
-  {
-    "userName": "hezron",
-    "address": "979790790",
-    "id": 4868,
-    "date": "2019-07-11:14:10:22",
-    "isAdmin": false,
-    "profilePic": ""
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hediye",
-    "email": "heyz@gmail.com",
-    "phoneNumber": "023t892356",
-    "address": "979790790",
-    "password": "reqfhgtfhfgjfg",
-    "confirmPassword": "reqfhgtfhfgjfg",
-    "id": 6880,
-    "date": "2019-07-11:15:15:37",
-    "isAdmin": false,
-    "profilePic": ""
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mariko",
+    "email": "marik@gmail.com",
+    "phone_number": "8888888888",
+    "address": "0980989",
+    "password": "$2b$10$P8Yk7O2sNTh2iUrvf/HQ0eF9Z8e2DMc.E.FNk42Swn7jXicTP9sEi",
+    "id": 3594,
+    "date": "2019-07-13:03:31:46",
+    "profile_picture": ""
   }
 ]

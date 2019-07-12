@@ -1,4 +1,5 @@
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 import fs from 'fs';
 import dotenv from 'dotenv';
@@ -90,13 +91,12 @@ async function getProperty(id) {
  * Gets a specific property type
  * @param {string} type - Accepts the type of the specified property.
  */
-async function getPropertyType(type) {
+async function getPropertyType(category) {
   const properties = await getProperties();
   const onePropertyType = [];
 
   properties.forEach(await function (item) {
-    console.log(item);
-    if (item.propertyType === type) {
+    if (item.category === category) {
       onePropertyType.push(item);
     }
   });
@@ -119,12 +119,13 @@ async function getUser(id) {
  */
 
 async function createUser(newRecord) {
-
+  let salt =  bcrypt.genSaltSync(saltRounds)
+  let hashedPassword = bcrypt.hashSync(newRecord.password,salt);
   const users = await getUsers();
-
+  newRecord.password = hashedPassword;
   newRecord.id = generateRandomId();
   newRecord.date = new Date().toJSON().slice(0,19).replace('T',':');
-  newRecord.profilePic = "";
+  newRecord.profile_picture = "";
   users.push(newRecord);
   await saveUsers(users);
   return newRecord;
@@ -139,6 +140,7 @@ async function createProperty(newRecord) {
   const properties = await getProperties();
 
   newRecord.id = generateRandomId();
+  newRecord.sold = false;
   newRecord.date = new Date().toJSON().slice(0,19).replace('T',':');
   properties.push(newRecord);
   await saveProperties(properties);
@@ -149,15 +151,14 @@ async function createProperty(newRecord) {
  * Updates a property
  * @param {Object} newProperty - Object containing info for updated property: the username, password
  */
-async function updateProperty(newProperty) {
-  const properties = await getProperties();
-  properties.forEach(async function(property) {
-    if (property.id == newProperty.id){
+async function updateProperty(res, newProperty) {
+  let properties = await getProperties();
+  let property = await getProperty(newProperty.id)
+    if (property){
       Object.assign(property, newProperty);
       await saveProperties(properties);
-    }
 
-});
+    }
 
 }
 
@@ -167,12 +168,11 @@ async function updateProperty(newProperty) {
  */
 async function updateUser(newUser) {
   const users = await getUsers();
-  users.forEach(async function(user) {
-    if(user.id == newUser.id){
+  let user = await getUser(newUser.id)
+    if(user){
       Object.assign(user, newUser);
       await saveUsers(users);
     }
-});
 }
 
 /**
@@ -185,11 +185,6 @@ async function deleteProperty(property) {
   await saveProperties(properties);
 }
 
-
-
-
-
-
 /**
  * Deletes a single Property
  * @param {Object} user - Accepts record to be deleted.
@@ -201,12 +196,7 @@ async function deleteUser(user) {
 }
 
 
-
-/**
- * Deletes a single Property
- * Accepts record to be deleted.
- */
-async function deleteAllUsers() {
+async function clearDb() {
   const allProperties = await getProperties();
   const allUsers = await getUsers();
   const properties = [];
@@ -217,7 +207,7 @@ async function deleteAllUsers() {
 
 
 module.exports = {
-  deleteAllUsers,
+  clearDb,
   getProperties,
   getUsers,
   createUser,
