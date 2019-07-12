@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 let validProperty = {
     "category": "Electronics",
-    "name": "HP laptop",
+    "name": "laptop",
     "reason": "sell",
     "price": "7000.00",
     "state": "Tanzania",
@@ -22,7 +22,7 @@ let validProperty = {
 }
 let invalidCategoryProperty = {
     "category": "56",
-    "name": "HP laptop",
+    "name": "HP ",
     "reason": "sell",
     "price": "7000.00",
     "state": "Tanzania",
@@ -223,7 +223,7 @@ describe('Test manipulate  property', () => {
     it('Should update a property', (done) => {
        chai.request(server)
             .post('/api/v1/properties/post-property/')
-            .send(__property)
+            .send(validProperty)
             .end((err, res) => {
                 if (err) {console.log(err);}
                         chai.request(server)

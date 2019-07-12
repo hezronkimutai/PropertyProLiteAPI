@@ -1,5 +1,6 @@
 let numericPattern = /^[0-9]*$/;
-let stringPattern = /^[a-zA-Z\s]*$/;
+let stringPatternP = /^[a-zA-Z\s]*$/;
+let stringPattern = /^[a-z]*$/;
 let addressPattern = /^[a-zA-Z0-9._]*$/;
 let mapPattern = /^[0-9]+,[0-9]*$/;
 let passwordPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]*$/;
@@ -7,45 +8,46 @@ let positiveFloatsPattern =/^(([0-9]+(?:\.[0-9]+)?)|([0-9]*(?:\.[0-9]+)?))$/;
 let emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 function validator(res, inputs){
-  if(Object.keys(inputs).length == 8){
+  if(Object.keys(inputs).length == 7){
     let validAddress = inputs.address.match(addressPattern);
-    let validFirstName = inputs.firstName.match(stringPattern);
-    let validSecondName = inputs.secondName.match(stringPattern);
-    let validUserName = inputs.userName.match(stringPattern);
+    let validFirstName = inputs.first_name.toLowerCase().match(stringPattern);
+    let validsecond_name = inputs.second_name.toLowerCase().match(stringPattern);
+    let validuser_name = inputs.user_name.toLowerCase().match(stringPattern);
     let validEmail = inputs.email.match(emailPattern);
-    let isValidPhoneNumber = inputs.phoneNumber.match(numericPattern);
+    let isValidPhoneNumber = inputs.phone_number.match(numericPattern);
     let validPassword = inputs.password.match(passwordPattern);
     if(!validAddress){
-      res.status(400).json({Error:"Invalid address"})
+      return res.status(400).json({Error:"Invalid address"})
     }else if(!validEmail){
-      res.status(400).json({Error:"Invalid email"})
+      return res.status(400).json({Error:"Invalid email"})
     }else if (!validPassword || inputs.password.length < 6) {
-      res.status(400).json({Error:"Invalid password"})
-    }else if(inputs.password != inputs.confirmPassword){
-      res.status(400).json({Error: "Passwords don't match"})
+      return res.status(400).json({Error:"Invalid password"})
     }else if(!validAddress){
       return res.status(400).json({Error:"Invalid address"})
-    }else if(!validUserName){
-      res.status(400).json({Error:"Ivalid username"})
+    }else if(!validuser_name){
+      return res.status(400).json({Error:"Ivalid user_name"})
     }else if (!validFirstName) {
-      res.status(400).json({Error:"Invalid first name"})
-    }else if(!validSecondName){
-      res.status(400).json({Error:"Invalid second name"})
+      return res.status(400).json({Error:"Invalid first name"})
+    }else if(!validsecond_name){
+      return res.status(400).json({Error:"Invalid second name"})
     }
+    return true;
   }else if(Object.keys(inputs).length == 10) {
-    let validCategory = inputs.category.match(stringPattern)
-    let validName = inputs.name.match(stringPattern)
-    let validCity = inputs.city.match(stringPattern);
-    let validState = inputs.state.match(stringPattern);
-    let validDescription = inputs.description.match(stringPattern)
+    let validCategory = inputs.category.toLowerCase().match(stringPattern)
+    let validName = inputs.name.toLowerCase().match(stringPattern)
+    let validCity = inputs.city.toLowerCase().match(stringPattern);
+    let validState = inputs.state.toLowerCase().match(stringPattern);
+    let validDescription = inputs.description.toLowerCase().match(stringPatternP)
     let validPrice = inputs.price.match(positiveFloatsPattern);
     let validAddress = inputs.address.match(addressPattern);
     let validMap = inputs.map.match(mapPattern);
-    let validReason = inputs.map.match(stringPattern)
+    let validReason = inputs.reason.toLowerCase().match(stringPattern)
     if (!validCategory) {
       return res.status(400).json({Error:"Invalid Category"})
     }else if (!validName) {
       return res.status(400).json({Error:"Make sure name reason, category city, state and description are strings"})
+    }else if(!validReason){
+      return res.status(400).json({Error:"Invalid reason"})
     }else if (!validState) {
       return res.status(400).json({Error:"Invalid state name."})
     }else if (!validCity) {
@@ -59,8 +61,9 @@ function validator(res, inputs){
     }else if(!validDescription) {
       return res.status(400).json({Error:"Invalid description"})
     }
+    return true;
   }else {
-    res.status(400).json({Error:"Please fill all the required fields"})
+    return res.status(400).json({Error:"Please fill all the required fields"})
   }
 }
 module.exports = {validator}

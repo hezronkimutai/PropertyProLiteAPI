@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "category": "Electronics",
+    "name": "laptop",
+    "reason": "sell",
+    "price": "7000.00",
+    "state": "Tanzania",
+    "city": "arusha",
+    "address": "76768",
+    "map": "90800,89900",
+    "description": "A very cool refurbished laptop",
+    "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
+    "id": 5033,
+    "date": "2019-07-11:20:02:20"
+  },
+  {
+    "category": "Electronics",
+    "name": "laptop",
+    "reason": "sell",
+    "price": "7000.00",
+    "state": "Tanzania",
+    "city": "arusha",
+    "address": "76768",
+    "map": "90800,89900",
+    "description": "A very cool refurbished laptop",
+    "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
+    "id": 7790,
+    "date": "2019-07-11:20:02:20"
+  },
+  {
+    "category": "Electronics",
+    "name": "laptop",
+    "reason": "sell",
+    "price": "7000.00",
+    "state": "Tanzania",
+    "city": "arusha",
+    "address": "76768",
+    "map": "90800,89900",
+    "description": "A very cool refurbished laptop",
+    "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
+    "id": 6362,
+    "date": "2019-07-11:20:02:20"
+  }
+]

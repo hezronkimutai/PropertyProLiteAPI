@@ -1,6 +1,5 @@
 import express from 'express';
 import{asyncHandler} from '../middlewares/middleware';
-import {validator} from '../helpers/valid';
 import{
   postPropertiesController,
   getPropertiesController,
@@ -15,7 +14,6 @@ const properties = express.Router();
 
 
 properties.post('/post-property', asyncHandler(async (req, res) => {
-  validator(res, req.body);
   postPropertiesController(res, req.body)
 }));
 
@@ -38,7 +36,6 @@ getPropertyTypeController(res, req.params.type)
 
 // send a put request to update a property
 properties.put('/:id', asyncHandler(async (req, res) => {
-  validator(res, req.body);
   updatePropertyController(res, req.body, req.params.id)
 }));
 

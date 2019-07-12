@@ -2,10 +2,12 @@ const bodyParser = require('body-parser');
 const config = require('../config/config');
 const middleware = require('../middlewares/middleware');
 const records = require('../models');
+import {validator} from '../helpers/valid';
 import jwt from 'jsonwebtoken';
 
 // /Get request to get all users
 async function getUsersController(res)  {
+
   const users = await records.getUsers();
 
   if (users) {
@@ -42,27 +44,24 @@ async function getUserController(res, id) {
 
 // send a post request to signup a user
 async function signupUserController(res, inputs) {
-  // validateUserInputs(res, inputs);
-    const users = await records.getUsers();
-    users.forEach(function(user) {
-      if (user.email == inputs.email || user.phoneNumber == inputs.phoneNumber || user.userName == inputs.userName){
-        res.status(400).json({
-          status:400,
-          message:"A user with the same credentials exist"
-        })
-      }
-});
+    if(validator(res, inputs) == true){
+      const users = await records.getUsers();
+      users.forEach(function(user) {
+        if (user.email == inputs.email || user.phoneNumber == inputs.phoneNumber || user.userName == inputs.userName){
+          res.status(400).json({
+            status:400,
+            message:"A user with the same credentials exist"
+          })
+        }
+  });
+    const user = await records.createUser(inputs);
 
-  const user = await records.createUser(inputs);
-
-      res.status(201).json({
-        status:"201",
-        message:"User created succesfully",
-        data:user
-      });
-
-
-
+        res.status(201).json({
+          status:"201",
+          message:"User created succesfully",
+          data:user
+        });
+    }
 }
 
 // send a post request to signin a user
@@ -101,28 +100,18 @@ async function signinUserController(res, inputs) {
 }
 
 async function updateUserController(res, inputs, id) {
-  // validateUserInputs(res, inputs)
-  const user = await records.getUser(id);
-  if (user) {
-    user.id = id,
-    user.firstName = inputs.firstName,
-    user.secondName = inputs.secondName,
-    user.userName = inputs.userName,
-    user.email = inputs.email,
-    user.phoneNumber = inputs.phoneNumber,
-    user.password = inputs.password,
-    user.confirmPassword = inputs.confirmPassword,
-
-
-
-    await records.updateUser(user);
-
-    res.status(204).end();
-  } else {
-    res.status(404).json({
-      status:"404",
-       message: "user wasn't found"
-     });
+  if(validator(res, inputs) == true){
+    let user = await records.getUser(id);
+    if (user) {
+      user = inputs
+      await records.updateUser(user);
+      res.status(204).end();
+    }else{
+      res.status(404).json({
+        status:"404",
+         message: "user wasn't found"
+       });
+    }
   }
 }
 
