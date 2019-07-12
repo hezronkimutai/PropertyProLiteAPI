@@ -1,11 +1,12 @@
 import express from 'express';
 import middleware from '../middlewares/middleware';
 import controller from '../controllers/properties'
-
+import jwt from 'jsonwebtoken';
 const properties = express.Router();
 
 
 properties.post('/post-property', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+  req.body.owner = jwt.decode(middleware.Token.token).id
   controller.postPropertiesController(res, req.body)
 }));
 
@@ -22,7 +23,7 @@ controller.getPropertyController(res,req.params.id)
 }));
 
 // Send a get request to retrieve a single property
-properties.get('/:type', middleware.asyncHandler(async (req, res) => {
+properties.get('/type/:type', middleware.asyncHandler(async (req, res) => {
 controller.getPropertyTypeController(res, req.params.type)
 }));
 
@@ -30,7 +31,7 @@ controller.getPropertyTypeController(res, req.params.type)
 properties.patch('/:id',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   controller.updatePropertyController(res, req.body, req.params.id)
 }));
-properties.patch('/sold/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+properties.put('/sold/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   controller.updatePropertyController(res, {sold:true}, req.params.id)
 }));
 
