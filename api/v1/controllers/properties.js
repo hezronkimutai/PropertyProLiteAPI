@@ -63,12 +63,11 @@ async function getPropertyTypeController(res,type) {
 }
 
 async function  updatePropertyController(res, inputs, id){
-if(validator(res, inputs)){
+if(true){
   let property = await records.getProperty(id);
   if (property) {
-    property = inputs
-
-    await records.updateProperty(property);
+    Object.assign(property, inputs);
+    await records.updateProperty(inputs);
 
     res.status(204).end();
   } else {

@@ -192,7 +192,7 @@ describe('Test manipulte a user', () => {
             .end((err, res) => {
                 if (err) {console.log(err);}
                   chai.request(server)
-                        .put(`/api/v1/users/${res.body.data.id}`)
+                        .patch(`/api/v1/users/${res.body.data.id}`)
                         .send(__user)
                         .end((err, result) => {
                             if (err) {

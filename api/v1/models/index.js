@@ -124,7 +124,6 @@ async function createUser(newRecord) {
 
   newRecord.id = generateRandomId();
   newRecord.date = new Date().toJSON().slice(0,19).replace('T',':');
-  newRecord.isAdmin = newRecord.email == "hez@gmail.com" ? true : false;
   newRecord.profilePic = "";
   users.push(newRecord);
   await saveUsers(users);
@@ -154,7 +153,7 @@ async function updateProperty(newProperty) {
   const properties = await getProperties();
   properties.forEach(async function(property) {
     if (property.id == newProperty.id){
-      property = newProperty;
+      Object.assign(property, newProperty);
       await saveProperties(properties);
     }
 
@@ -170,12 +169,10 @@ async function updateUser(newUser) {
   const users = await getUsers();
   users.forEach(async function(user) {
     if(user.id == newUser.id){
-      user = newUser;
+      Object.assign(user, newUser);
       await saveUsers(users);
     }
-
 });
-
 }
 
 /**

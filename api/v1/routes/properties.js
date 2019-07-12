@@ -34,8 +34,8 @@ properties.get('/type/:type', asyncHandler(async (req, res) => {
 getPropertyTypeController(res, req.params.type)
 }));
 
-// send a put request to update a property
-properties.put('/:id', asyncHandler(async (req, res) => {
+// send a patch request to update a property
+properties.patch('/:id', asyncHandler(async (req, res) => {
   updatePropertyController(res, req.body, req.params.id)
 }));
 

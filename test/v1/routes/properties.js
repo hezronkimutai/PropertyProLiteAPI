@@ -227,7 +227,7 @@ describe('Test manipulate  property', () => {
             .end((err, res) => {
                 if (err) {console.log(err);}
                         chai.request(server)
-                        .put(`/api/v1/properties/${res.body.data.id}`)
+                        .patch(`/api/v1/properties/${res.body.data.id}`)
                         .send(__property)
                         .end((err, result) => {
                             if (err) {

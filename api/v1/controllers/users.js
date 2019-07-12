@@ -71,7 +71,8 @@ async function signinUserController(res, inputs) {
 
     for (let i = 0; i < users.length; i++) {
       if (users[i].email === inputs.email && users[i].password === inputs.password) {
-        let token = jwt.sign({email: inputs.email},
+        delete inputs.password;
+        let token = jwt.sign(inputs,
           config.secret,
           { expiresIn: '24h' // expires in 24 hours
           }
@@ -100,16 +101,16 @@ async function signinUserController(res, inputs) {
 }
 
 async function updateUserController(res, inputs, id) {
-  if(validator(res, inputs) == true){
+  if(true){
     let user = await records.getUser(id);
     if (user) {
-      user = inputs
-      await records.updateUser(user);
+      Object.assign(user, inputs);
+      await records.updateUser(inputs);
       res.status(204).end();
     }else{
       res.status(404).json({
         status:"404",
-         message: "user wasn't found"
+        Error: "user wasn't found"
        });
     }
   }
@@ -125,12 +126,10 @@ async function deleteUserController(res, id) {
   } else {
     res.status(404).json({
       status:"404",
-       message: "User wasn't found"
+       Error: "User wasn't found"
      });
   }
 }
-
-
 
 
 module.exports = {

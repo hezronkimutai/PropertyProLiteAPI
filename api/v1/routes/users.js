@@ -35,8 +35,8 @@ users.post('/login', asyncHandler(async (req, res) => {
 signinUserController( res,req.body);
 }));
 
-// send a put request to update a user
-users.put('/:id', asyncHandler(async (req, res) => {
+// send a patch request to update a user
+users.patch('/:id', asyncHandler(async (req, res) => {
   updateUserController(res,req.body,req.params.id);
 }));
 
