@@ -16,6 +16,7 @@ var allowCrossDomain = function(req, res, next) {
 
     next();
 }
+
 app.use((req, res, next) => {
   const err = new Error('NOT FOUND!!!!!');
   next(err);
