@@ -7,8 +7,7 @@ let passwordPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]*$/;
 let positiveFloatsPattern =/^(([0-9]+(?:\.[0-9]+)?)|([0-9]*(?:\.[0-9]+)?))$/;
 let emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-function validator(res, inputs){
-  if(Object.keys(inputs).length == 7){
+function userValidator(res, inputs){
     let validAddress = inputs.address.match(addressPattern);
     let validFirstName = inputs.first_name.toLowerCase().match(stringPattern);
     let validsecond_name = inputs.second_name.toLowerCase().match(stringPattern);
@@ -32,7 +31,8 @@ function validator(res, inputs){
       return res.status(400).json({Error:"Invalid second name"})
     }
     return true;
-  }else if(Object.keys(inputs).length == 10) {
+  }
+  function propertyValidator(res, inputs) {
     let validCategory = inputs.category.toLowerCase().match(stringPattern)
     let validName = inputs.name.toLowerCase().match(stringPattern)
     let validCity = inputs.city.toLowerCase().match(stringPattern);
@@ -62,8 +62,5 @@ function validator(res, inputs){
       return res.status(400).json({Error:"Invalid description"})
     }
     return true;
-  }else {
-    return res.status(400).json({Error:"Please fill all the required fields"})
   }
-}
-module.exports = {validator}
+module.exports = {userValidator, propertyValidator}

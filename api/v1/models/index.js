@@ -1,4 +1,5 @@
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 import fs from 'fs';
 import dotenv from 'dotenv';
@@ -119,12 +120,13 @@ async function getUser(id) {
  */
 
 async function createUser(newRecord) {
-
+  let salt =  bcrypt.genSaltSync(saltRounds)
+  let hashedPassword = bcrypt.hashSync(newRecord.password,salt);
+console.log('======================', hashedPassword)
   const users = await getUsers();
-
+  newRecord.password = hashedPassword;
   newRecord.id = generateRandomId();
   newRecord.date = new Date().toJSON().slice(0,19).replace('T',':');
-  newRecord.isAdmin = newRecord.email == "hez@gmail.com" ? true : false;
   newRecord.profilePic = "";
   users.push(newRecord);
   await saveUsers(users);
@@ -140,6 +142,7 @@ async function createProperty(newRecord) {
   const properties = await getProperties();
 
   newRecord.id = generateRandomId();
+  newRecord.sold = false;
   newRecord.date = new Date().toJSON().slice(0,19).replace('T',':');
   properties.push(newRecord);
   await saveProperties(properties);
@@ -154,7 +157,7 @@ async function updateProperty(newProperty) {
   const properties = await getProperties();
   properties.forEach(async function(property) {
     if (property.id == newProperty.id){
-      property = newProperty;
+      Object.assign(property, newProperty);
       await saveProperties(properties);
     }
 
@@ -170,12 +173,10 @@ async function updateUser(newUser) {
   const users = await getUsers();
   users.forEach(async function(user) {
     if(user.id == newUser.id){
-      user = newUser;
+      Object.assign(user, newUser);
       await saveUsers(users);
     }
-
 });
-
 }
 
 /**
@@ -188,11 +189,6 @@ async function deleteProperty(property) {
   await saveProperties(properties);
 }
 
-
-
-
-
-
 /**
  * Deletes a single Property
  * @param {Object} user - Accepts record to be deleted.
@@ -204,12 +200,7 @@ async function deleteUser(user) {
 }
 
 
-
-/**
- * Deletes a single Property
- * Accepts record to be deleted.
- */
-async function deleteAllUsers() {
+async function clearDb() {
   const allProperties = await getProperties();
   const allUsers = await getUsers();
   const properties = [];
@@ -220,7 +211,7 @@ async function deleteAllUsers() {
 
 
 module.exports = {
-  deleteAllUsers,
+  clearDb,
   getProperties,
   getUsers,
   createUser,

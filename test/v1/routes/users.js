@@ -1,8 +1,3 @@
-
-
-
-
-
 import assert from 'assert';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
@@ -52,6 +47,9 @@ let sValidUser = {
 let nullUser = {};
 
 describe('Signup a user', () => {
+  beforeEach(()=>{
+    records.clearDb()
+  })
     it('Should add user to the db', (done) => {
      chai.request(server)
             .post('/api/v1/users/signup/')
@@ -192,7 +190,7 @@ describe('Test manipulte a user', () => {
             .end((err, res) => {
                 if (err) {console.log(err);}
                   chai.request(server)
-                        .put(`/api/v1/users/${res.body.data.id}`)
+                        .patch(`/api/v1/users/${res.body.data.id}`)
                         .send(__user)
                         .end((err, result) => {
                             if (err) {
