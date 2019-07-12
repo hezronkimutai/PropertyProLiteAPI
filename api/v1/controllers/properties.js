@@ -1,8 +1,8 @@
 import records from '../models';
-import {validator} from '../helpers/valid';
+import validator from '../helpers/valid';
 
 async function postPropertiesController(res,inputs) {
-    if(validator(res, inputs) == true){
+    if(validator.propertyValidator(res, inputs)){
       const property = await records.createProperty(inputs);
       res.status(201).json({
         status:"201",
@@ -17,12 +17,12 @@ async function getPropertiesController(res,req){
     res.status(200).json({
       status:"200",
       message:"properties succesfully retrieved",
-      data:properties
+      data:properties.filter((item) =>{return item.sold == false})
     });
   } else {
     res.status(400).json({
       status:"400",
-       message: 'No properties found'
+       Error: 'No properties found'
      });
   }
 }
@@ -40,7 +40,7 @@ async function getPropertyController (res, id) {
   } else {
     res.status(400).json({
       status:"400",
-      message: 'Property not found'
+      Error: 'Property not found'
   });
   }
 }
@@ -57,7 +57,7 @@ async function getPropertyTypeController(res,type) {
   } else {
     res.status(404).json({
       status:"404",
-      message: 'Property type not found'
+      Error: 'Property type not found'
   });
   }
 }
@@ -67,13 +67,14 @@ if(true){
   let property = await records.getProperty(id);
   if (property) {
     Object.assign(property, inputs);
-    await records.updateProperty(inputs);
-
-    res.status(204).end();
+    if(validator.propertyValidator(res, property)){
+      await records.updateProperty(property);
+    }
+    res.status(204).json({message:"Property updated successfully"});
   } else {
     res.status(404).json({
       status:"404",
-      message: 'Property not found'
+      Error: 'Property not found'
   });
   }
 }
@@ -84,11 +85,11 @@ if(true){
   const property = await records.getProperty(id);
   if (property) {
     await records.deleteProperty(property);
-    res.status(204).end();
+    res.status(204).json({message:"Property deleted succesfully"});
   } else {
     res.status(404).json({
       status:"404",
-      message: 'Property not found'
+      Error: 'Property not found'
   });
   }
 }

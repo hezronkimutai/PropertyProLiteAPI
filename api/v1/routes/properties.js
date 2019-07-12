@@ -1,48 +1,42 @@
 import express from 'express';
-import{asyncHandler} from '../middlewares/middleware';
-import{
-  postPropertiesController,
-  getPropertiesController,
-  updatePropertyController,
-  getPropertyController,
-  deletePropertyController,
-  getPropertyTypeController
-} from '../controllers/properties'
-
+import middleware from '../middlewares/middleware';
+import controller from '../controllers/properties'
 
 const properties = express.Router();
 
 
-properties.post('/post-property', asyncHandler(async (req, res) => {
-  postPropertiesController(res, req.body)
+properties.post('/post-property', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+  controller.postPropertiesController(res, req.body)
 }));
 
 
 // /users
-properties.get('/', asyncHandler(async (req, res) => {
-getPropertiesController(res)
+properties.get('/', middleware.asyncHandler(async (req, res) => {
+controller.getPropertiesController(res)
 }));
 
 
 // Send a get request to retrieve a single property
-properties.get('/:id', asyncHandler(async (req, res) => {
-getPropertyController(res,req.params.id)
+properties.get('/:id', middleware.asyncHandler(async (req, res) => {
+controller.getPropertyController(res,req.params.id)
 }));
 
 // Send a get request to retrieve a single property
-properties.get('/type/:type', asyncHandler(async (req, res) => {
-getPropertyTypeController(res, req.params.type)
+properties.get('/:type', middleware.asyncHandler(async (req, res) => {
+controller.getPropertyTypeController(res, req.params.type)
 }));
 
 // send a patch request to update a property
-properties.patch('/:id', asyncHandler(async (req, res) => {
-  updatePropertyController(res, req.body, req.params.id)
+properties.patch('/:id',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+  controller.updatePropertyController(res, req.body, req.params.id)
+}));
+properties.patch('/sold/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+  controller.updatePropertyController(res, {sold:true}, req.params.id)
 }));
 
 // send a delete request to delete a property
-properties.delete('/:id', asyncHandler(async (req, res) => {
-deletePropertyController(res, req.params.id);
+properties.delete('/:id',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+controller.deletePropertyController(res, req.params.id);
 }));
-
 
 module.exports = properties;
