@@ -10,11 +10,11 @@ let emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]
 function validator(res, inputs){
   if(Object.keys(inputs).length == 7){
     let validAddress = inputs.address.match(addressPattern);
-    let validFirstName = inputs.firstName.toLowerCase().match(stringPattern);
-    let validSecondName = inputs.secondName.toLowerCase().match(stringPattern);
-    let validUserName = inputs.userName.toLowerCase().match(stringPattern);
+    let validFirstName = inputs.first_name.toLowerCase().match(stringPattern);
+    let validsecond_name = inputs.second_name.toLowerCase().match(stringPattern);
+    let validuser_name = inputs.user_name.toLowerCase().match(stringPattern);
     let validEmail = inputs.email.match(emailPattern);
-    let isValidPhoneNumber = inputs.phoneNumber.match(numericPattern);
+    let isValidPhoneNumber = inputs.phone_number.match(numericPattern);
     let validPassword = inputs.password.match(passwordPattern);
     if(!validAddress){
       return res.status(400).json({Error:"Invalid address"})
@@ -24,11 +24,11 @@ function validator(res, inputs){
       return res.status(400).json({Error:"Invalid password"})
     }else if(!validAddress){
       return res.status(400).json({Error:"Invalid address"})
-    }else if(!validUserName){
-      return res.status(400).json({Error:"Ivalid username"})
+    }else if(!validuser_name){
+      return res.status(400).json({Error:"Ivalid user_name"})
     }else if (!validFirstName) {
       return res.status(400).json({Error:"Invalid first name"})
-    }else if(!validSecondName){
+    }else if(!validsecond_name){
       return res.status(400).json({Error:"Invalid second name"})
     }
     return true;

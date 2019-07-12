@@ -14,38 +14,38 @@ let should = chai.should();
 chai.use(chaiHttp);
 
 let validUser = {
-    "firstName": "Mark",
-    "secondName": "Lisaswa",
-    "userName": "Mariko",
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mariko",
     "email": "marik@gmail.com",
-    "phoneNumber": "0937892356",
+    "phone_number": "0937892356",
     "address": "0980989",
     "password": "reqfhgtfhfgjfg"
 };
 let uValidUser = {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezikiah",
+    "first_name": "hezron",
+    "second_name": "kimutai",
+    "user_name": "hezikiah",
     "email": "bosire@gmail.com",
-    "phoneNumber": "0837092356",
+    "phone_number": "0837092356",
     "address": "0980989",
     "password": "reqfhgtfhfgjfg"
 };
 let dValidUser = {
-    "firstName": "Denis",
-    "secondName": "Oliech",
-    "userName": "Deno",
+    "first_name": "Denis",
+    "second_name": "Oliech",
+    "user_name": "Deno",
     "email": "Deno@gmail.com",
-    "phoneNumber": "0937892356",
+    "phone_number": "0937892356",
     "address": "0980989",
     "password": "reqfhgtfhfgjfg"
 };
 let sValidUser = {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hjkezziue",
+    "first_name": "hezron",
+    "second_name": "kimutai",
+    "user_name": "hjkezziue",
     "email": "hueuiz@gmail.com",
-    "phoneNumber": "7936792356",
+    "phone_number": "7936792356",
     "address": "0980989",
     "password": "reqfhgtfhfgjfg"
 };
@@ -73,13 +73,13 @@ describe('Signup a user', () => {
             done();
 
     });
-    it('Should respond with a 400 status code while creating a user whose firstname is a number', (done) => {
+    it('Should respond with a 400 status code while creating a user whose first_name is a number', (done) => {
         let _user = {
-            "firstName": '67',
-            "secondName": "kimutai",
-            "userName": "hezzie",
+            "first_name": '67',
+            "second_name": "kimutai",
+            "user_name": "hezzie",
             "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
+            "phone_number": "0937892356",
             "address": "0980989",
             "password": "reqfhgtfhfgjfg"
         };
@@ -93,11 +93,11 @@ describe('Signup a user', () => {
     });
     it('Should respond with a 400 status code while creating a user whose password is less than 6', (done) => {
         let _user = {
-            "firstName": "hezron",
-            "secondName": "kimutai",
-            "userName": "hezzie",
+            "first_name": "hezron",
+            "second_name": "kimutai",
+            "user_name": "hezzie",
             "email": "hez@gmail.com",
-            "phoneNumber": "0937892356",
+            "phone_number": "0937892356",
             "address": "0980989",
             "password": "req"
         };
@@ -112,11 +112,11 @@ describe('Signup a user', () => {
     });
     it('Should respond with a 400 status code while creating a user whose phone number is a string', (done) => {
         let _user = {
-            "firstName": "hezron",
-            "secondName": "kimutai",
-            "userName": "hezzie",
+            "first_name": "hezron",
+            "second_name": "kimutai",
+            "user_name": "hezzie",
             "email": "hez@gmail.com",
-            "phoneNumber": "kimki",
+            "phone_number": "kimki",
             "address": "0980989",
             "password": "requiui"
         };
@@ -130,11 +130,11 @@ describe('Signup a user', () => {
     });
     it('Should respond with a 400 status code while creating a user whose email is invalid', (done) => {
         let _user = {
-            "firstName": "hezron",
-            "secondName": "kimutai",
-            "userName": "hezzie",
+            "first_name": "hezron",
+            "second_name": "kimutai",
+            "user_name": "hezzie",
             "email": "hezgmail.com",
-            "phoneNumber": "0937892356",
+            "phone_number": "0937892356",
             "address": "0980989",
             "password": "req"
         };
@@ -167,12 +167,9 @@ describe('Test fetch users users', () => {
                         .end((err, result) => {
                             result.should.have.status(200);
                           });
-
             });
             done();
     });
-
-
 });
 
 
@@ -181,11 +178,11 @@ describe('Test fetch users users', () => {
 describe('Test manipulte a user', () => {
     it('Should update a user', (done) => {
       let __user = {
-          "firstName": "ui",
-          "secondName": "fy",
-          "userName": "hezzie",
+          "first_name": "ui",
+          "second_name": "fy",
+          "user_name": "hezzie",
           "email": "kim@gmail.com",
-          "phoneNumber": "0937890356",
+          "phone_number": "0937890356",
           "address": "0980989",
           "password": "reqfhgtfhfgjfg"
       };
