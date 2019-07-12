@@ -6,12 +6,11 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon --exec babel-node api/index.js",
     "start:prod": "NODE_ENV=production babel-node api/index.js",
-    "testv1": "NODE_ENV=test npm run _drop && NODE_ENV=test nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./test/v1/*",
+    "testv1": "NODE_ENV=test npm run delete && NODE_ENV=test nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./test/v1/* --timeout 20000",
     "testv2": "NODE_ENV=test npm run drop && NODE_ENV=test npm run create && NODE_ENV=test nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./test/v2/*",
     "create": "babel-node ./api/v2/database/config createTables",
     "drop": "babel-node ./api/v2/database/config dropTables",
-    "_create": "babel-node ./api/v1/models deleteAllProperties",
-    "_drop": "babel-node ./api/v1/models deleteAllUsers",
+    "delete": "babel-node ./api/v1/models clearDb",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Hezron Kimutai Chelimo",

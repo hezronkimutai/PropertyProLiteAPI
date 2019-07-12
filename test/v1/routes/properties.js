@@ -2,7 +2,8 @@ import assert from 'assert';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import records from '../../../api/v1/models';
-import server from'../../../api';
+import server from '../../../api';
+import Token from './users'
 
 
 let should = chai.should();
@@ -87,9 +88,11 @@ let nullProperty = {}
 
 describe('Post a Property', () => {
 
+
     it('Should add a valid property to the db', (done) => {
             chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(validProperty)
             .end((err, res) => {
                 res.should.have.status(201);
@@ -102,6 +105,7 @@ describe('Post a Property', () => {
     it('Should not add property with invalid category to the db', (done) => {
      chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(invalidCategoryProperty)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -112,6 +116,7 @@ describe('Post a Property', () => {
     it('Should not add a property with invalid reason to the db', (done) => {
        chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(invalidReasonProperty)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -121,6 +126,7 @@ describe('Post a Property', () => {
     it('Should not add a property with invalid state to the db', (done) => {
       chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(invalidStateProperty)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -132,6 +138,7 @@ describe('Post a Property', () => {
     it('Should not add property with invalid city to the db', (done) => {
       chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(invalidCityProperty)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -144,6 +151,7 @@ describe('Post a Property', () => {
     it('Should not add property with invalid map points to the db', (done) => {
       chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(invalidMapProperty)
             .end((err, res) => {
                 res.should.have.status(400);
@@ -156,6 +164,7 @@ describe('Post a Property', () => {
         chai.request(server)
 
                     .post('/api/v1/properties/post-property/')
+                    .set("Authorization",Token)
                     .send(nullProperty)
                     .end((err, res) => {
                         res.should.have.status(400);
@@ -185,6 +194,7 @@ describe('Fetch all properties', () => {
     it('Should Fecth a single property', (done) => {
     chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(validProperty)
             .end((err, res) => {
                 if (err) {
@@ -204,31 +214,17 @@ describe('Fetch all properties', () => {
 
 
 describe('Test manipulate  property', () => {
-
-
-    let __property = {
-        "category": "Sroom",
-        "name": "Houscbe",
-        "reason": "rencbct",
-        "price": "7000",
-        "state": "tancbania",
-        "city": "arha",
-        "address": "76768",
-        "map": "90800,800",
-        "description": "Veryl house",
-        "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png"
-    };
-
-
     it('Should update a property', (done) => {
        chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(validProperty)
             .end((err, res) => {
                 if (err) {console.log(err);}
                         chai.request(server)
                         .patch(`/api/v1/properties/${res.body.data.id}`)
-                        .send(__property)
+                        .set("Authorization",Token)
+                        .send({"category": "Sroom"})
                         .end((err, result) => {
                             if (err) {
                                 console.log(err);
@@ -243,12 +239,13 @@ describe('Test manipulate  property', () => {
     it('Should delete a property', (done) => {
       chai.request(server)
             .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
             .send(validProperty)
             .end((err, res) => {
                 if (err) {console.log(err);}
                           chai.request(server)
                         .delete(`/api/v1/properties/${res.body.data.id}`)
-                        .end((err, result) => {
+                        .set("Authorization",Token).end((err, result) => {
 
                             result.should.have.status(204);
                           });

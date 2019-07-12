@@ -1,14 +1,18 @@
-
-
-
-
-
 import assert from 'assert';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import records from '../../../api/v1/models';
 import server from'../../../api';
+import config from '../../../api/v1/config/config';
 
+import jwt from 'jsonwebtoken';
+let token = jwt.sign({"email":"hez@gmail.com","password":"HHeezziiee1357"},
+  config.secret,
+  { expiresIn: '24h' // expires in 24 hours
+  }
+);
+
+const Token = "Bearer" + token
 
 let should = chai.should();
 chai.use(chaiHttp);
@@ -22,36 +26,11 @@ let validUser = {
     "address": "0980989",
     "password": "reqfhgtfhfgjfg"
 };
-let uValidUser = {
-    "first_name": "hezron",
-    "second_name": "kimutai",
-    "user_name": "hezikiah",
-    "email": "bosire@gmail.com",
-    "phone_number": "0837092356",
-    "address": "0980989",
-    "password": "reqfhgtfhfgjfg"
-};
-let dValidUser = {
-    "first_name": "Denis",
-    "second_name": "Oliech",
-    "user_name": "Deno",
-    "email": "Deno@gmail.com",
-    "phone_number": "0937892356",
-    "address": "0980989",
-    "password": "reqfhgtfhfgjfg"
-};
-let sValidUser = {
-    "first_name": "hezron",
-    "second_name": "kimutai",
-    "user_name": "hjkezziue",
-    "email": "hueuiz@gmail.com",
-    "phone_number": "7936792356",
-    "address": "0980989",
-    "password": "reqfhgtfhfgjfg"
-};
+
 let nullUser = {};
 
 describe('Signup a user', () => {
+
     it('Should add user to the db', (done) => {
      chai.request(server)
             .post('/api/v1/users/signup/')
@@ -148,6 +127,7 @@ describe('Signup a user', () => {
     });
 });
 describe('Test fetch users users', () => {
+
     it('Should Fecth all the users', (done) => {
       chai.request(server)
               .get('/api/v1/users/')
@@ -159,7 +139,7 @@ describe('Test fetch users users', () => {
     it('Should Fecth a single user', (done) => {
       chai.request(server)
             .post('/api/v1/users/signup/')
-            .send(sValidUser)
+            .send(validUser)
             .end((err, res) => {
                 if (err) {console.log(err);}
                      chai.request(server)
@@ -176,24 +156,18 @@ describe('Test fetch users users', () => {
 
 
 describe('Test manipulte a user', () => {
+
     it('Should update a user', (done) => {
-      let __user = {
-          "first_name": "ui",
-          "second_name": "fy",
-          "user_name": "hezzie",
-          "email": "kim@gmail.com",
-          "phone_number": "0937890356",
-          "address": "0980989",
-          "password": "reqfhgtfhfgjfg"
-      };
+
          chai.request(server)
             .post('/api/v1/users/signup/')
-            .send(uValidUser)
+            .send(validUser)
             .end((err, res) => {
                 if (err) {console.log(err);}
                   chai.request(server)
                         .patch(`/api/v1/users/${res.body.data.id}`)
-                        .send(__user)
+                        .set("Authorization",Token)
+                        .send({"first_name": "ui"})
                         .end((err, result) => {
                             if (err) {
                                 console.log(err);
@@ -208,11 +182,12 @@ describe('Test manipulte a user', () => {
     it('Should delete a user', (done) => {
         chai.request(server)
             .post('/api/v1/users/signup/')
-            .send(dValidUser)
+            .send(validUser)
             .end((err, res) => {
                 if (err) {console.log(err);}
                     chai.request(server)
                         .delete(`/api/v1/users/${res.body.data.id}`)
+                        .set("Authorization",Token)
                         .end((err, result) => {
                             result.should.have.status(204);
                           });

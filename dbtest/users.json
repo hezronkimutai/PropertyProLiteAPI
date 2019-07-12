@@ -1,28 +1,14 @@
 [
   {
-    "firstName": "Mark",
-    "secondName": "Lisaswa",
-    "userName": "Mariko",
+    "first_name": "Mark",
+    "second_name": "Lisaswa",
+    "user_name": "Mariko",
     "email": "marik@gmail.com",
-    "phoneNumber": "0937892356",
+    "phone_number": "0937892356",
     "address": "0980989",
-    "password": "reqfhgtfhfgjfg",
-    "id": 4267,
-    "date": "2019-07-11:20:02:21",
-    "isAdmin": false,
-    "profilePic": ""
-  },
-  {
-    "firstName": "hezron",
-    "secondName": "kimutai",
-    "userName": "hezzie",
-    "email": "hez@gmail.com",
-    "phoneNumber": "kimki",
-    "address": "0980989",
-    "password": "requiui",
-    "id": 2326,
-    "date": "2019-07-11:20:02:21",
-    "isAdmin": true,
+    "password": "$2b$10$.LWJP.sFfngOrWkbBQqb9eJMjSZCNcf1s8E1aOa9p8cLfAtRVbrE6",
+    "id": 4114,
+    "date": "2019-07-12:16:29:15",
     "profilePic": ""
   }
 ]
