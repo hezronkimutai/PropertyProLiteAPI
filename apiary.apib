@@ -5,7 +5,7 @@ HOST: https://propertyproliteapi.herokuapp.com/api
 
 Property Pro Lite is a platform where people can create and/or search properties for sale or rent.
 
-## Properties collection [/v2/properties]
+## Properties collection [/v1/properties]
 
 ### List All properties [GET]
 
@@ -29,7 +29,7 @@ Property Pro Lite is a platform where people can create and/or search properties
 
 
 
-### Post property [/v2/properties/post-property]
+## Post property [/v1/properties/post-property]
 
 ### Create a New Property [POST]
 
@@ -55,7 +55,7 @@ object containing a property name, propertytype, and an uploaded image.
 
     + Headers
 
-            Location: /v2/properties/post-property
+            Location: /v1/properties/post-property
 
     + Body
 
@@ -73,7 +73,7 @@ object containing a property name, propertytype, and an uploaded image.
                 "id": 9023
               }
               
-### Single Property [/v2/properties/:id]
+## Single Property [/v1/properties/:id]
 
 ### Fetch a single property [GET]
 
@@ -109,7 +109,7 @@ object.
 
     + Headers
 
-            Location: /v2/properties/:id
+            Location: /v1/properties/:id
 
     + Body
 
@@ -127,7 +127,7 @@ object.
                 "id": 9023
               }
 
-#### Users collection [/v2/users]
+## Users collection [/v1/users]
 
 ### List All users [GET]
 
@@ -153,7 +153,7 @@ object.
               }
         ]
 
-#### Users collection [/v2/users/signup]
+## Users collection [/v1/users/signup]
 
 ### Create a New user [POST]
 
@@ -175,7 +175,7 @@ object containing a username and password.
 
     + Headers
 
-            Location: /v2/users/signup
+            Location: /v1/users/signup
 
     + Body
 
@@ -190,7 +190,7 @@ object containing a username and password.
               }
 
 
-### Single user [/v2/users/:id]
+## Single user [/v1/users/:id]
 
 ### Fetch a single user [GET]
 
