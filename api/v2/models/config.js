@@ -33,7 +33,6 @@ export const createTables = async () => {
                                                   )`
 
   await pool.query(ctu)
-  console.log(" sucess")
 
   const ctp = `CREATE TABLE IF NOT EXISTS properties(
                                                     id serial PRIMARY KEY,
