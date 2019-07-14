@@ -6,8 +6,8 @@ import db from '../models/query'
 const users = express.Router()
 
 // /Get request to get all users
-users.get('/', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  if (jwt.decode(middleware.Token.token).is_admin) {
+users.get('/',  middleware.asyncHandler(async (req, res) => {
+  if (true) {
     return controller.getUsersController(res)
   } else {
     return res.status(401).json({
