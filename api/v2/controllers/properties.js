@@ -1,5 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable semi */
 /* eslint-disable camelcase */
-import records from '../models'
+import db from '../models/query'
+import format from 'pg-format';
 import validator from '../helpers/valid'
 
 async function postPropertiesController (res, inputs) {
@@ -18,11 +21,12 @@ async function postPropertiesController (res, inputs) {
       !inputs.reason ||
       !inputs.price ||
       !inputs.state ||
-       !inputs.city ||
-       !inputs.address ||
-       !inputs.map ||
-       !inputs.description ||
-       !inputs.url) {
+      !inputs.city ||
+      !inputs.address ||
+      !inputs.map ||
+      !inputs.description ||
+      !inputs.url
+  ) {
     return res.status(400).json({
       status: '400',
       Error: 'Please fill all the required inputs.'
@@ -44,14 +48,17 @@ async function postPropertiesController (res, inputs) {
   }
 }
 async function getPropertiesController (res, req) {
-  const properties = await records.getProperties()
-  if (properties) {
+  const propertiesQuery = format(`SELECT * from properties`)
+  db.query(propertiesQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
     res.status(200).json({
       status: '200',
-      message: 'properties succesfully retrieved',
-      data: properties.filter((item) => { return item.sold == false })
+      message: 'properties retrieved succesfully',
+      data: result.rows
     })
-  }
+  });
 }
 async function getPropertyController (res, id) {
   const property = await records.getProperty(id)

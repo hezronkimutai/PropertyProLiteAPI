@@ -2,24 +2,22 @@
 import bcrypt from 'bcrypt'
 import validator from '../helpers/valid'
 import jwt from 'jsonwebtoken'
-const config = require('../config/config')
-const records = require('../models')
+import db from '../models/query'
+import format from 'pg-format';
+import config from '../config/config'
 // /Get request to get all users
 async function getUsersController (res) {
-  const users = await records.getUsers()
-
-  if (users) {
-    users.forEach(async function (user) {
-      delete user.password
+  const usersQuery = format('SELECT * from users')
+  db.query(usersQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
+    res.status(200).json({
+      status: '200',
+      message: 'User retrieved succesfully',
+      data: result.rows
     })
-
-    res.json(users)
-  } else {
-    res.status(400).json({
-      status: '400',
-      message: 'No users found'
-    })
-  }
+  })
 }
 
 // Send a get request to retrieve a single property
