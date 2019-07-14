@@ -1,7 +1,8 @@
 import middleware from '../middlewares/middleware'
 import controller from '../controllers/users'
 import jwt from 'jsonwebtoken'
-import express from 'express';
+import express from 'express'
+import db from '../models/query'
 const users = express.Router()
 
 // /Get request to get all users

@@ -2,6 +2,7 @@ import express from 'express'
 import middleware from '../middlewares/middleware'
 import controller from '../controllers/properties'
 import jwt from 'jsonwebtoken'
+import db from '../models/query'
 const properties = express.Router()
 
 properties.post('/post-property', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
