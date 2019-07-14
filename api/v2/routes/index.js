@@ -1,11 +1,9 @@
-import express from 'express';
-const routes = express.Router();
+import express from 'express'
 
-import properties from './properties';
-import users from './users';
-// import cloudinary from './cloudinary';
+import properties from './properties'
+import users from './users'
+const routes = express.Router()
 
-routes.use('/properties', properties);
-routes.use('/users', users);
-// routes.use('/', cloudinary);
-module.exports = routes;
+routes.use('/properties', properties)
+routes.use('/users', users)
+module.exports = routes
