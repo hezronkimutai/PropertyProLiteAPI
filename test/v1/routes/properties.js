@@ -335,10 +335,37 @@ describe('Test manipulate  property', () => {
                         .patch(`/api/v1/properties/${res.body.data.id}`)
                         .set("Authorization",Token)
                         .send({"category": "Sroom"})
+<<<<<<< HEAD
+=======
                         .end((err, result) => {
                             if (err) {
                                 console.log(err);
                             }
+                            result.should.have.status(204);
+                            done();
+                          });
+
+              });
+
+    });
+
+    it('Should mark a property a sold', (done) => {
+       chai.request(server)
+            .post('/api/v1/properties/post-property/')
+            .set("Authorization",Token)
+            .send(sValidProperty)
+            .end((err, res) => {
+                if (err) {console.log(err);}
+
+                        chai.request(server)
+                        .put(`/api/v1/properties/sold/${res.body.data.id}`)
+                        .set("Authorization",Token)
+>>>>>>> 35a60c5bea47a6a1fd2f4ae328b43559a0d64bb0
+                        .end((err, result) => {
+                            if (err) {
+                                console.log(err);
+                            }
+<<<<<<< HEAD
                             result.should.have.status(201);
                             done();
                           });
@@ -366,6 +393,12 @@ describe('Test manipulate  property', () => {
                             done();
                           });
 
+=======
+                            result.should.have.status(204);
+                            done();
+                          });
+
+>>>>>>> 35a60c5bea47a6a1fd2f4ae328b43559a0d64bb0
               });
 
     });
@@ -381,7 +414,11 @@ describe('Test manipulate  property', () => {
                           chai.request(server)
                         .delete(`/api/v1/properties/${res.body.data.id}`)
                         .set("Authorization",Token).end((err, result) => {
+<<<<<<< HEAD
                             result.should.have.status(201);
+=======
+                            result.should.have.status(204);
+>>>>>>> 35a60c5bea47a6a1fd2f4ae328b43559a0d64bb0
                               done();
                           });
 
