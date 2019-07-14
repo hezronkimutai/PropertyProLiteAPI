@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import validator from '../helpers/valid'
 import jwt from 'jsonwebtoken'
 import db from '../models/query'
-import format from 'pg-format';
+import format from 'pg-format'
 import config from '../config/config'
 // /Get request to get all users
 async function getUsersController (res) {
@@ -22,21 +22,17 @@ async function getUsersController (res) {
 
 // Send a get request to retrieve a single property
 async function getUserController (res, id) {
-  const user = await records.getUser(id)
-
-  if (user) {
-    delete user.password
+  const userQuery = format(`SELECT * from users where id='%s'`, id)
+  db.query(userQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
     res.status(200).json({
       status: '200',
-      message: 'User succesfully retrieved',
-      data: user
+      message: 'User retrieved succesfully',
+      data: result.rows
     })
-  } else {
-    res.status(404).json({
-      status: '404',
-      message: 'Property not found'
-    })
-  }
+  })
 }
 
 // send a post request to signup a user
