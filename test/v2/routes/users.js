@@ -183,20 +183,14 @@ describe('Test fetch users users', () => {
         done()
       })
   })
-  // it('Should Fecth a single user', (done) => {
-  //   chai.request(server)
-  //     .post('/api/v2/users/signup/')
-  //     .send(gValidUser)
-  //     .end((err, res) => {
-  //       if (err) { console.log(err) }
-  //       chai.request(server)
-  //         .get(`/api/v2/users/${res.body.data.id}`)
-  //         .end((_err, result) => {
-  //           result.should.have.status(200)
-  //           done()
-  //         })
-  //     })
-  // })
+  it('Should Fecth a single user', (done) => {
+    chai.request(server)
+      .get(`/api/v2/users/1`)
+      .end((_err, result) => {
+        result.should.have.status(200)
+        done()
+      })
+  })
   // it('Should not Fecth a non existing single user', (done) => {
   //   chai.request(server)
   //     .get(`/api/v2/users/89`)
