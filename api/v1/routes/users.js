@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 
 
 
+
 // /Get request to get all users
 users.get('/',middleware.checkToken,middleware.asyncHandler(async (req, res) => {
   if(jwt.decode(middleware.Token.token).is_admin){
