@@ -41,7 +41,7 @@ users.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (req, r
 }))
 
 // send a delete request to delete a user
-users.delete('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+users.delete('/:id',  middleware.asyncHandler(async (req, res) => {
   controller.deleteUserController(res, req.params.id)
 }))
 

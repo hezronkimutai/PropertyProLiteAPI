@@ -14,165 +14,165 @@ const Token = 'Bearer' + token
 chai.use(chaiHttp)
 
 const validUser = {
-  first_name: 'Mark',
-  last_name: 'Lisaswa',
-  user_name: 'Mariko',
+  firstname: 'Mark',
+  lastname: 'Lisaswa',
+  username: 'Mariko',
   email: 'marik@gmail.com',
-  phone_number: '0987665566',
+  phonenumber: '0987665566',
   address: '0980989',
-  is_admin: true,
+  isadmin: true,
   password: 're%@u&@#23ERfg'
 }
 const lValidUser = {
-  first_name: 'Mark',
-  last_name: 'Lisaswa',
-  user_name: 'Marikotaman',
+  firstname: 'Mark',
+  lastname: 'Lisaswa',
+  username: 'Marikotaman',
   email: 'mariktaman@gmail.com',
-  phone_number: '0989965566',
-  is_admin: true,
+  phonenumber: '0989965566',
+  isadmin: true,
   address: '0980989',
   password: 're%@u&@#23ERfg'
 }
 const lInValidUser = {
-  first_name: 'Mark',
-  last_name: 'Lisaswa',
-  user_name: 'Mariman',
+  firstname: 'Mark',
+  lastname: 'Lisaswa',
+  username: 'Mariman',
   email: 'marman@gmail.com',
-  phone_number: '0989900566',
-  is_admin: true,
+  phonenumber: '0989900566',
+  isadmin: true,
   address: '0980989',
   password: 're%@u&@#23ERfg'
 }
 const dValidUser = {
-  first_name: 'Mark',
-  last_name: 'Lisaswa',
-  user_name: 'Mako',
+  firstname: 'Mark',
+  lastname: 'Lisaswa',
+  username: 'Mako',
   email: 'mik@gmail.com',
-  phone_number: '0987765566',
-  is_admin: true,
+  phonenumber: '0987765566',
+  isadmin: true,
   address: '0980989',
   password: 're%@u&@#23ERfg'
 }
 const gValidUser = {
-  first_name: 'Mark',
-  last_name: 'Lisaswa',
-  user_name: 'Marlliko',
+  firstname: 'Mark',
+  lastname: 'Lisaswa',
+  username: 'Marlliko',
   email: 'mkkarik@gmail.com',
-  phone_number: '0987664466',
-  is_admin: true,
+  phonenumber: '0987664466',
+  isadmin: true,
   address: '0980989',
   password: 're%@u&@#23ERfg'
 }
 const uValidUser = {
-  first_name: 'Mark',
-  last_name: 'Lisaswa',
-  user_name: 'Mppariko',
+  firstname: 'Mark',
+  lastname: 'Lisaswa',
+  username: 'Mppariko',
   email: 'mauuyrik@gmail.com',
-  phone_number: '9870005566',
-  is_admin: true,
+  phonenumber: '9870005566',
+  isadmin: true,
   address: '0980989',
   password: 're%@u&@#23ERfg'
 }
 
 const nullUser = {}
 const inValidEmailUser = {
-  first_name: 'hezron',
-  last_name: 'kimutai',
-  user_name: 'hezzieinvalidemail',
+  firstname: 'hezron',
+  lastname: 'kimutai',
+  username: 'hezzieinvalidemail',
   email: 'invalidemail',
-  phone_number: '8888888888',
-  is_admin: true,
+  phonenumber: '8888888888',
+  isadmin: true,
   address: '0980989',
   password: 're%@u&@#23ERfg'
 }
 const inValidPhoneUser = {
-  first_name: 'hezron',
-  last_name: 'kimutai',
-  user_name: 'he',
+  firstname: 'hezron',
+  lastname: 'kimutai',
+  username: 'he',
   email: 'he@gmail.com',
-  phone_number: 'kimki',
+  phonenumber: 'kimki',
   address: '0980989',
-  is_admin: true,
+  isadmin: true,
   password: 're%#23ERfg'
 }
-// describe('Signup a user', () => {
-//   it('Should add user to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(validUser)
-//       .end((_err, res) => {
-//         res.should.have.status(201)
-//         done()
-//       })
-//   })
+describe('Signup a user', () => {
+  it('Should add user to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/signup/')
+      .send(validUser)
+      .end((_err, res) => {
+        res.should.have.status(201)
+        done()
+      })
+  })
 
-//   it('Should not add null user to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(nullUser)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should respond with a 400 status code while creating a user whose first_name is a number', (done) => {
-//     const _user = {
-//       first_name: '67',
-//       last_name: 'kimutai',
-//       user_name: 'hezzie',
-//       email: 'hez@gmail.com',
-//       phone_number: '0937892356',
-//       address: '0980989',
-//       is_admin: true,
-//       password: 're%#23ERfg'
-//     }
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(_user)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should respond with a 400 status code while creating a user whose password is less than 6', (done) => {
-//     const _user = {
-//       first_name: 'hezron',
-//       last_name: 'kimutai',
-//       user_name: 'hezzie',
-//       email: 'hez@gmail.com',
-//       phone_number: '0937892356',
-//       address: '0980989',
-//       is_admin: true,
-//       password: 'req'
-//     }
+  it('Should not add null user to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/signup/')
+      .send(nullUser)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should respond with a 400 status code while creating a user whosefirstname is a number', (done) => {
+    const _user = {
+      firstname: '67',
+      lastname: 'kimutai',
+      username: 'hezzie',
+      email: 'hez@gmail.com',
+      phonenumber: '0937892356',
+      address: '0980989',
+      isadmin: true,
+      password: 're%#23ERfg'
+    }
+    chai.request(server)
+      .post('/api/v2/users/signup/')
+      .send(_user)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should respond with a 400 status code while creating a user whose password is less than 6', (done) => {
+    const _user = {
+      firstname: 'hezron',
+      lastname: 'kimutai',
+      username: 'hezzie',
+      email: 'hez@gmail.com',
+      phonenumber: '0937892356',
+      address: '0980989',
+      isadmin: true,
+      password: 'req'
+    }
 
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(_user)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should respond with a 400 status code while creating a user with invalid phone_number', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(inValidPhoneUser)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should respond with a 400 status code while creating a user whose email is invalid', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(inValidEmailUser)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-// })
+    chai.request(server)
+      .post('/api/v2/users/signup/')
+      .send(_user)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should respond with a 400 status code while creating a user with invalid phonenumber', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/signup/')
+      .send(inValidPhoneUser)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should respond with a 400 status code while creating a user whose email is invalid', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/signup/')
+      .send(inValidEmailUser)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+})
 
 describe('Test fetch users users', () => {
   it('Should Fecth all the users', (done) => {
@@ -202,7 +202,7 @@ describe('Test fetch users users', () => {
   // })
 })
 
-// describe('Test manipulte a user', () => {
+describe('Test manipulte a user', () => {
 //   it('Should update a user', (done) => {
 //     chai.request(server)
 //       .post('/api/v2/users/signup/')
@@ -212,7 +212,7 @@ describe('Test fetch users users', () => {
 //         chai.request(server)
 //           .patch(`/api/v2/users/${res.body.data.id}`)
 //           .set('Authorization', Token)
-//           .send({ first_name: 'ui' })
+//           .send({firstname: 'ui' })
 //           .end((err, result) => {
 //             if (err) {
 //               console.log(err)
@@ -223,22 +223,16 @@ describe('Test fetch users users', () => {
 //       })
 //   })
 
-//   it('Should delete a user', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(dValidUser)
-//       .end((err, res) => {
-//         if (err) { console.log(err) }
-//         chai.request(server)
-//           .delete(`/api/v2/users/${res.body.data.id}`)
-//           .set('Authorization', Token)
-//           .end((_err, result) => {
-//             result.should.have.status(200)
-//             done()
-//           })
-//       })
-//   })
-// })
+  it('Should delete a user', (done) => {
+    chai.request(server)
+      .delete(`/api/v2/users/1`)
+      .set('Authorization', Token)
+      .end((_err, result) => {
+        result.should.have.status(201)
+        done()
+      })
+  })
+})
 // describe('Test User login', () => {
 //   it('Should login a user with valid inputs', (done) => {
 //     chai.request(server)
@@ -279,21 +273,21 @@ describe('Test fetch users users', () => {
 //   })
 // })
 
-// describe('Test all 404 and 500', () => {
-//   it('Should catch all 404', (done) => {
-//     chai.request(server)
-//       .get('/')
-//       .end((_err, result) => {
-//         result.should.have.status(500)
-//         done()
-//       })
-//   })
-//   it('Should catch all 500', (done) => {
-//     chai.request(server)
-//       .get('/api/v2/users-fivehundred')
-//       .end((_err, result) => {
-//         result.should.have.status(500)
-//         done()
-//       })
-//   })
-// })
+describe('Test all 404 and 500', () => {
+  it('Should catch all 404', (done) => {
+    chai.request(server)
+      .get('/')
+      .end((_err, result) => {
+        result.should.have.status(500)
+        done()
+      })
+  })
+  it('Should catch all 500', (done) => {
+    chai.request(server)
+      .get('/api/v2/users-fivehundred')
+      .end((_err, result) => {
+        result.should.have.status(500)
+        done()
+      })
+  })
+})

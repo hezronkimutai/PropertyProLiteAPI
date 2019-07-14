@@ -31,7 +31,7 @@ async function postPropertiesController (res, inputs) {
       status: '400',
       Error: 'Please fill all the required inputs.'
     })
-  } 
+  }
   // else if (property_name && property_reason && property_price && property_state &&
   //    property_city && property_address && property_map &&
   //    property_description && property_url && property_owner) {
@@ -40,7 +40,7 @@ async function postPropertiesController (res, inputs) {
   //     Error: 'It seems a similar property exist'
   //   })
   // }
-   else if (!validator.propertyValidator(res, inputs)) {
+  else if (!validator.propertyValidator(res, inputs)) {
     const propertyQuery = format(`INSERT INTO  properties(category,
       name,reason, price, state, city, address, map, description,url)
       VALUES('%s', '%s', '%s','%s', '%s', '%s','%s','%s','%s','%s')`,
@@ -128,16 +128,16 @@ async function updatePropertyController (res, inputs, id) {
 
 // send a delete request to delete a property
 async function deletePropertyController (res, id) {
-  const property = await records.getProperty(id)
-  if (property) {
-    await records.deleteProperty(property)
-    return res.status(201).json({ message: 'Property deleted succesfully' })
-  } else {
-    res.status(404).json({
-      status: '404',
-      Error: 'Property not found'
+  const deletePropertyQuery = format(`DELETE FROM properties WHERE id='%s'`, id)
+  db.query(deletePropertyQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
+    res.status(201).json({
+      status: '201',
+      message: 'properties deleted succesfully'
     })
-  }
+  })
 }
 
 module.exports = {
