@@ -21,11 +21,13 @@ pool.on('connect', () => {
 export const createTables = async () => {
   const ctu = `CREATE TABLE IF NOT EXISTS users(
                                                   id serial PRIMARY KEY,
-                                                  firstName VARCHAR NOT NULL,
-                                                  secondName VARCHAR NOT NULL,
+                                                  firstname VARCHAR NOT NULL,
+                                                  lastname VARCHAR NOT NULL,
                                                   username VARCHAR NOT NULL,
                                                   email VARCHAR NOT NULL,
-                                                  phoneNumber VARCHAR NOT NULL,
+                                                  phonenumber VARCHAR NOT NULL,
+                                                  address VARCHAR NOT NULL,
+                                                  isadmin VARCHAR NOT NULL,
                                                   password VARCHAR NOT NULL,
                                                   profilePic VARCHAR NULL
                                                   )`

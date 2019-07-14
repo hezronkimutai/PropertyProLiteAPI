@@ -1,3 +1,4 @@
+/* eslint-disable handle-callback-err */
 /* eslint-disable camelcase */
 import bcrypt from 'bcrypt'
 import validator from '../helpers/valid'
@@ -38,38 +39,68 @@ async function getUserController (res, id) {
 // send a post request to signup a user
 async function signupUserController (req, res, inputs) {
   if (
-    !req.body.first_name ||
-    !req.body.last_name ||
-    !req.body.user_name ||
+    !req.body.firstname ||
+    !req.body.lastname ||
+    !req.body.username ||
     !req.body.email ||
-    !req.body.phone_number ||
+    !req.body.phonenumber ||
     !req.body.password ||
-    !req.body.is_admin ||
+    !req.body.isadmin ||
   !req.body.address) {
     return res.status(400).json({
       status: '400',
       Error: 'Please fill all the required inputs.'
     })
   } else if (!validator.userValidator(res, inputs)) {
-    const users = await records.getUsers()
-
-    const user = users.find(user => user.email === inputs.email)
-    const user_phone_number = users.find(user => user.phone_number === inputs.phone_number)
-    const user_user_name = users.find(user => user.user_name === inputs.user_name)
-    if (user || user_phone_number || user_user_name) {
-      return res.status(400).json({
-        status: 400,
-        message: 'A user with the same credentials exist'
-      })
-    } else {
-      const user = await records.createUser(inputs)
-      delete user.password
-      return res.status(201).json({
-        status: '201',
-        message: 'User created succesfully',
-        data: user
-      })
-    }
+ 
+    const userQuery = format(`INSERT INTO  users(firstname,
+    lastname,username, email, phonenumber, address, isadmin, password)
+    VALUES('%s', '%s', '%s','%s', '%s', '%s', '%s', '%s')`,
+    req.body.firstname,
+    req.body.lastname,
+    req.body.username,
+    req.body.email,
+    req.body.phonenumber,
+    req.body.password,
+    req.body.address,
+    req.body.isadmin)
+    const emailQuery = format(`SELECT * from users where email='%s'`, req.body.email)
+    const usernameQuery = format(`SELECT * from users where username='%s'`, req.body.username)
+    const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`, req.body.phonenumber)
+    db.query(emailQuery, function (err, ress) {
+      if (err) {console.log(err)}
+      if (ress.rows.length != 0) {
+        res.status(400).json({
+          status: '400',
+          message: 'A user with same email exist'
+        })
+      } else {
+        db.query(usernameQuery, function (err, resu) {
+          if (resu.rows.length != 0) {
+            res.status(400).json({
+              status: '400',
+              message: 'A user with same username exist'
+            })
+          } else {
+            db.query(phonenumberQuery, function (err, resul) {
+              if (resul.rows.length != 0) {
+                res.status(400).json({
+                  status: '400',
+                  message: 'A user with same phonenumber exist'
+                })
+              } else {
+                db.query(userQuery, function (err, result) {
+                  res.status(201).json({
+                    status: '201',
+                    message: 'successfully created the user'
+                  })
+                })
+              }
+            })
+          }
+        })
+      }
+    })
   }
 }
 
