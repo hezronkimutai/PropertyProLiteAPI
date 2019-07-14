@@ -61,20 +61,17 @@ async function getPropertiesController (res, req) {
   });
 }
 async function getPropertyController (res, id) {
-  const property = await records.getProperty(id)
-
-  if (property) {
+  const propertyQuery = format(`SELECT * from properties WHERE id='%s'`, id)
+  db.query(propertyQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
     res.status(200).json({
       status: '200',
-      message: 'succesfully fetched the property',
-      data: property
+      message: 'properties retrieved succesfully',
+      data: result.rows
     })
-  } else {
-    res.status(404).json({
-      status: '404',
-      Error: 'Property not found'
-    })
-  }
+  })
 }
 
 async function getPropertyTypeController (res, category) {
