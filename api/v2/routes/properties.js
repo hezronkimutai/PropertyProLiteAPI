@@ -5,8 +5,8 @@ import jwt from 'jsonwebtoken'
 import db from '../models/query'
 const properties = express.Router()
 
-properties.post('/post-property', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  req.body.owner = jwt.decode(middleware.Token.token).id
+properties.post('/post-property',  middleware.asyncHandler(async (req, res) => {
+  // req.body.owner = jwt.decode(middleware.Token.token).id
   controller.postPropertiesController(res, req.body)
 }))
 
