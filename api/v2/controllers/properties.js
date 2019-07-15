@@ -6,17 +6,17 @@ import format from 'pg-format';
 import validator from '../helpers/valid'
 
 async function postPropertiesController (res, inputs) {
-  const properties = await records.getProperties()
-  const property_name = properties.find(property => property.name === inputs.name)
-  const property_reason = properties.find(property => property.reason === inputs.reason)
-  const property_price = properties.find(property => property.price === inputs.price)
-  const property_state = properties.find(property => property.state === inputs.state)
-  const property_city = properties.find(property => property.city === inputs.city)
-  const property_address = properties.find(property => property.address === inputs.address)
-  const property_map = properties.find(property => property.map === inputs.map)
-  const property_description = properties.find(property => property.description === inputs.description)
-  const property_url = properties.find(property => property.url === inputs.url)
-  const property_owner = properties.find(property => property.owner === inputs.owner)
+  // const properties = await records.getProperties()
+  // const property_name = properties.find(property => property.name === inputs.name)
+  // const property_reason = properties.find(property => property.reason === inputs.reason)
+  // const property_price = properties.find(property => property.price === inputs.price)
+  // const property_state = properties.find(property => property.state === inputs.state)
+  // const property_city = properties.find(property => property.city === inputs.city)
+  // const property_address = properties.find(property => property.address === inputs.address)
+  // const property_map = properties.find(property => property.map === inputs.map)
+  // const property_description = properties.find(property => property.description === inputs.description)
+  // const property_url = properties.find(property => property.url === inputs.url)
+  // const property_owner = properties.find(property => property.owner === inputs.owner)
   if (!inputs.name ||
       !inputs.reason ||
       !inputs.price ||
@@ -31,19 +31,37 @@ async function postPropertiesController (res, inputs) {
       status: '400',
       Error: 'Please fill all the required inputs.'
     })
-  } else if (property_name && property_reason && property_price && property_state &&
-     property_city && property_address && property_map &&
-     property_description && property_url && property_owner) {
-    return res.status(400).json({
-      status: '400',
-      Error: 'It seems a similar property exist'
-    })
-  } else if (!validator.propertyValidator(res, inputs)) {
-    const property = await records.createProperty(inputs)
-    res.status(201).json({
-      status: '201',
-      message: 'Property created succesfully',
-      data: property
+  } 
+  // else if (property_name && property_reason && property_price && property_state &&
+  //    property_city && property_address && property_map &&
+  //    property_description && property_url && property_owner) {
+  //   return res.status(400).json({
+  //     status: '400',
+  //     Error: 'It seems a similar property exist'
+  //   })
+  // }
+   else if (!validator.propertyValidator(res, inputs)) {
+    const propertyQuery = format(`INSERT INTO  properties(category,
+      name,reason, price, state, city, address, map, description,url)
+      VALUES('%s', '%s', '%s','%s', '%s', '%s','%s','%s','%s','%s')`,
+    inputs.category,
+    inputs.name,
+    inputs.reason,
+    inputs.price,
+    inputs.state,
+    inputs.city,
+    inputs.address,
+    inputs.map,
+    inputs.description,
+    inputs.url);
+    db.query(propertyQuery, function (err, result) {
+      if (err) {
+        console.log(err)
+      }
+      res.status(201).json({
+        status: '201',
+        message: 'Property created Succesfully'
+      })
     })
   }
 }
