@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable handle-callback-err */
 /* eslint-disable camelcase */
 import bcrypt from 'bcrypt'
@@ -37,35 +38,29 @@ async function getUserController (res, id) {
 }
 
 // send a post request to signup a user
-async function signupUserController (req, res, inputs) {
+async function signupUserController (res, inputs) {
   if (
-    !req.body.firstname ||
-    !req.body.lastname ||
-    !req.body.username ||
-    !req.body.email ||
-    !req.body.phonenumber ||
-    !req.body.password ||
-    !req.body.isadmin ||
-  !req.body.address) {
+    !inputs.firstname ||
+    !inputs.lastname ||
+    !inputs.username ||
+    !inputs.email ||
+    !inputs.phonenumber ||
+    !inputs.password ||
+    !inputs.isadmin ||
+  !inputs.address) {
     return res.status(400).json({
       status: '400',
       Error: 'Please fill all the required inputs.'
     })
   } else if (!validator.userValidator(res, inputs)) {
-    const userQuery = format(`INSERT INTO  users(firstname,
+    const userQuery = `INSERT INTO  users(firstname,
     lastname,username, email, phonenumber, address, isadmin, password)
-    VALUES('%s', '%s', '%s','%s', '%s', '%s', '%s', '%s')`,
-    req.body.firstname,
-    req.body.lastname,
-    req.body.username,
-    req.body.email,
-    req.body.phonenumber,
-    req.body.password,
-    req.body.address,
-    req.body.isadmin)
-    const emailQuery = format(`SELECT * from users where email='%s'`, req.body.email)
-    const usernameQuery = format(`SELECT * from users where username='%s'`, req.body.username)
-    const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`, req.body.phonenumber)
+    VALUES('${inputs.firstname}', '${inputs.lastname}', '${inputs.username}'
+    ,'${inputs.email}','${inputs.phonenumber}','${inputs.address}', ${inputs.isadmin},
+     '${inputs.password}')`
+    const emailQuery = `SELECT * from users where email= '${inputs.email}'`
+    const usernameQuery = `SELECT * from users where username= '${inputs.username}'`
+    const phonenumberQuery = `SELECT * from users where phonenumber= '${inputs.phonenumber}'`
     db.query(emailQuery, function (err, ress) {
       if (err) { console.log(err) }
       if (ress.rows.length != 0) {
@@ -89,9 +84,13 @@ async function signupUserController (req, res, inputs) {
                 })
               } else {
                 db.query(userQuery, function (err, result) {
+                  if (err) {
+                    console.log(err)
+                  }
                   res.status(201).json({
                     status: '201',
-                    message: 'successfully created the user'
+                    message: 'successfully created the user',
+                    data: result.rows
                   })
                 })
               }
@@ -131,6 +130,7 @@ async function signinUserController (res, inputs) {
 }
 
 async function updateUserController (res, inputs, id) {
+<<<<<<< HEAD
   inputs.id = id
   const user = await records.getUser(id)
   Object.assign(user, inputs)
@@ -141,6 +141,26 @@ async function updateUserController (res, inputs, id) {
     res.status(404).json({
       status: '404',
       Error: "user wasn't found"
+=======
+  // inputs.id = id
+  // const user = await records.getUser(id)
+  // Object.assign(user, inputs)
+  // if (user && !validator.userValidator(res, user)) {
+  //   await records.updateUser(user)
+  //   res.status(201).json({ message: 'User updated succesfully' })
+  // } else {
+  //   res.status(404).json({
+  //     status: '404',
+  //     Error: "user wasn't found"
+  //   })
+  // }
+  Object.keys(inputs).forEach(function (key) {
+    const updateUser = `UPDATE users SET ${key} = '${inputs[key]}' where id = '${id}'`
+    db.query(updateUser, function (err, result) {
+      if (err) {
+        console.log(err)
+      }
+>>>>>>> #167288744 Update property
     })
   }
 }

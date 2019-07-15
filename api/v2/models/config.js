@@ -17,9 +17,10 @@ pool.on('connect', () => {
   console.log('Connected to the db successfully')
 })
 
+
 // Creating tables function
 export const createTables = async () => {
-  const ctu = `CREATE TABLE IF NOT EXISTS users(
+  const createTableUsers = `CREATE TABLE IF NOT EXISTS users(
                                                   id serial PRIMARY KEY,
                                                   firstname VARCHAR NOT NULL,
                                                   lastname VARCHAR NOT NULL,
@@ -32,9 +33,9 @@ export const createTables = async () => {
                                                   profilePic VARCHAR NULL
                                                   )`
 
-  await pool.query(ctu)
+  await pool.query(createTableUsers)
 
-  const ctp = `CREATE TABLE IF NOT EXISTS properties(
+  const createTableProperties = `CREATE TABLE IF NOT EXISTS properties(
                                                     id serial PRIMARY KEY,
                                                     category varchar,
                                                     name varchar,
@@ -48,19 +49,19 @@ export const createTables = async () => {
                                                     url varchar
                                                     )`
 
-  await pool.query(ctp)
+  await pool.query(createTableProperties)
 }
 
 // Dropping tables already creating
 export const dropTables = async () => {
-  const dtu = `DROP TABLE IF EXISTS users`
-  const dtp = `DROP TABLE IF EXISTS properties`
+  const deleteTableUsers = `DROP TABLE IF EXISTS users`
+  const deleteTableProperties = `DROP TABLE IF EXISTS properties`
 
   // Drop the table sms
-  await pool.query(dtu)
+  await pool.query(deleteTableUsers)
 
   // Drop the table contacts
-  await pool.query(dtp)
+  await pool.query(deleteTableProperties)
 }
 
 pool.on('remove', () => {

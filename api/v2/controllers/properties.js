@@ -41,19 +41,11 @@ async function postPropertiesController (res, inputs) {
   //   })
   // }
   else if (!validator.propertyValidator(res, inputs)) {
-    const propertyQuery = format(`INSERT INTO  properties(category,
-      name,reason, price, state, city, address, map, description,url)
-      VALUES('%s', '%s', '%s','%s', '%s', '%s','%s','%s','%s','%s')`,
-    inputs.category,
-    inputs.name,
-    inputs.reason,
-    inputs.price,
-    inputs.state,
-    inputs.city,
-    inputs.address,
-    inputs.map,
-    inputs.description,
-    inputs.url);
+    const propertyQuery = `INSERT INTO  properties(category,
+      name,reason, price, state, city, address, map, description,url,sold)
+      VALUES('${inputs.category}', '${inputs.name}', '${inputs.reason}','${inputs.price}',
+         '${inputs.state}', '${inputs.city}','${inputs.address}','${inputs.map}',
+         '${inputs.description}','${inputs.url}',false)`;
     db.query(propertyQuery, function (err, result) {
       if (err) {
         console.log(err)
@@ -112,6 +104,7 @@ async function getPropertyTypeController (res, category) {
 }
 
 async function updatePropertyController (res, inputs, id) {
+<<<<<<< HEAD
   inputs.id = id
   const property = await records.getProperty(id)
   Object.assign(property, inputs)
@@ -124,6 +117,33 @@ async function updatePropertyController (res, inputs, id) {
       Error: 'Property not found'
     })
   }
+=======
+  // inputs.id = id
+  // const property = await records.getProperty(id)
+  // Object.assign(property, inputs)
+  // if (property && !validator.propertyValidator(res, property)) {
+  //   await records.updateProperty(res, property)
+  //   return res.status(201).json({ message: 'Property updated successfully' })
+  // } else {
+  //   return res.status(404).json({
+  //     status: '404',
+  //     Error: 'Property not found'
+  //   })
+  // }
+  Object.keys(inputs).forEach(function (key) {
+    const updateProperty = `UPDATE properties SET ${key} = '${inputs[key]}' where id = '${id}'`
+    db.query(updateProperty, function (err, result) {
+      if (err) {
+        console.log(err)
+      }
+      
+    })
+  });
+  res.status(201).json({
+    status: '201',
+    message: 'Profile updated the user'
+  })
+>>>>>>> #167288744 Update property
 };
 
 // send a delete request to delete a property

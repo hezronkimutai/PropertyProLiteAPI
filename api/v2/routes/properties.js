@@ -26,7 +26,7 @@ properties.get('/type/:type', middleware.asyncHandler(async (req, res) => {
 }))
 
 // send a patch request to update a property
-properties.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+properties.patch('/:id', middleware.asyncHandler(async (req, res) => {
   controller.updatePropertyController(res, req.body, req.params.id)
 }))
 properties.put('/sold/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
