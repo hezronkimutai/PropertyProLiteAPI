@@ -52,7 +52,6 @@ async function signupUserController (req, res, inputs) {
       Error: 'Please fill all the required inputs.'
     })
   } else if (!validator.userValidator(res, inputs)) {
- 
     const userQuery = format(`INSERT INTO  users(firstname,
     lastname,username, email, phonenumber, address, isadmin, password)
     VALUES('%s', '%s', '%s','%s', '%s', '%s', '%s', '%s')`,
@@ -68,7 +67,7 @@ async function signupUserController (req, res, inputs) {
     const usernameQuery = format(`SELECT * from users where username='%s'`, req.body.username)
     const phonenumberQuery = format(`SELECT * from users where phonenumber='%s'`, req.body.phonenumber)
     db.query(emailQuery, function (err, ress) {
-      if (err) {console.log(err)}
+      if (err) { console.log(err) }
       if (ress.rows.length != 0) {
         res.status(400).json({
           status: '400',
@@ -148,17 +147,16 @@ async function updateUserController (res, inputs, id) {
 
 // send a delete request to delete a user
 async function deleteUserController (res, id) {
-  const user = await records.getUser(id)
-
-  if (user) {
-    await records.deleteUser(user)
-    res.status(201).json({ message: 'User deleted succesfully' })
-  } else {
-    res.status(404).json({
-      status: '404',
-      Error: "User wasn't found"
+  const deleteUserQuery = format(`DELETE FROM users WHERE id='%s'`, id)
+  db.query(deleteUserQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
+    res.status(201).json({
+      status: '201',
+      message: 'User deleted succesfully'
     })
-  }
+  })
 }
 
 module.exports = {
