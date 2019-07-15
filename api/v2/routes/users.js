@@ -27,7 +27,7 @@ users.get('/:id', middleware.asyncHandler(async (req, res) => {
 
 // send a post request to signup a user
 users.post('/signup', middleware.asyncHandler(async (req, res) => {
-  controller.signupUserController(req, res, req.body)
+  controller.signupUserController(res, req.body)
 }))
 
 // send a post request to signin a user
