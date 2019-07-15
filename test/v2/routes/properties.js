@@ -257,22 +257,14 @@ describe('Fetch  properties', () => {
   //     })
   // })
 
-  // it('Should Fecth a single property', (done) => {
-  //   chai.request(server)
-  //     .post('/api/v2/properties/post-property/')
-  //     .set('Authorization', Token)
-  //     .send(gValidProperty)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         console.log(err)
-  //       } chai.request(server)
-  //         .get(`/api/v2/properties/${res.body.data.id}`)
-  //         .end((_err, result) => {
-  //           result.should.have.status(200)
-  //           done()
-  //         })
-  //     })
-  // })
+  it('Should Fecth a single property', (done) => {
+    chai.request(server)
+      .get(`/api/v2/properties/1`)
+      .end((_err, result) => {
+        result.should.have.status(200)
+        done()
+      })
+  })
 
   // it('Should Fecth a single property type', (done) => {
   //   chai.request(server)
