@@ -150,6 +150,10 @@ async function updateUserController (res, inputs, id) {
       }
     })
   })
+  res.status(201).json({
+    status: '201',
+    message: 'Profile updated the user'
+  })
 }
 
 // send a delete request to delete a user
