@@ -19,8 +19,8 @@ const getUsersController = async(res) => {
       status: '200',
       message: 'User retrieved succesfully',
       data: result.rows
-    })
-  })
+    });
+  });
 }
 
 const getUserController = async (res, id) => {
@@ -33,8 +33,8 @@ const getUserController = async (res, id) => {
       status: '200',
       message: 'User retrieved succesfully',
       data: result.rows
-    })
-  })
+    });
+  });
 }
 
 const signupUserController = async(res, inputs) => {
@@ -45,7 +45,7 @@ const signupUserController = async(res, inputs) => {
     return res.status(400).json({
       status: '400',
       Error: 'Please fill all the required inputs.'
-    })
+    });
   } else if (!validator.userValidator(res, inputs)) {
     const userQuery = `INSERT INTO  users(firstname,
     lastname,username, email, phonenumber, address, isadmin, password)
@@ -61,22 +61,23 @@ const signupUserController = async(res, inputs) => {
         res.status(400).json({
           status: '400',
           message: 'A user with same email exist'
-        })
+        });
       } else {
         db.query(usernameQuery, function (err, resu) {
           if (resu.rows.length != 0) {
             res.status(400).json({
               status: '400',
               message: 'A user with same username exist'
-            })
+            });
           } else {
             db.query(phonenumberQuery, function (err, resul) {
               if (resul.rows.length != 0) {
                 res.status(400).json({
                   status: '400',
                   message: 'A user with same phonenumber exist'
-                })
+                });
               } else {
+                delete inputs.password;
                 db.query(userQuery, function (err, result) {
                   if (err) {
                     console.log(err)
@@ -84,15 +85,15 @@ const signupUserController = async(res, inputs) => {
                   res.status(201).json({
                     status: '201',
                     message: 'successfully created the user',
-                    data: result.rows
-                  })
-                })
+                    data: inputs
+                  });
+                });
               }
-            })
+            });
           }
-        })
+        });
       }
-    })
+    });
   }
 }
 
@@ -101,48 +102,57 @@ const signinUserController = async(res, inputs)=>{
     const loginQuery = `select * from users where email= '${inputs.email}' AND password = '${inputs.password}'`
     db.query(loginQuery, function (err, result) {
       if (err) { console.log(err) }
-      if (result.length != 0) {
-        const token = jwt.sign(result.rows[0], config, { expiresIn: '24h' })
+      if (result.rows.length != 0) {
+        const token = jwt.sign(result.rows[0], config, { expiresIn: '24h' });
         return res.status(201).json({
           status: '201',
           message: 'user Succesfully logged in',
           token: token
+        });
+      }else{
+        res.status(400).json({
+          status:'400',
+          Error: 'Invalid credentials'
         })
       }
-    })
+    });
   } else {
     res.status(400).json({
       message: 'password and email required.'
-    })
+    });
   }
 }
 
 const updateUserController = async(res, inputs, id) => {
+  const user = `select * from users where id = ${id}`;
   Object.keys(inputs).forEach(function (key) {
     const updateUser = `UPDATE users SET ${key} = '${inputs[key]}' where id = '${id}'`
     db.query(updateUser, function (err, result) {
       if (err) {
         console.log(err)
       }
-    })
-  })
-  res.status(201).json({
-    status: '201',
-    message: 'Profile updated the user'
-  })
+    });
+  });
+  db.query(user, function (err, result) {
+    delete result.rows[0].password;
+    if (err) { console.log(err) }
+    res.status(201).json({
+      status: '201',
+      message: 'User success fully updated',
+      data:result.rows
+    });
+  });
 }
 
 const deleteUserController = (res, id) => {
   const deleteUserQuery = format(`DELETE FROM users WHERE id='%s'`, id)
   db.query(deleteUserQuery, function (err, result) {
-    if (err) {
-      console.log(err)
-    }
+    if (err) { console.log(err) }
     res.status(201).json({
       status: '201',
       message: 'User deleted succesfully'
-    })
-  })
+    });
+  });
 }
 
 export default {

@@ -9,7 +9,7 @@ dotenv.config();
 
 const config = process.env.secret;
 
-const token = jwt.sign({ email: 'hez@gmail.com', password: 'HHeezziiee1357' },
+const token = jwt.sign({isadmin:true, email: 'hez@gmail.com', password: 'HHeezziiee1357' },
   config,
   { expiresIn: '24h' });
 const Token = `Bearer${token}`;
@@ -20,7 +20,7 @@ chai.use(chaiHttp);
 describe('Signup a user', () => {
   it('Should add user to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/users/signup/')
+      .post('/api/v2/users/auth/signup/')
       .send(users.validUser)
       .end((_err, res) => {
         res.should.have.status(201);
@@ -30,7 +30,7 @@ describe('Signup a user', () => {
 
   it('Should not add null user to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/users/signup/')
+      .post('/api/v2/users/auth/signup/')
       .send(users.nullUser)
       .end((_err, res) => {
         res.should.have.status(400);
@@ -40,7 +40,7 @@ describe('Signup a user', () => {
   it('Should not add a user with an invalid username to the database', (done) => {
 
     chai.request(server)
-      .post('/api/v2/users/signup/')
+      .post('/api/v2/users/auth/signup/')
       .send(users.inValidNameUser)
       .end((_err, res) => {
         res.should.have.status(400);
@@ -51,7 +51,7 @@ describe('Signup a user', () => {
 
 
     chai.request(server)
-      .post('/api/v2/users/signup/')
+      .post('/api/v2/users/auth/signup/')
       .send(users.inValidPasswordUser)
       .end((_err, res) => {
         res.should.have.status(400);
@@ -60,7 +60,7 @@ describe('Signup a user', () => {
   });
   it('Should not add a user with an invalid phone number to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/users/signup/')
+      .post('/api/v2/users/auth/signup/')
       .send(users.inValidPhoneUser)
       .end((_err, res) => {
         res.should.have.status(400);
@@ -69,7 +69,7 @@ describe('Signup a user', () => {
   });
   it('Should not add a user with an invalid email to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/users/signup/')
+      .post('/api/v2/users/auth/signup/')
       .send(users.inValidEmailUser)
       .end((_err, res) => {
         res.should.have.status(400);
@@ -78,10 +78,11 @@ describe('Signup a user', () => {
   });
 });
 
-describe('Test fetch users users', () => {
+describe('Test fetch users', () => {
   it('Should Fecth all the users', (done) => {
     chai.request(server)
       .get('/api/v2/users/')
+      .set('Authorization', Token)
       .end((_err, result) => {
         result.should.have.status(200);
         done();
@@ -90,6 +91,7 @@ describe('Test fetch users users', () => {
   it('Should Fecth a single user', (done) => {
     chai.request(server)
       .get('/api/v2/users/1')
+      .set('Authorization', Token)
       .end((_err, result) => {
         result.should.have.status(200);
         done();
@@ -105,7 +107,7 @@ describe('Test manipulte a user', () => {
       .send({ firstname: 'ui' })
       .end((err, result) => {
         if (err) {console.log(err);}
-        result.should.have.status(201);
+        result.should.have.status(200);
         done();
       });
   });
@@ -115,7 +117,28 @@ describe('Test manipulte a user', () => {
       .delete('/api/v2/users/1')
       .set('Authorization', Token)
       .end((_err, result) => {
+        result.should.have.status(200);
+        done();
+      });
+  });
+});
+
+describe('User login', () => {
+  it('Should login a user with valid credentials', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/auth/signin')
+      .send(users.validLoginUser)
+      .end((_err, result) => {
         result.should.have.status(201);
+        done();
+      });
+  });
+  it('Should not login a user with invalid credentials', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/auth/signin')
+      .send(users.inValidLoginUser)
+      .end((_err, result) => {
+        result.should.have.status(400);
         done();
       });
   });
