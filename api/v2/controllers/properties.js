@@ -55,17 +55,15 @@ const getPropertyController = async(res, id) => {
 }
 
 const getPropertyTypeController = async(res, category) => {
-  const properties = await records.getProperties()
-  const property = properties.find(property => property.category == category)
-
-  if (property) {
-    const property = await records.getPropertyType(category)
+  const propertyQuery = `SELECT * from properties WHERE category ='${category}'`
+  db.query(propertyQuery, function (err, result) {
+    if (err) { console.log(err) }
     res.status(200).json({
       status: '200',
-      message: 'property Type retrieved succesfully',
+      message: `properties of type ${category} retrieved succesfully`,
       data: result.rows
     })
-  }
+  })
 }
 
 const updatePropertyController = async(res, inputs, id) => {

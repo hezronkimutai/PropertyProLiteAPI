@@ -115,6 +115,15 @@ describe('Fetch  properties', () => {
         done();
       });
   });
+
+  it('Should Fecth a single property type properties', (done) => {
+    chai.request(server)
+      .get('/api/v2/properties/type/Electronics')
+      .end((_err, result) => {
+        result.should.have.status(200);
+        done();
+      });
+  });
 });
 
 describe('Test manipulate  property', () => {
