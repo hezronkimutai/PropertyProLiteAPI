@@ -153,81 +153,81 @@ const invalidMapProperty = {
 
 const nullProperty = {}
 
-// describe('Post a Property', () => {
-//   it('Should add a valid property to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(validProperty)
-//       .end((_err, res) => {
-//         res.should.have.status(201)
-//         done()
-//       })
-//   })
+describe('Post a Property', () => {
+  it('Should add a valid property to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/properties/post-property/')
+      .set('Authorization', Token)
+      .send(validProperty)
+      .end((_err, res) => {
+        res.should.have.status(201)
+        done()
+      })
+  })
 
-//   it('Should not add property with invalid category to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(invalidCategoryProperty)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should not add a property with invalid reason to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(invalidReasonProperty)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should not add a property with invalid state to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(invalidStateProperty)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should not add property with invalid city to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(invalidCityProperty)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-//   it('Should not add property with invalid map points to the db', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(invalidMapProperty)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
+  it('Should not add property with invalid category to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/properties/post-property/')
+      .set('Authorization', Token)
+      .send(invalidCategoryProperty)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should not add a property with invalid reason to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/properties/post-property/')
+      .set('Authorization', Token)
+      .send(invalidReasonProperty)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should not add a property with invalid state to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/properties/post-property/')
+      .set('Authorization', Token)
+      .send(invalidStateProperty)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should not add property with invalid city to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/properties/post-property/')
+      .set('Authorization', Token)
+      .send(invalidCityProperty)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+  it('Should not add property with invalid map points to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/properties/post-property/')
+      .set('Authorization', Token)
+      .send(invalidMapProperty)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
 
-//   it('Should not add null property to the db', (done) => {
-//     chai.request(server)
+  it('Should not add null property to the db', (done) => {
+    chai.request(server)
 
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(nullProperty)
-//       .end((_err, res) => {
-//         res.should.have.status(400)
-//         done()
-//       })
-//   })
-// })
+      .post('/api/v2/properties/post-property/')
+      .set('Authorization', Token)
+      .send(nullProperty)
+      .end((_err, res) => {
+        res.should.have.status(400)
+        done()
+      })
+  })
+})
 
 describe('Fetch  properties', () => {
   it('Should Fecth all the properties', (done) => {
@@ -266,67 +266,43 @@ describe('Fetch  properties', () => {
       })
   })
 
-  // it('Should Fecth a single property type', (done) => {
-  //   chai.request(server)
-  //     .post('/api/v2/properties/post-property/')
-  //     .set('Authorization', Token)
-  //     .send(tValidProperty)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         console.log(err)
-  //       } chai.request(server)
-  //         .get(`/api/v2/properties/type/${res.body.data.category}`)
-  //         .end((_err, result) => {
-  //           result.should.have.status(200)
-  //           done()
-  //         })
-  //     })
-  // })
+  it('Should Fecth a single property type', (done) => {
+    chai.request(server)
+      .get(`/api/v2/properties/type/Electronics`)
+      .end((_err, result) => {
+        result.should.have.status(200)
+        done()
+      })
+  })
 })
 
 describe('Test manipulate  property', () => {
-//   it('Should update a property', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/properties/post-property/')
-//       .set('Authorization', Token)
-//       .send(uValidProperty)
-//       .end((err, res) => {
-//         if (err) { console.log(err)}
+  it('Should update a property', (done) => {
+    chai.request(server)
+      .patch(`/api/v2/properties/1`)
+      .set('Authorization', Token)
+      .send({ category: 'Sroom' })
+      .end((err, result) => {
+        if (err) {
+          console.log(err)
+        }
+        result.should.have.status(201)
+        done()
+      })
+  })
 
-  //         chai.request(server)
-  //           .patch(`/api/v2/properties/${res.body.data.id}`)
-  //           .set('Authorization', Token)
-  //           .send({ category: 'Sroom' })
-  //           .end((err, result) => {
-  //             if (err) {
-  //               console.log(err)
-  //             }
-  //             result.should.have.status(201)
-  //             done()
-  //           })
-  //       })
-  //   })
-
-  //   it('Should mark a property a sold', (done) => {
-  //     chai.request(server)
-  //       .post('/api/v2/properties/post-property/')
-  //       .set('Authorization', Token)
-  //       .send(sValidProperty)
-  //       .end((err, res) => {
-  //         if (err) { console.log(err)}
-
-  //         chai.request(server)
-  //           .put(`/api/v2/properties/sold/${res.body.data.id}`)
-  //           .set('Authorization', Token)
-  //           .end((err, result) => {
-  //             if (err) {
-  //               console.log(err)
-  //             }
-  //             result.should.have.status(201)
-  //             done()
-  //           })
-  //       })
-  //   })
+  it('Should mark a property a sold', (done) => {
+    chai.request(server)
+      .put(`/api/v2/properties/sold/1`)
+      .set('Authorization', Token)
+      .end((err, result) => {
+        if (err) {
+          console.log(err)
+        }
+        result.should.have.status(201)
+        done()
+      })
+  })
 
   it('Should delete a property', (done) => {
     chai.request(server)

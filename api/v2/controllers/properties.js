@@ -71,7 +71,7 @@ async function getPropertiesController (res, req) {
   });
 }
 async function getPropertyController (res, id) {
-  const propertyQuery = format(`SELECT * from properties WHERE id='%s'`, id)
+  const propertyQuery = `SELECT * from properties WHERE id='${id}'`
   db.query(propertyQuery, function (err, result) {
     if (err) {
       console.log(err)
@@ -85,22 +85,33 @@ async function getPropertyController (res, id) {
 }
 
 async function getPropertyTypeController (res, category) {
-  const properties = await records.getProperties()
-  const property = properties.find(property => property.category == category)
-
-  if (property) {
-    const property = await records.getPropertyType(category)
+  const propertyTypeQuery = `SELECT * from properties WHERE category='${category}'`
+  db.query(propertyTypeQuery, function (err, result) {
+    if (err) {
+      console.log(err)
+    }
     res.status(200).json({
       status: '200',
-      message: 'succesfully retrieved property type',
-      data: property
+      message: 'property Type retrieved succesfully',
+      data: result.rows
     })
-  } else {
-    res.status(404).json({
-      status: '404',
-      Error: 'Property type not found'
-    })
-  }
+  })
+  // const properties = await records.getProperties()
+  // const property = properties.find(property => property.category == category)
+
+  // if (property) {
+  //   const property = await records.getPropertyType(category)
+  //   res.status(200).json({
+  //     status: '200',
+  //     message: 'succesfully retrieved property type',
+  //     data: property
+  //   })
+  // } else {
+  //   res.status(404).json({
+  //     status: '404',
+  //     Error: 'Property type not found'
+  //   })
+  // }
 }
 
 async function updatePropertyController (res, inputs, id) {
