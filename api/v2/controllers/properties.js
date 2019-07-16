@@ -104,20 +104,6 @@ async function getPropertyTypeController (res, category) {
 }
 
 async function updatePropertyController (res, inputs, id) {
-<<<<<<< HEAD
-  inputs.id = id
-  const property = await records.getProperty(id)
-  Object.assign(property, inputs)
-  if (property && !validator.propertyValidator(res, property)) {
-    await records.updateProperty(res, property)
-    return res.status(201).json({ message: 'Property updated successfully' })
-  } else {
-    return res.status(404).json({
-      status: '404',
-      Error: 'Property not found'
-    })
-  }
-=======
   // inputs.id = id
   // const property = await records.getProperty(id)
   // Object.assign(property, inputs)
@@ -143,7 +129,6 @@ async function updatePropertyController (res, inputs, id) {
     status: '201',
     message: 'Profile updated the user'
   })
->>>>>>> #167288744 Update property
 };
 
 // send a delete request to delete a property

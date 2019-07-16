@@ -130,18 +130,6 @@ async function signinUserController (res, inputs) {
 }
 
 async function updateUserController (res, inputs, id) {
-<<<<<<< HEAD
-  inputs.id = id
-  const user = await records.getUser(id)
-  Object.assign(user, inputs)
-  if (user && !validator.userValidator(res, user)) {
-    await records.updateUser(user)
-    res.status(201).json({ message: 'User updated succesfully' })
-  } else {
-    res.status(404).json({
-      status: '404',
-      Error: "user wasn't found"
-=======
   // inputs.id = id
   // const user = await records.getUser(id)
   // Object.assign(user, inputs)
@@ -160,9 +148,8 @@ async function updateUserController (res, inputs, id) {
       if (err) {
         console.log(err)
       }
->>>>>>> #167288744 Update property
     })
-  }
+  })
 }
 
 // send a delete request to delete a user
