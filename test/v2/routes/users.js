@@ -203,25 +203,19 @@ describe('Test fetch users users', () => {
 })
 
 describe('Test manipulte a user', () => {
-//   it('Should update a user', (done) => {
-//     chai.request(server)
-//       .post('/api/v2/users/signup/')
-//       .send(uValidUser)
-//       .end((err, res) => {
-//         if (err) { console.log(err) }
-//         chai.request(server)
-//           .patch(`/api/v2/users/${res.body.data.id}`)
-//           .set('Authorization', Token)
-//           .send({firstname: 'ui' })
-//           .end((err, result) => {
-//             if (err) {
-//               console.log(err)
-//             }
-//             result.should.have.status(200)
-//             done()
-//           })
-//       })
-//   })
+  it('Should update a user', (done) => {
+    chai.request(server)
+      .patch(`/api/v2/users/1`)
+      .set('Authorization', Token)
+      .send({ firstname: 'ui' })
+      .end((err, result) => {
+        if (err) {
+          console.log(err)
+        }
+        result.should.have.status(201)
+        done()
+      })
+  })
 
   it('Should delete a user', (done) => {
     chai.request(server)

@@ -36,7 +36,7 @@ users.post('/login', middleware.asyncHandler(async (req, res) => {
 }))
 
 // send a patch request to update a user
-users.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+users.patch('/:id', middleware.asyncHandler(async (req, res) => {
   controller.updateUserController(res, req.body, req.params.id)
 }))
 
