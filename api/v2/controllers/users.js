@@ -1,6 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable handle-callback-err */
-/* eslint-disable camelcase */
 import bcrypt from 'bcrypt'
 import validator from '../helpers/valid'
 import jwt from 'jsonwebtoken'
@@ -105,43 +102,26 @@ async function signupUserController (res, inputs) {
 // send a post request to signin a user
 async function signinUserController (res, inputs) {
   if (inputs.email && inputs.password) {
-    const users = await records.getUsers()
-    const user = users.find(user => user.email === inputs.email)
-    if (user && bcrypt.compareSync(inputs.password, user.password)) {
-      delete inputs.password
-      const token = jwt.sign(user, config.secret, { expiresIn: '24h' })
-      return res.status(201).json({
-        status: '201',
-        message: 'user Succesfully logged in',
-        token: token
-      })
-    } else {
-      return res.status(400).json({
-        status: '400',
-        message: 'Incorrect details'
-      })
-    }
+    const loginQuery = `select * from users where email= '${inputs.email}' AND password = '${inputs.password}'`
+    db.query(loginQuery, function (err, result) {
+      if (err) { console.log(err) }
+      if (result.length != 0) {
+        const token = jwt.sign(result.rows[0], config.secret, { expiresIn: '24h' })
+        return res.status(201).json({
+          status: '201',
+          message: 'user Succesfully logged in',
+          token: token
+        })
+      }
+    })
   } else {
     res.status(400).json({
-      status: '400',
       message: 'password and email required.'
     })
   }
 }
 
 async function updateUserController (res, inputs, id) {
-  // inputs.id = id
-  // const user = await records.getUser(id)
-  // Object.assign(user, inputs)
-  // if (user && !validator.userValidator(res, user)) {
-  //   await records.updateUser(user)
-  //   res.status(201).json({ message: 'User updated succesfully' })
-  // } else {
-  //   res.status(404).json({
-  //     status: '404',
-  //     Error: "user wasn't found"
-  //   })
-  // }
   Object.keys(inputs).forEach(function (key) {
     const updateUser = `UPDATE users SET ${key} = '${inputs[key]}' where id = '${id}'`
     db.query(updateUser, function (err, result) {
