@@ -1,11 +1,15 @@
 import bcrypt from 'bcrypt'
-import validator from '../helpers/valid'
+import validator from '../helpers/userValidator'
 import jwt from 'jsonwebtoken'
 import db from '../models/query'
 import format from 'pg-format'
-import config from '../config/config'
-// /Get request to get all users
-async function getUsersController (res) {
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const config = process.env.secret;
+
+const getUsersController = async(res) => {
   const usersQuery = format('SELECT * from users')
   db.query(usersQuery, function (err, result) {
     if (err) {
@@ -19,8 +23,7 @@ async function getUsersController (res) {
   })
 }
 
-// Send a get request to retrieve a single property
-async function getUserController (res, id) {
+const getUserController = async (res, id) => {
   const userQuery = format(`SELECT * from users where id='%s'`, id)
   db.query(userQuery, function (err, result) {
     if (err) {
@@ -34,17 +37,11 @@ async function getUserController (res, id) {
   })
 }
 
-// send a post request to signup a user
-async function signupUserController (res, inputs) {
+const signupUserController = async(res, inputs) => {
   if (
-    !inputs.firstname ||
-    !inputs.lastname ||
-    !inputs.username ||
-    !inputs.email ||
-    !inputs.phonenumber ||
-    !inputs.password ||
-    !inputs.isadmin ||
-  !inputs.address) {
+    !inputs.firstname || !inputs.lastname || !inputs.username ||
+    !inputs.email || !inputs.phonenumber || !inputs.password ||
+    !inputs.isadmin || !inputs.address) {
     return res.status(400).json({
       status: '400',
       Error: 'Please fill all the required inputs.'
@@ -99,14 +96,13 @@ async function signupUserController (res, inputs) {
   }
 }
 
-// send a post request to signin a user
-async function signinUserController (res, inputs) {
+const signinUserController = async(res, inputs)=>{
   if (inputs.email && inputs.password) {
     const loginQuery = `select * from users where email= '${inputs.email}' AND password = '${inputs.password}'`
     db.query(loginQuery, function (err, result) {
       if (err) { console.log(err) }
       if (result.length != 0) {
-        const token = jwt.sign(result.rows[0], config.secret, { expiresIn: '24h' })
+        const token = jwt.sign(result.rows[0], config, { expiresIn: '24h' })
         return res.status(201).json({
           status: '201',
           message: 'user Succesfully logged in',
@@ -121,7 +117,7 @@ async function signinUserController (res, inputs) {
   }
 }
 
-async function updateUserController (res, inputs, id) {
+const updateUserController = async(res, inputs, id) => {
   Object.keys(inputs).forEach(function (key) {
     const updateUser = `UPDATE users SET ${key} = '${inputs[key]}' where id = '${id}'`
     db.query(updateUser, function (err, result) {
@@ -136,8 +132,7 @@ async function updateUserController (res, inputs, id) {
   })
 }
 
-// send a delete request to delete a user
-async function deleteUserController (res, id) {
+const deleteUserController = (res, id) => {
   const deleteUserQuery = format(`DELETE FROM users WHERE id='%s'`, id)
   db.query(deleteUserQuery, function (err, result) {
     if (err) {
@@ -150,7 +145,7 @@ async function deleteUserController (res, id) {
   })
 }
 
-module.exports = {
+export default {
   getUserController,
   getUsersController,
   signupUserController,

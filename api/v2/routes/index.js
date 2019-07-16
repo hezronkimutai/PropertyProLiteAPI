@@ -1,9 +1,9 @@
-import express from 'express'
+import express from 'express';
+import properties from './properties';
+import users from './users';
 
-import properties from './properties'
-import users from './users'
-const routes = express.Router()
+const routes = express.Router();
 
-routes.use('/properties', properties)
-routes.use('/users', users)
-module.exports = routes
+routes.use('/properties', properties);
+routes.use('/users', users);
+export default routes;
