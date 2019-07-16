@@ -28,14 +28,11 @@ export const createTables = async () => {
                                                   email VARCHAR NOT NULL,
                                                   phonenumber VARCHAR NOT NULL,
                                                   address VARCHAR NOT NULL,
-                                                  isadmin VARCHAR NOT NULL,
+                                                  isadmin BOOLEAN NOT NULL,
                                                   password VARCHAR NOT NULL,
                                                   profilePic VARCHAR NULL
                                                   )`
-
-  await pool.query(createTableUsers)
-
-  const createTableProperties = `CREATE TABLE IF NOT EXISTS properties(
+const createTableProperties = `CREATE TABLE IF NOT EXISTS properties(
                                                     id serial PRIMARY KEY,
                                                     category varchar,
                                                     name varchar,
@@ -44,11 +41,14 @@ export const createTables = async () => {
                                                     state varchar,
                                                     city varchar,
                                                     address varchar,
+                                                    sold BOOLEAN NOT NULL,
                                                     map varchar,
                                                     description varchar,
                                                     url varchar
                                                     )`
 
+
+  await pool.query(createTableUsers)
   await pool.query(createTableProperties)
 }
 
@@ -57,10 +57,10 @@ export const dropTables = async () => {
   const deleteTableUsers = `DROP TABLE IF EXISTS users`
   const deleteTableProperties = `DROP TABLE IF EXISTS properties`
 
-  // Drop the table sms
+  // Drop the table users
   await pool.query(deleteTableUsers)
 
-  // Drop the table contacts
+  // Drop the table properties
   await pool.query(deleteTableProperties)
 }
 
