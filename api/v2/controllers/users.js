@@ -29,6 +29,7 @@ const getUsersController = async(res) => {
 const getUserController = async (res, id) => {
   const userQuery = `SELECT * from users where id='${id}'`
   db.query(userQuery, (err, result) => {
+
     delete result.rows[0].password
     if (err) {
       res.status(500).json({
@@ -70,6 +71,7 @@ const signupUserController = async(res, inputs) => {
     const usernameQuery = `SELECT * from users where username= '${inputs.username}'`
     const phonenumberQuery = `SELECT * from users where phonenumber= '${inputs.phonenumber}'`
     db.query(emailQuery, (err, ress) => {
+
       if (ress.rows.length != 0) {
         res.status(400).json({
           status: 400,
@@ -124,6 +126,7 @@ const signinUserController = async(res, inputs)=>{
         });
       }
       if(bcrypt.compareSync(inputs.password, result.rows[0].password)){
+
         const token = jwt.sign(result.rows[0], config, { expiresIn: '24h' });
         return res.status(201).json({
           status: 201,
@@ -185,6 +188,7 @@ const deleteUserController = (res, id) => {
         Error:`User ${id} does not exist`
       })
     }
+
   db.query(deleteUserQuery, (err, result) => {
     if (err) { res.status(500).json({Error:err}) }
     res.status(201).json({
