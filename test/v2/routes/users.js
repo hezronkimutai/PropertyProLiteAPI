@@ -9,11 +9,13 @@ dotenv.config();
 
 const config = process.env.secret;
 
-const token = jwt.sign({isadmin:true, email: 'hez@gmail.com', password: 'HHeezziiee1357' },
+const token = jwt.sign(
+  {isadmin:true, email: 'hez@gmail.com', password: 'HHeezziiee1357' },
   config,
-  { expiresIn: '24h' });
-const Token = `Bearer${token}`;
+  { expiresIn: '24h',},);
+const Token = `Bearer ${  token}`;
 
+const should = chai.should();
 chai.use(chaiHttp);
 
 
@@ -77,7 +79,26 @@ describe('Signup a user', () => {
       });
   });
 });
-
+describe('User login', () => {
+  it('Should login a user with valid credentials', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/auth/signin')
+      .send(users.validLoginUser)
+      .end((_err, result) => {
+        result.should.have.status(201);
+        done();
+      });
+  });
+  it('Should not login a user with invalid credentials', (done) => {
+    chai.request(server)
+      .post('/api/v2/users/auth/signin')
+      .send(users.inValidLoginUser)
+      .end((_err, result) => {
+        result.should.have.status(400);
+        done();
+      });
+  });
+});
 describe('Test fetch users', () => {
   it('Should Fecth all the users', (done) => {
     chai.request(server)
@@ -106,8 +127,8 @@ describe('Test manipulte a user', () => {
       .set('Authorization', Token)
       .send({ firstname: 'ui' })
       .end((err, result) => {
-        if (err) {console.log(err);}
-        result.should.have.status(200);
+        
+        result.should.have.status(201);
         done();
       });
   });
@@ -117,28 +138,7 @@ describe('Test manipulte a user', () => {
       .delete('/api/v2/users/1')
       .set('Authorization', Token)
       .end((_err, result) => {
-        result.should.have.status(200);
-        done();
-      });
-  });
-});
-
-describe('User login', () => {
-  it('Should login a user with valid credentials', (done) => {
-    chai.request(server)
-      .post('/api/v2/users/auth/signin')
-      .send(users.validLoginUser)
-      .end((_err, result) => {
         result.should.have.status(201);
-        done();
-      });
-  });
-  it('Should not login a user with invalid credentials', (done) => {
-    chai.request(server)
-      .post('/api/v2/users/auth/signin')
-      .send(users.inValidLoginUser)
-      .end((_err, result) => {
-        result.should.have.status(400);
         done();
       });
   });

@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
     },
   });
 });
-// eslint-disable-next-line no-console
+
 app.listen(process.env.PORT || 3000, () => console.log('PropertyProLiteAPI listening on port 3000!'));
 
 module.exports = app;

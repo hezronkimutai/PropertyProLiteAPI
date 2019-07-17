@@ -13,8 +13,12 @@ const getUsersController = async(res) => {
   const usersQuery = format('SELECT * from users')
   db.query(usersQuery, function (err, result) {
     if (err) {
-      console.log(err)
+      res.status(500).json({
+        status:"500",
+        Error: "Internal server error"
+      })
     }
+    result.rows.forEach((user)=>{delete user.password})
     res.status(200).json({
       status: '200',
       message: 'User retrieved succesfully',
@@ -26,8 +30,12 @@ const getUsersController = async(res) => {
 const getUserController = async (res, id) => {
   const userQuery = format(`SELECT * from users where id='%s'`, id)
   db.query(userQuery, function (err, result) {
+    delete result.rows[0].password
     if (err) {
-      console.log(err)
+      res.status(500).json({
+        status:"500",
+        Error: "Internal server error"
+      })
     }
     res.status(200).json({
       status: '200',
@@ -56,7 +64,12 @@ const signupUserController = async(res, inputs) => {
     const usernameQuery = `SELECT * from users where username= '${inputs.username}'`
     const phonenumberQuery = `SELECT * from users where phonenumber= '${inputs.phonenumber}'`
     db.query(emailQuery, function (err, ress) {
-      if (err) { console.log(err) }
+      if (err) {
+        res.status(500).json({
+          status:"500",
+          Error: "Internal server error"
+        })
+      }
       if (ress.rows.length != 0) {
         res.status(400).json({
           status: '400',
@@ -80,7 +93,10 @@ const signupUserController = async(res, inputs) => {
                 delete inputs.password;
                 db.query(userQuery, function (err, result) {
                   if (err) {
-                    console.log(err)
+                    res.status(500).json({
+                      status:"500",
+                      Error: "Internal server error"
+                    })
                   }
                   res.status(201).json({
                     status: '201',
@@ -101,7 +117,12 @@ const signinUserController = async(res, inputs)=>{
   if (inputs.email && inputs.password) {
     const loginQuery = `select * from users where email= '${inputs.email}' AND password = '${inputs.password}'`
     db.query(loginQuery, function (err, result) {
-      if (err) { console.log(err) }
+      if (err) {
+        res.status(500).json({
+          status:"500",
+          Error: "Internal server error"
+        })
+      }
       if (result.rows.length != 0) {
         const token = jwt.sign(result.rows[0], config, { expiresIn: '24h' });
         return res.status(201).json({
@@ -125,34 +146,51 @@ const signinUserController = async(res, inputs)=>{
 
 const updateUserController = async(res, inputs, id) => {
   const user = `select * from users where id = ${id}`;
-  Object.keys(inputs).forEach(function (key) {
-    const updateUser = `UPDATE users SET ${key} = '${inputs[key]}' where id = '${id}'`
-    db.query(updateUser, function (err, result) {
-      if (err) {
-        console.log(err)
-      }
-    });
-  });
   db.query(user, function (err, result) {
     delete result.rows[0].password;
-    if (err) { console.log(err) }
+    if (err) { res.status(500).json({Error:err}) }
+    if (result.rows.length === 0){
+      res.status(400).json({
+        status:400,
+        Error:`User ${id} does not exist`
+      })
+    }
+    Object.keys(inputs).forEach(function (key) {
+      const updateUser = `UPDATE users SET ${key} = '${inputs[key]}' where id = '${id}'`
+      db.query(updateUser, function (err, result) {
+      if (err) { res.status(500).json({Error:err}) }
+      });
+    });
     res.status(201).json({
       status: '201',
       message: 'User success fully updated',
       data:result.rows
     });
   });
+  
+
 }
 
 const deleteUserController = (res, id) => {
-  const deleteUserQuery = format(`DELETE FROM users WHERE id='%s'`, id)
+  const user = `select * from users where id = ${id}`;
+  const deleteUserQuery = format(`DELETE FROM users WHERE id='%s'`, id);
+  db.query(user, function (err, result) {
+    delete result.rows[0].password;
+    if (err) { res.status(500).json({Error:err}) }
+    if (result.rows.length === 0){
+      res.status(400).json({
+        status:400,
+        Error:`User ${id} does not exist`
+      })
+    }
   db.query(deleteUserQuery, function (err, result) {
-    if (err) { console.log(err) }
+    if (err) { res.status(500).json({Error:err}) }
     res.status(201).json({
       status: '201',
       message: 'User deleted succesfully'
     });
   });
+});
 }
 
 export default {

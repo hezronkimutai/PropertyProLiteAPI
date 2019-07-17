@@ -7,13 +7,22 @@ import jwt from 'jsonwebtoken'
 users.get('/',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
     return controller.getUsersController(res)
-  } else {
+  }else{
+    return res.status(401).json({
+      status:401,
+      Error:"You must be an admin"
+    })
   }
 }))
 
 users.get('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
     return controller.getUserController(res, req.params.id)
+  }else{
+    return res.status(401).json({
+      status:401,
+      Error:"You must be an admin"
+    })
   }
 }))
 

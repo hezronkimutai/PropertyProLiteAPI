@@ -12,7 +12,7 @@ properties.post('/', middleware.checkToken, middleware.asyncHandler(async(req, r
 
 properties.get('/', middleware.asyncHandler(async (req, res) => {
   controller.getPropertiesController(res)
-}));
+}))
 
 properties.get('/:id', middleware.asyncHandler(async (req, res) => {
   controller.getPropertyController(res, req.params.id)
