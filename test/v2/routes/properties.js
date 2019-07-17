@@ -10,7 +10,7 @@ dotenv.config();
 const config = process.env.secret;
 
 const token = jwt.sign(
-  { email: 'hez@gmail.com', password: 'HHeezziiee1357' },
+  {isadmin:true, email: 'hez@gmail.com', password: 'HHeezziiee1357' },
   config,
   { expiresIn: '24h',},);
 const Token = `Bearer ${  token}`;

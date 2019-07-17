@@ -8,7 +8,8 @@ const Token = { token: '' }
 const checkToken = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization']
   if (!token) {
-    return res.json({
+    return res.status(401).json({
+      status:401,
       Error: 'token is not supplied'
 
     })
@@ -20,9 +21,9 @@ const checkToken = (req, res, next) => {
   if (token) {
     jwt.verify(token, config, (err, decoded) => {
       if (err) {
-        return res.json({
-          success: false,
-          message: 'Token is not valid'
+        return res.status(401).json({
+          status: 401,
+          Error: 'Token is not valid'
         })
       } else {
         req.decoded = decoded
@@ -30,9 +31,9 @@ const checkToken = (req, res, next) => {
       }
     })
   } else {
-    return res.json({
-      success: false,
-      message: 'Auth token is not supplied'
+    return res.status(401).json({
+      status: 401,
+      Error: 'Auth token is not supplied'
 
     })
   }
