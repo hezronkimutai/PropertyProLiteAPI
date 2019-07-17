@@ -10,7 +10,7 @@ dotenv.config();
 const config = process.env.secret;
 
 const token = jwt.sign(
-  {isadmin:true, email: 'hez@gmail.com', password: 'HHeezziiee1357' },
+  {id:1, isadmin:true, email: 'hez@gmail.com', password: 'HHeezziiee1357' },
   config,
   { expiresIn: '24h',},);
 const Token = `Bearer ${  token}`;
@@ -23,7 +23,7 @@ chai.use(chaiHttp);
 describe('Post a Property', () => {
   it('Should add a valid property to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/properties/')
+      .post('/api/v2/property/')
       .set('Authorization', Token)
       .send(properties.validProperty)
       .end((_err, res) => {
@@ -34,7 +34,7 @@ describe('Post a Property', () => {
 
   it('Should not add property with invalid category to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/properties/')
+      .post('/api/v2/property/')
       .set('Authorization', Token)
       .send(properties.invalidCategoryProperty)
       .end((_err, res) => {
@@ -44,7 +44,7 @@ describe('Post a Property', () => {
   });
   it('Should not add a property with invalid reason to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/properties/')
+      .post('/api/v2/property/')
       .set('Authorization', Token)
       .send(properties.invalidReasonProperty)
       .end((_err, res) => {
@@ -54,7 +54,7 @@ describe('Post a Property', () => {
   });
   it('Should not add a property with invalid state to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/properties/')
+      .post('/api/v2/property/')
       .set('Authorization', Token)
       .send(properties.invalidStateProperty)
       .end((_err, res) => {
@@ -64,7 +64,7 @@ describe('Post a Property', () => {
   });
   it('Should not add property with invalid city to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/properties/')
+      .post('/api/v2/property/')
       .set('Authorization', Token)
       .send(properties.invalidCityProperty)
       .end((_err, res) => {
@@ -74,7 +74,7 @@ describe('Post a Property', () => {
   });
   it('Should not add property with invalid map points to the db', (done) => {
     chai.request(server)
-      .post('/api/v2/properties/')
+      .post('/api/v2/property/')
       .set('Authorization', Token)
       .send(properties.invalidMapProperty)
       .end((_err, res) => {
@@ -86,7 +86,7 @@ describe('Post a Property', () => {
   it('Should not add null property to the db', (done) => {
     chai.request(server)
 
-      .post('/api/v2/properties/')
+      .post('/api/v2/property/')
       .set('Authorization', Token)
       .send(properties.nullProperty)
       .end((_err, res) => {
@@ -99,7 +99,7 @@ describe('Post a Property', () => {
 describe('Fetch  properties', () => {
   it('Should Fecth all the properties', (done) => {
     chai.request(server)
-      .get('/api/v2/properties/')
+      .get('/api/v2/property/')
       .end((_err, result) => {
         result.should.have.status(200);
         done();
@@ -109,7 +109,7 @@ describe('Fetch  properties', () => {
 
   it('Should Fecth a single property', (done) => {
     chai.request(server)
-      .get('/api/v2/properties/1')
+      .get('/api/v2/property/1')
       .end((_err, result) => {
         result.should.have.status(200);
         done();
@@ -118,8 +118,9 @@ describe('Fetch  properties', () => {
 
   it('Should Fecth a single property type properties', (done) => {
     chai.request(server)
-      .get('/api/v2/properties/type/Electronics')
+      .get('/api/v2/property/type/Electronics')
       .end((_err, result) => {
+        console.log("pppppppppppppppppppppp",result)
         result.should.have.status(200);
         done();
       });
@@ -129,7 +130,7 @@ describe('Fetch  properties', () => {
 describe('Test manipulate  property', () => {
   it('Should update a property', (done) => {
     chai.request(server)
-      .patch('/api/v2/properties/1')
+      .patch('/api/v2/property/1')
       .set('Authorization', Token)
       .send({category:"Thenewcategory"})
       .end((_err, result) => {
@@ -140,7 +141,7 @@ describe('Test manipulate  property', () => {
 
   it('Should delete a property', (done) => {
     chai.request(server)
-      .delete('/api/v2/properties/1')
+      .delete('/api/v2/property/1')
       .set('Authorization', Token)
       .end((_err, result) => {
         result.should.have.status(201);
