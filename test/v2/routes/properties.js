@@ -127,6 +127,17 @@ describe('Fetch  properties', () => {
 });
 
 describe('Test manipulate  property', () => {
+  it('Should update a property', (done) => {
+    chai.request(server)
+      .patch('/api/v2/properties/1')
+      .set('Authorization', Token)
+      .send({category:"Thenewcategory"})
+      .end((_err, result) => {
+        result.should.have.status(201);
+        done();
+      });
+  });
+
   it('Should delete a property', (done) => {
     chai.request(server)
       .delete('/api/v2/properties/1')

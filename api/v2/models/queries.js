@@ -13,7 +13,7 @@ const createTableUsers = `CREATE TABLE IF NOT EXISTS users(
     )`;
 const createTableProperties = `CREATE TABLE IF NOT EXISTS properties(
       id serial PRIMARY KEY,
-      owner INTEGER,
+      owner integer references users(id) on delete cascade,
       category varchar,
       name varchar,
       reason varchar,

@@ -15,23 +15,23 @@ const propertyValidator = (res, inputs) => {
   const validMap = inputs.map.match(mapPattern);
   const validReason = inputs.reason.toLowerCase().match(stringPattern);
   if (!validCategory) {
-    return res.status(400).json({ Error: 'Invalid Category' });
+    return res.status(400).json({ status: 400, Error: 'Invalid Category' });
   } if (!validName) {
-    return res.status(400).json({ Error: 'Make sure name reason, category city, state and description are strings' });
+    return res.status(400).json({ status: 400, Error: 'Make sure name reason, category city, state and description are strings' });
   } if (!validReason) {
-    return res.status(400).json({ Error: 'Invalid reason' });
+    return res.status(400).json({ status: 400, Error: 'Invalid reason' });
   } if (!validState) {
-    return res.status(400).json({ Error: 'Invalid state name.' });
+    return res.status(400).json({ status: 400, Error: 'Invalid state name.' });
   } if (!validCity) {
-    return res.status(400).json({ Error: 'Invalid city name.' });
+    return res.status(400).json({ status: 400, Error: 'Invalid city name.' });
   } if (!validPrice) {
-    return res.status(400).json({ Error: 'Invalid price' });
+    return res.status(400).json({ status: 400, Error: 'Invalid price' });
   } if (!validAddress) {
-    return res.status(400).json({ Error: 'Invalid address' });
+    return res.status(400).json({ status: 400, Error: 'Invalid address' });
   } if (!validMap) {
-    return res.status(400).json({ Error: 'Make sure that the you provide a valid map cordinates' });
+    return res.status(400).json({ status: 400, Error: 'Make sure that the you provide a valid map cordinates' });
   } if (!validDescription) {
-    return res.status(400).json({ Error: 'Invalid description' });
+    return res.status(400).json({ status: 400, Error: 'Invalid description' });
   }
   return false;
 };
