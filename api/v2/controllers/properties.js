@@ -14,27 +14,24 @@ const postPropertiesController = async(res, inputs) => {
 
   else if (!validator.propertyValidator(res, inputs)) {
     const propertyQuery = `INSERT INTO  properties(category,
-      name,reason, price, state, city, address, map, description,url,sold)
+      name,reason, price, state, city, address, map, description,url,sold, owner)
       VALUES('${inputs.category}', '${inputs.name}', '${inputs.reason}','${inputs.price}',
          '${inputs.state}', '${inputs.city}','${inputs.address}','${inputs.map}',
-         '${inputs.description}','${inputs.url}',false)`;
-    db.query(propertyQuery, function (err, result) {
-      if (err) {
-        console.log(err)
-      }
-      res.status(201).json({
-        status: '201',
-        message: 'Property created Succesfully'
+         '${inputs.description}','${inputs.url}',false, '${inputs.owner}')`;
+
+      db.query(propertyQuery, function (err, result) {
+        res.status(201).json({
+          status: '201',
+          message: 'Property created Succesfully',
+          data:inputs
+        })
       })
-    })
+    
   }
 }
 const getPropertiesController = async(res, req) => {
   const propertiesQuery = format(`SELECT * from properties`)
   db.query(propertiesQuery, function (err, result) {
-    if (err) {
-      console.log(err)
-    }
     res.status(200).json({
       status: '200',
       message: 'properties retrieved succesfully',
@@ -45,19 +42,29 @@ const getPropertiesController = async(res, req) => {
 const getPropertyController = async(res, id) => {
   const propertyQuery = `SELECT * from properties WHERE id='${id}'`
   db.query(propertyQuery, function (err, result) {
-    if (err) { console.log(err) }
-    res.status(200).json({
-      status: '200',
-      message: 'properties retrieved succesfully',
-      data: result.rows
-    })
-  })
+    if (err) {
+      res.status(500).json({
+        status:"500",
+        Error: "Internal server error"
+      })
+    }
+      res.status(200).json({
+        status: '200',
+        message: 'properties retrieved succesfully',
+        data:result.rows
+      })
+  });
 }
 
 const getPropertyTypeController = async(res, category) => {
   const propertyQuery = `SELECT * from properties WHERE category ='${category}'`
   db.query(propertyQuery, function (err, result) {
-    if (err) { console.log(err) }
+    if (err) {
+      res.status(500).json({
+        status:"500",
+        Error: "Internal server error"
+      })
+    }
     res.status(200).json({
       status: '200',
       message: `properties of type ${category} retrieved succesfully`,
@@ -67,16 +74,31 @@ const getPropertyTypeController = async(res, category) => {
 }
 
 const updatePropertyController = async(res, inputs, id) => {
+  const property = `select * from properties where id = '${id}'`
   Object.keys(inputs).forEach(function (key) {
     const updateProperty = `UPDATE properties SET ${key} = '${inputs[key]}' where id = '${id}'`
     db.query(updateProperty, function (err, result) {
-      if (err) { console.log(err) }
+      if (err) {
+        res.status(500).json({
+          status:"500",
+          Error: "Internal server error"
+        })
+      }
       
     })
   });
-  res.status(201).json({
-    status: '201',
-    message: 'Profile updated the user'
+  db.query(property, function (err, result) {
+    if (err) {
+      res.status(500).json({
+        status:"500",
+        Error: "Internal server error"
+      })
+    }
+    res.status(201).json({
+      status: '201',
+      message: 'Property success fully updated',
+      data:result.rows
+    })
   })
 };
 
@@ -84,7 +106,10 @@ const  deletePropertyController = async(res, id) => {
   const deletePropertyQuery = `DELETE FROM properties WHERE id='${id}'`
   db.query(deletePropertyQuery, function (err, result) {
     if (err) {
-      console.log(err)
+      res.status(500).json({
+        status:"500",
+        Error: "Internal server error"
+      })
     }
     res.status(201).json({
       status: '201',

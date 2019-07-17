@@ -8,6 +8,14 @@ const validUser = {
   isadmin: true,
   password: 're%@u&@#23ERfg',
 };
+const validLoginUser = {
+  email: 'marik@gmail.com',
+  password: 're%@u&@#23ERfg',
+};
+const inValidLoginUser = {
+  email: 'mak@gmail.com',
+  password: 're%@u&@#23ERfg',
+};
 const lValidUser = {
   firstname: 'Mark',
   lastname: 'Lisaswa',
@@ -112,4 +120,6 @@ export default {
   nullUser,
   inValidEmailUser,
   inValidPhoneUser,
+  validLoginUser,
+  inValidLoginUser,
 };
