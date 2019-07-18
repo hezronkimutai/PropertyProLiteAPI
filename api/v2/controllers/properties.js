@@ -72,6 +72,12 @@ const getPropertiesController = async(res, req) => {
 const getPropertyController = async(res, id) => {
   const propertyQuery = `SELECT * from properties WHERE id='${id}'`
   db.query(propertyQuery, (err, result) => {
+    if(result === undefined || result.rows.length === 0 ){
+      return res.status(400).json({
+        status:400,
+        Error: "Property not found"
+      })
+    }
     if (err) {
       res.status(500).json({
         status:"500",
@@ -89,6 +95,12 @@ const getPropertyController = async(res, id) => {
 const getPropertyTypeController = async(res, type) => {
   const propertyQuery = `SELECT * from properties WHERE type ='${type}'`
   db.query(propertyQuery, (err, result) => {
+    if(result === undefined || result.rows.length === 0 ){
+      return res.status(400).json({
+        status:400,
+        Error: "Property not found"
+      })
+    }
     if (err) {
       res.status(500).json({
         status:"500",
@@ -135,6 +147,7 @@ const updatePropertyController = async(res, inputs, id) => {
 const  deletePropertyController = async(res, id) => {
   const deletePropertyQuery = `DELETE FROM properties WHERE id='${id}'`
   db.query(deletePropertyQuery, (err, result) => {
+
     if (err) {
       res.status(500).json({
         status:"500",

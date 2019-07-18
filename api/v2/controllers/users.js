@@ -29,6 +29,12 @@ const getUsersController = async(res) => {
 const getUserController = async (res, id) => {
   const userQuery = `SELECT * from users where id='${id}'`
   db.query(userQuery, (err, result) => {
+    if(result.rows.length === 0|| result === undefined){
+      return res.status(400).json({
+        status:400,
+        Error: "User not found"
+      })
+    }
     delete result.rows[0].password
     if (err) {
       res.status(500).json({
@@ -118,7 +124,7 @@ const signinUserController = async(res, inputs)=>{
   if (inputs.email && inputs.password) {
     const loginQuery = `select * from users where email= '${inputs.email}'`
     db.query(loginQuery, (err, result) => {
-      if (result.rows.length === 0) {
+      if (result.rows.length === 0 || result === undefined) {
         return res.status(400).json({
           status: 400,
           message: 'Invalid credentials'
@@ -152,7 +158,7 @@ const updateUserController = async(res, inputs, id) => {
   db.query(user, (err, result) => {
     delete result.rows[0].password;
     if (err) { res.status(500).json({Error:err}) }
-    if (result.rows.length === 0){
+    if (result.rows.length === 0 || result === undefined){
       res.status(400).json({
         status:400,
         Error:`User ${id} does not exist`
@@ -178,12 +184,6 @@ const deleteUserController = (res, id) => {
   db.query(user, (err, result) => {
     delete result.rows[0].password;
     if (err) { res.status(500).json({Error:err}) }
-    if (result.rows.length === 0){
-      res.status(400).json({
-        status:400,
-        Error:`User ${id} does not exist`
-      })
-    }
   db.query(deleteUserQuery, (err, result) => {
     if (err) { res.status(500).json({Error:err}) }
     res.status(201).json({

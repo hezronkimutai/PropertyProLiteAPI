@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "NODE_ENV=development npm run create && nodemon --exec babel-node api/index.js",
-    "start:prod": "NODE_ENV=production babel-node api/index.js",
+    "start:prod": "NODE_ENV=production npm run create && babel-node api/index.js",
     "testv2": "NODE_ENV=test npm run drop && NODE_ENV=test npm run create && NODE_ENV=test nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./test/v2/*",
     "create": "babel-node ./api/v2/models/config createTables",
     "drop": "babel-node ./api/v2/models/config dropTables",

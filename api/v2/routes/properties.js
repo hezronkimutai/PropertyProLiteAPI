@@ -30,7 +30,7 @@ properties.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (r
   controller.updatePropertyController(res, req.body, req.params.id)
 }));
 properties.put('/:id/sold', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.updatePropertyController(res, { sold: true }, req.params.id)
+  controller.updatePropertyController(res, { status:"sold" }, req.params.id)
 }));
 
 properties.delete('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {

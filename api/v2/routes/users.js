@@ -1,8 +1,9 @@
-import middleware from '../middlewares/middleware'
-import controller from '../controllers/users'
-import express from 'express'
+import middleware from '../middlewares/middleware';
+import controller from '../controllers/users';
+import express from 'express';
+import jwt from 'jsonwebtoken';
+
 const users = express.Router()
-import jwt from 'jsonwebtoken'
 
 users.get('/users',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
@@ -28,6 +29,14 @@ users.get('/users/:id', middleware.checkToken, middleware.asyncHandler(async (re
 
 users.post('/auth/signup', middleware.asyncHandler(async (req, res) => {
   controller.signupUserController(res, req.body)
+}))
+
+users.put('/auth/signout', middleware.asyncHandler(async (req, res) => {
+  middleware.Token.token = '';
+  return res.status(201).json({
+    status:201,
+    message: "logged out succesfully"
+  })
 }))
 
 users.post('/auth/signin', middleware.asyncHandler(async (req, res) => {
