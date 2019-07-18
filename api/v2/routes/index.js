@@ -4,6 +4,6 @@ import users from './users';
 
 const routes = express.Router();
 
-routes.use('/properties', properties);
-routes.use('/users', users);
+routes.use('/property', properties);
+routes.use('/', users);
 export default routes;

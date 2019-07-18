@@ -4,7 +4,7 @@ import express from 'express'
 const users = express.Router()
 import jwt from 'jsonwebtoken'
 
-users.get('/',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+users.get('/users',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
     return controller.getUsersController(res)
   }else{
@@ -15,7 +15,7 @@ users.get('/',  middleware.checkToken, middleware.asyncHandler(async (req, res) 
   }
 }))
 
-users.get('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+users.get('/users/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
     return controller.getUserController(res, req.params.id)
   }else{
@@ -34,11 +34,11 @@ users.post('/auth/signin', middleware.asyncHandler(async (req, res) => {
   controller.signinUserController(res, req.body)
 }))
 
-users.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+users.patch('/users/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   controller.updateUserController(res, req.body, req.params.id)
 }))
 
-users.delete('/:id',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
+users.delete('/users/:id',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   controller.deleteUserController(res, req.params.id)
 }))
 

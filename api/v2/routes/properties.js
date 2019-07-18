@@ -10,6 +10,10 @@ properties.post('/', middleware.checkToken, middleware.asyncHandler(async(req, r
   controller.postPropertiesController(res, req.body)
 }));
 
+properties.post('/:id', middleware.checkToken, middleware.asyncHandler(async(req, res) => {
+  controller.postFlagController(res, req.body,req.params.id)
+}));
+
 properties.get('/', middleware.asyncHandler(async (req, res) => {
   controller.getPropertiesController(res)
 }))

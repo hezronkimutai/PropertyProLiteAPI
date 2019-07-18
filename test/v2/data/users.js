@@ -1,16 +1,16 @@
 const validUser = {
-  firstname: 'Mark',
-  lastname: 'Lisaswa',
-  username: 'Mariko',
-  email: 'marik@gmail.com',
-  phonenumber: '0987665566',
-  address: '0980989',
+  firstname: 'hezron',
+  lastname: 'kimutai',
+  username: 'hjiye',
+  email: 'hj@gmail.com',
+  phonenumber: '8888888888',
+  address: '979790790',
   isadmin: true,
-  password: 're%@u&@#23ERfg',
+  password: 'rtTT45$ty@',
 };
 const validLoginUser = {
-  email: 'marik@gmail.com',
-  password: 're%@u&@#23ERfg',
+  email: 'hj@gmail.com',
+  password: 'rtTT45$ty@',
 };
 const inValidLoginUser = {
   email: 'mak@gmail.com',
