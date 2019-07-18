@@ -7,7 +7,7 @@ dotenv.config()
 const env = process.env.NODE_ENV
 
 const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL
-console.log(databaseUrl)
+
 export const pool = new Pool({
   connectionString: databaseUrl
 })
