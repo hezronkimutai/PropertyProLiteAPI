@@ -39,7 +39,7 @@ const sValidProperty = {
   imageurl: 'https://res.cloudinary.com/hezzie/image/upload/v2561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png',
 };
 const dValidProperty = {
-  type: 'Aeroplane', 
+  type: 'Aeroplane',
   price: '7000.00',
   state: 'kenya',
   city: 'narobi',
@@ -56,7 +56,7 @@ const invalidtypeProperty = {
 };
 
 const invalidReasonProperty = {
-  type: 'Sifn fgle room', 
+  type: 'Sifn fgle room',
   price: '7000',
   state: 'tancbvbczania',
   city: 'arusha',
@@ -88,9 +88,15 @@ const invalidMapProperty = {
   address: '76768',
   imageurl: 'https://res.cloudinary.com/hezzie/image/upload/v2561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png',
 };
+const validFlag = {
+  description: 'twbedoom',
+  mappoints: '5654,546657',
+  reason: 'sell',
+};
 
 const nullProperty = {};
 export default {
+  validFlag,
   validProperty,
   gValidProperty,
   tValidProperty,

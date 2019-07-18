@@ -30,7 +30,7 @@ const createTableFlags = `CREATE TABLE IF NOT EXISTS flags(
   propertyid integer references properties(id) ON DELETE CASCADE,
   reason varchar,
   description varchar,
-  mappoints,
+  mappoints varchar,
   createdon timestamp default now()
   )`;
 const deleteTableUsers = 'DROP TABLE IF EXISTS users';
