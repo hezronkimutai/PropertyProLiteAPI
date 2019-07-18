@@ -18,7 +18,7 @@ users.get('/users',  middleware.checkToken, middleware.asyncHandler(async (req, 
 
 users.get('/users/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
-    return controller.getUserController(res, req.params.id)
+    return controller.  getUserController(res, req.params.id)
   }else{
     return res.status(401).json({
       status:401,

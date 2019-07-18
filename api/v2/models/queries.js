@@ -6,7 +6,7 @@ const createTableUsers = `CREATE TABLE IF NOT EXISTS users(
       lastname VARCHAR NOT NULL,
       username VARCHAR NOT NULL,
       email VARCHAR NOT NULL,
-      phonenumber VARCHAR NOT NULL,
+      phonenumber integer NOT NULL,
       address VARCHAR NOT NULL,
       isadmin BOOLEAN NOT NULL,
       password VARCHAR NOT NULL,
