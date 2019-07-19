@@ -62,59 +62,58 @@ const getUserController = async (res, id) => {
   }
 }
 const signupUserController = async(res, inputs) => {
-  try{
-    if (
-      !inputs.firstname || !inputs.lastname || !inputs.username ||
-      !inputs.email || !inputs.phonenumber || !inputs.password ||
-      !inputs.isadmin || !inputs.address) {
-      return res.status(400).json({
-        status: 400,
-        Error: 'Please fill all the required inputs.'
-      });
-    } else if (!validator.userValidator(res, inputs)) {
-      const saltRounds = 10;
-      let salt =  bcrypt.genSaltSync(saltRounds);
-      let hashedPassword = bcrypt.hashSync(inputs.password,salt);
-      inputs.password = hashedPassword;
-      const thisUser = `select * from users where email = '${inputs.email}'`
-      const userQuery = `INSERT INTO  users(firstname,
-      lastname,username, email, phonenumber, address, isadmin, password)
-      VALUES('${inputs.firstname}', '${inputs.lastname}', '${inputs.username}'
-      ,'${inputs.email}','${inputs.phonenumber}','${inputs.address}', ${inputs.isadmin},
-       '${inputs.password}')`
-      const emailQuery = `SELECT * from users where email= '${inputs.email}'`
-      const usernameQuery = `SELECT * from users where username= '${inputs.username}'`
-      const phonenumberQuery = `SELECT * from users where phonenumber= '${inputs.phonenumber}'`
-      db.query(emailQuery, (err, ress) => {
-        if (ress.rows.length != 0) {
-          res.status(409).json({
-            status: 409,
-            message: 'A user with same email exist'
-          });
-        } else {
-          db.query(usernameQuery, (err, resu) => {
-            if (resu.rows.length != 0) {
-              res.status(409).json({
-                status: 409,
-                message: 'A user with same username exist'
-              });
-            } else {
-              db.query(phonenumberQuery, (err, resul) => {
-                if (resul.rows.length != 0) {
-                  res.status(409).json({
-                    status: 409,
-                    message: 'A user with same phonenumber exist'
-                  });
-                } else {
-                  db.query(userQuery, (err, result) => {
-                    db.query(thisUser,(err, result)=> {
-                      delete result.rows[0].password
-                      result.rows[0].token = jwt.sign(result.rows[0], config, { expiresIn: '24h' });
-                      res.status(201).json({
-                        status: 201,
-                        message: 'successfully created the user',
-                        data: result.rows[0]
-                      });
+  
+  if (
+    !inputs.firstname || !inputs.lastname || !inputs.username ||
+    !inputs.email || !inputs.phonenumber || !inputs.password ||
+    !inputs.isadmin || !inputs.address) {
+    return res.status(400).json({
+      status: 400,
+      Error: 'Please fill all the required inputs.'
+    });
+  } else if (!validator.userValidator(res, inputs)) {
+    const saltRounds = 10;
+    let salt =  bcrypt.genSaltSync(saltRounds);
+    let hashedPassword = bcrypt.hashSync(inputs.password,salt);
+
+    inputs.password = hashedPassword;
+  
+    const userQuery = `INSERT INTO  users(firstname,
+    lastname,username, email, phonenumber, address, isadmin, password)
+    VALUES('${inputs.firstname}', '${inputs.lastname}', '${inputs.username}'
+    ,'${inputs.email}','${inputs.phonenumber}','${inputs.address}', ${inputs.isadmin},
+     '${inputs.password}')`
+    const emailQuery = `SELECT * from users where email= '${inputs.email}'`
+    const usernameQuery = `SELECT * from users where username= '${inputs.username}'`
+    const phonenumberQuery = `SELECT * from users where phonenumber= '${inputs.phonenumber}'`
+    db.query(emailQuery, (err, ress) => {
+      if (ress.rows.length != 0) {
+        res.status(409).json({
+          status: 409,
+          message: 'A user with same email exist'
+        });
+      } else {
+        db.query(usernameQuery, (err, resu) => {
+          if (resu.rows.length != 0) {
+            res.status(409).json({
+              status: 409,
+              message: 'A user with same username exist'
+            });
+          } else {
+            db.query(phonenumberQuery, (err, resul) => {
+              if (resul.rows.length != 0) {
+                res.status(409).json({
+                  status: 409,
+                  message: 'A user with same phonenumber exist'
+                });
+              } else {
+                delete inputs.password;
+                inputs.token = jwt.sign(inputs, config, { expiresIn: '24h' });
+                db.query(userQuery, (err, result) => {
+                  if (err) {
+                    res.status(500).json({
+                      status:500,
+                      Error: "Internal server error"
                     })
                   });
                 }
