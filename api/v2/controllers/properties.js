@@ -6,8 +6,8 @@ import vaalidator from '../helpers/flagValidator';
 const postPropertiesController = async(res, inputs) => {
   if (!inputs.price || !inputs.price ||
       !inputs.state || !inputs.city || !inputs.address ||!inputs.imageurl) {
-    return res.status(400).json({
-      status: '400',
+    return res.status(409).json({
+      status: '409',
       Error: 'Please fill all the required inputs.'
     })
   }

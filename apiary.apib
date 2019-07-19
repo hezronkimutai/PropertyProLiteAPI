@@ -5,31 +5,46 @@ HOST: https://propertyproliteapi.herokuapp.com/api
 
 Property Pro Lite is a platform where people can create and/or search properties for sale or rent.
 
-## Properties collection [/v1/properties]
+## Properties collection [/v2/property]
 
 ### List All properties [GET]
 
 + Response 200 (application/json)
 
-        [
-              {
-                "category": "Sifn fgle room",
-                "name": "Houscbhfxce",
-                "reason": "renfhfcbct",
-                "price": "7000",
-                "state": "tancbvbczania",
-                "city": "arusha",
-                "address": "76768",
-                "map": "90800,89900",
-                "description": "Very coovbvbvl house",
-                "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
-                "id": 9023
-              }
-        ]
+        {
+            "status": "200",
+            "message": "properties retrieved succesfully",
+            "data": [
+                {
+                    "id": 8,
+                    "owner": 2,
+                    "status": "sold",
+                    "price": 90000,
+                    "state": "Rwanda",
+                    "city": "arusha",
+                    "address": "76768",
+                    "type": "apartment",
+                    "createdon": "2019-07-18T13:11:42.328Z",
+                    "imageurl": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png"
+                },
+                {
+                    "id": 10,
+                    "owner": 2,
+                    "status": "available",
+                    "price": 7890,
+                    "state": "Rwanda",
+                    "city": "arusha",
+                    "address": "76768",
+                    "type": "atmyyyyyyyyyyent",
+                    "createdon": "2019-07-18T14:13:21.574Z",
+                    "imageurl": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png"
+                }
+            ]
+        }
 
 
 
-## Post property [/v1/properties/post-property]
+## Post property [/v2/property/]
 
 ### Create a New Property [POST]
 
@@ -38,60 +53,62 @@ object containing a property name, propertytype, and an uploaded image.
 
 + Request (application/json)
 
-          {
-            "category": "Sifn fgle room",
-            "name": "Houscbhfxce",
-            "reason": "renfhfcbct",
+        {
+            "type": "twobedroom",
             "price": "7000",
-            "state": "tancbvbczania",
+            "state": "tanzania",
             "city": "arusha",
             "address": "76768",
-            "map": "90800,89900",
-            "description": "Very coovbvbvl house",
-            "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
-          }
+            "imageurl": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png"
+        }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /v1/properties/post-property
+            Location: /v2/property
 
     + Body
 
               {
-                "category": "Sifn fgle room",
-                "name": "Houscbhfxce",
-                "reason": "renfhfcbct",
-                "price": "7000",
-                "state": "tancbvbczania",
-                "city": "arusha",
-                "address": "76768",
-                "map": "90800,89900",
-                "description": "Very coovbvbvl house",
-                "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
-                "id": 9023
-              }
+                    "status": "201",
+                    "message": "Property created Succesfully",
+                    "data": {
+                        "id": 8,
+                        "owner": 2,
+                        "status": "sold",
+                        "price": 90000,
+                        "state": "Rwanda",
+                        "city": "arusha",
+                        "address": "76768",
+                        "type": "apartment",
+                        "createdon": "2019-07-18T13:11:42.328Z",
+                        "imageurl": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png"
+                    }
+                }
               
-## Single Property [/v1/properties/:id]
+## Single Property [/v2/property/:id]
 
 ### Fetch a single property [GET]
 
 + Response 200 (application/json)
 
           {
-            "category": "Sifn fgle room",
-            "name": "Houscbhfxce",
-            "reason": "renfhfcbct",
-            "price": "7000",
-            "state": "tancbvbczania",
-            "city": "arusha",
-            "address": "76768",
-            "map": "90800,89900",
-            "description": "Very coovbvbvl house",
-            "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
-            "id": 9023
-          }
+                "status": 200,
+                "message": "properties retrieved succesfully",
+                "data": {
+                    "id": 8,
+                    "owner": 2,
+                    "status": "sold",
+                    "price": 90000,
+                    "state": "Rwanda",
+                    "city": "arusha",
+                    "address": "76768",
+                    "type": "apartment",
+                    "createdon": "2019-07-18T13:11:42.328Z",
+                    "imageurl": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png"
+                }
+            }
 
 
 ### Update property [PATCH]
@@ -101,59 +118,74 @@ object.
 
 + Request (application/json)
 
-          {
-            "name": "Two bed room"
-          }
+        {
+            "type": "apartment",
+            "price": "70000",
+            "state": "Rwanda"
+        }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /v1/properties/:id
+            Location: /v2/property/:id
 
     + Body
 
-              {
-                "category": "Sifn fgle room",
-                "name": "Two bed room",
-                "reason": "renfhfcbct",
-                "price": "7000",
-                "state": "tancbvbczania",
-                "city": "arusha",
-                "address": "76768",
-                "map": "90800,89900",
-                "description": "Very coovbvbvl house",
-                "url": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png",
-                "id": 9023
-              }
+            {
+                "status": 200,
+                "message": "properties retrieved succesfully",
+                "data": {
+                    "id": 8,
+                    "owner": 2,
+                    "status": "sold",
+                    "price": 90000,
+                    "state": "Rwanda",
+                    "city": "arusha",
+                    "address": "76768",
+                    "type": "apartment",
+                    "createdon": "2019-07-18T13:11:42.328Z",
+                    "imageurl": "https://res.cloudinary.com/hezzie/image/upload/v1561036548/PropertyProLiteAPI/2019-06-20T13:15:46.472Z.png"
+                }
+            }
 
-## Users collection [/v1/users]
+## Users collection [/v2/users]
 
 ### List All users [GET]
 
 + Response 200 (application/json)
 
-        [
-              {
-                "first_name": "hezron",
-                "second_name": "kimutai",
-                "user_name": "hezzie",
-                "email": "hez@gmail.com",
-                "phone_number": "0937892356",
-                "password": "reqfhgtfhfgjfg",
-                "id": 5209
-              }{
-                "first_name": "hezron",
-                "second_name": "kimutai",
-                "user_name": "hezzie",
-                "email": "hez@gmail.com",
-                "phone_number": "0937892356",
-                "password": "reqfhgtfhfgjfg",
-                "id": 5209
-              }
-        ]
+        {
+            "status": "200",
+            "message": "User retrieved succesfully",
+            "data": [
+                {
+                    "id": 2,
+                    "firstname": "hezron",
+                    "lastname": "kimutai",
+                    "username": "hjuye",
+                    "email": "hiuuj@gmail.com",
+                    "phonenumber": "8778788888",
+                    "address": "979790790",
+                    "isadmin": true,
+                    "profilepic": null,
+                    "createdon": "2019-07-19T06:36:38.801Z"
+                },{
+                    "id": 2,
+                    "firstname": "kimutai",
+                    "lastname": "hezron",
+                    "username": "eizzeh",
+                    "email": "efff@gmail.com",
+                    "phonenumber": "8778788888",
+                    "address": "979790790",
+                    "isadmin": true,
+                    "profilepic": null,
+                    "createdon": "2019-07-19T06:36:38.801Z"
+                }
+            ]
+        }
 
-## Users collection [/v1/users/signup]
+## Users collection [/v2/auth/signup]
 
 ### Create a New user [POST]
 
@@ -162,20 +194,22 @@ object containing a username and password.
 
 + Request (application/json)
 
-          {
-            "first_name": "hezron",
-            "second_name": "kimutai",
-            "user_name": "hezzie",
-            "email": "hez@gmail.com",
-            "phone_number": "0937892356",
-            "password": "reqfhgtfhfgjfg"
-          }
+            {
+              "firstname": "hezron",
+              "lastname": "kimutai",
+              "username": "hjuye",
+              "email": "hiuuj@gmail.com",
+              "phonenumber": "8778788888",
+              "address": "979790790",
+              "isadmin": true,
+              "password": "rtTT45$ty@"
+            }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /v1/users/signup
+            Location: /v12/auth/signup
 
     + Body
 
@@ -196,12 +230,20 @@ object containing a username and password.
 
 + Response 200 (application/json)
 
-          {
-            "first_name": "hezron",
-            "second_name": "kimutai",
-            "user_name": "hezzie",
-            "email": "hez@gmail.com",
-            "phone_number": "0937892356",
-            "password": "reqfhgtfhfgjfg",
-            "id": 5209
-          }
+            {
+                "status": 201,
+                "message": "successfully created the user",
+                "data": {
+                    "id": 3,
+                    "firstname": "hezron",
+                    "lastname": "kihmutai",
+                    "username": "hhjuye",
+                    "email": "hihuuj@gmail.com",
+                    "phonenumber": "8178788888",
+                    "address": "979790790",
+                    "isadmin": true,
+                    "profilepic": null,
+                    "createdon": "2019-07-19T07:02:38.024Z",
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZmlyc3RuYW1lIjoiaGV6cm9uIiwibGFzdG5hbWUiOiJraWhtdXRhaSIsInVzZXJuYW1lIjoiaGhqdXllIiwiZW1haWwiOiJoaWh1dWpAZ21haWwuY29tIiwicGhvbmVudW1iZXIiOiI4MTc4Nzg4ODg4IiwiYWRkcmVzcyI6Ijk3OTc5MDc5MCIsImlzYWRtaW4iOnRydWUsInByb2ZpbGVwaWMiOm51bGwsImNyZWF0ZWRvbiI6IjIwMTktMDctMTlUMDc6MDI6MzguMDI0WiIsImlhdCI6MTU2MzUxOTc1OCwiZXhwIjoxNTYzNjA2MTU4fQ.LRXu4R-mJoufdx8HuH9p0IOGqZR0BF53rcv2---7jFE"
+                }
+            }

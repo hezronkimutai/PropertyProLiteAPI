@@ -71,22 +71,22 @@ const signupUserController = async(res, inputs) => {
     const phonenumberQuery = `SELECT * from users where phonenumber= '${inputs.phonenumber}'`
     db.query(emailQuery, (err, ress) => {
       if (ress.rows.length != 0) {
-        res.status(400).json({
-          status: 400,
+        res.status(409).json({
+          status: 409,
           message: 'A user with same email exist'
         });
       } else {
         db.query(usernameQuery, (err, resu) => {
           if (resu.rows.length != 0) {
-            res.status(400).json({
-              status: 400,
+            res.status(409).json({
+              status: 409,
               message: 'A user with same username exist'
             });
           } else {
             db.query(phonenumberQuery, (err, resul) => {
               if (resul.rows.length != 0) {
-                res.status(400).json({
-                  status: 400,
+                res.status(409).json({
+                  status: 409,
                   message: 'A user with same phonenumber exist'
                 });
               } else {
