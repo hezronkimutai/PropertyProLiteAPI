@@ -7,7 +7,6 @@ cache:
     - "node_modules"
 script:
   - npm run testv2
-
 before_script:
   - psql -c 'CREATE DATABASE ppltest;' -U postgres
 after_success:

@@ -7,11 +7,12 @@ const properties = express.Router()
 
 properties.post('/', middleware.checkToken, middleware.asyncHandler(async(req, res) => {
   req.body.owner = jwt.decode(middleware.Token.token).id
+  console.log("fuiehiufhiueh",req.body.owner)
   controller.postPropertiesController(res, req.body)
 }));
 
 properties.post('/:id', middleware.checkToken, middleware.asyncHandler(async(req, res) => {
-  controller.postFlagController(res, req.body,req.params.id)
+  controller.postFlagController(res, req.body,req.params.id, jwt.decode(middleware.Token.token).id)
 }));
 
 properties.get('/', middleware.asyncHandler(async (req, res) => {
@@ -27,14 +28,14 @@ properties.get('/type/:type', middleware.asyncHandler(async (req, res) => {
 }));
 
 properties.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.updatePropertyController(res, req.body, req.params.id)
+  controller.updatePropertyController(res, req.body, req.params.id, jwt.decode(middleware.Token.token).id)
 }));
 properties.put('/:id/sold', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.updatePropertyController(res, { status:"sold" }, req.params.id)
+  controller.updatePropertyController(res, { status:"sold" }, req.params.id, jwt.decode(middleware.Token.token).id)
 }));
 
 properties.delete('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.deletePropertyController(res, req.params.id)
+  controller.deletePropertyController(res, req.params.id, jwt.decode(middleware.Token.token).id)
 }));
 
 export default properties;

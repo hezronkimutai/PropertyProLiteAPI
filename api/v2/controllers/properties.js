@@ -2,36 +2,39 @@ import db from '../models/query'
 import format from 'pg-format';
 import validator from '../helpers/propertyValidator';
 import vaalidator from '../helpers/flagValidator';
+
+
+
 const postPropertiesController = async(res, inputs) => {
-  try{
-  if (!inputs.price || !inputs.price ||
+  if (!inputs.type || !inputs.price ||
       !inputs.state || !inputs.city || !inputs.address ||!inputs.imageurl) {
     return res.status(400).json({
       status: '400',
       Error: 'Please fill all the required inputs.'
     })
   }
-  else if(!validator.propertyValidator(res, inputs)) {
-      const propertyQuery = `INSERT INTO  properties(owner,
-        price, state, city, address, type, imageurl)
-        VALUES('${inputs.owner}', '${inputs.price}', '${inputs.state}',
-         '${inputs.city}', '${inputs.address}', '${inputs.type}', '${inputs.imageurl}')`;
-        db.query(propertyQuery, (err, result) => {
-          res.status(201).json({
-            status: '201',
-            message: 'Property created Succesfully',
-            data:result
-          })
+ if (!validator.propertyValidator(res, inputs)) {
+    const propertyQuery = `INSERT INTO  properties(owner,
+      price, state, city, address, type, imageurl)
+      VALUES('${inputs.owner}', '${inputs.price}', '${inputs.state}',
+       '${inputs.city}', '${inputs.address}', '${inputs.type}', '${inputs.imageurl}')`;
+  
+      db.query(propertyQuery, (err, result) => {
+        if(err){
+          console.log(err)
+        }
+        res.status(201).json({
+          status: '201',
+          message: 'Property created Succesfully',
+          data:inputs
         })
-    } 
-  }catch(err){
-    return res.status(500).json({
-      status: 500,
-      Error: err
-    })
-  }
+      })
+     
+
+
 }
-const postFlagController = async(res, inputs,id) => {
+}
+const postFlagController = async(res, inputs,id, owner) => {
   try{
     if (!inputs.reason || !inputs.description || !inputs.mappoints) {
       return res.status(400).json({
@@ -39,21 +42,33 @@ const postFlagController = async(res, inputs,id) => {
         Error: 'Please fill all the required inputs.'
       })
     }
-    else if (!vaalidator.flagValidator(res, inputs, id)) {
+     if (!vaalidator.flagValidator(res, inputs, id)) {
+
+      const thisFlag = `select * from flags where propertyid = '${id}'`
       const flagQuery = `INSERT INTO  flags(reason, description, mappoints, propertyid)
       VALUES('${inputs.reason}','${inputs.description}', '${inputs.mappoints}', '${id}')`;
-        db.query(flagQuery, (err, result) => {
-          if(err) {
-            console.log(err)
-          }
-          res.status(201).json({
-            status: 201,
-            message: 'flag created Succesfully',
-            data:result.rows
+      db.query(thisFlag, (err, result) => {
+        if(result === undefined || result.rows.length === 0){
+          return res.status(404).json({
+            status: 404,
+            message: 'Property not found'
           })
-        })
-    }
-  }catch(err){
+        }if (result.rows[0].owner === owner){
+          db.query(flagQuery,()=>{
+            return res.status(201).json({
+              status: 201,
+              message: 'flag created Succesfully',
+              data:result.rows[0]
+            })
+          })
+        }else{
+          res.status(401).json({
+            status:401,
+            Error: "Unauthorized"
+          })
+        }
+      })
+  }}catch(err){
     return res.status(500).json({
       status:500,
       Error: err
@@ -62,10 +77,16 @@ const postFlagController = async(res, inputs,id) => {
 }
 const getPropertiesController = async(res, req) => {
   try{
-    const propertiesQuery = format(`SELECT * from properties`)
+    const propertiesQuery = `SELECT * from properties  where status='available'`
     db.query(propertiesQuery, (err, result) => {
+      if(result.rows.length === 0){
+        return res.status(404).json({
+          status: 400,
+          Error:"Property not found"
+        })
+      }
       res.status(200).json({
-        status: '200',
+        status: 200,
         message: 'properties retrieved succesfully',
         data: result.rows
       })
@@ -93,10 +114,16 @@ const getPropertyController = async(res, id) => {
           Error: "Property not found"
         })
       }
+      if (result.rows[0].status === 'sold'){
+        return res.status(400).json({
+          status:400,
+          Error: "Ooops the property has been sold."
+        })
+      }
        return res.status(200).json({
-          status: '200',
+          status: 200,
           message: 'properties retrieved succesfully',
-          data:result.rows
+          data:result.rows[0]
         })
     });
   }catch(err){
@@ -136,55 +163,75 @@ const getPropertyTypeController = async(res, type) => {
   } 
 }
 
-const updatePropertyController = async(res, inputs, id) => {
-  try{
+const updatePropertyController = async(res, inputs, id, owner) => {
+    const confirmIfFoundProperty = `select * from properties where id = '${id}'`
     if(isNaN(id)){
       return res.status(405).json({
         status: 405,
-        Error: "Invalid property"
+        Error: "Method not allowed"
       })
     }
-    const confirmProperty = `select * from properties where id = '${id}'`
-    db.query(confirmProperty, (err, result) => {
-      if(result === undefined || result.rows === 0 ){
-        res.status(404).json({
-          status: 404,
+  db.query(confirmIfFoundProperty, (err, result) => {
+    console.log(result.rows[0])
+          if(result === undefined || result.rows === 0 ){
+            return res.status(404).json({
+              status: 404,
+              Error: 'Property not found'
+            })
+          }
+          if(result.rows[0].owner === owner){
+            console.log(result.rows[0])
+            Object.keys(inputs).forEach((key) => {
+              const updateProperty = `UPDATE properties SET ${key} = '${inputs[key]}' where id = '${id}'`
+              db.query(updateProperty)
+            });
+            const confirmIfFound = `select * from properties where id = '${id}'`
+            db.query(confirmIfFound, (err, resut) => {
+              return res.status(201).json({
+                status: 201,
+                message: 'Property successfully updated',
+                data: resut.rows[0]
+              })
+            })
+                
+          }else{
+            res.status(401).json({
+              status:401,
+              Error: "Unauthorized"
+            })
+          }
+        })
+ 
+};
+
+const  deletePropertyController = async(res, id, owner) => {
+  try{
+    const deletePropertyQuery = `DELETE FROM properties WHERE id='${id}'`
+    const thisUser = `select * from properties where id= '${id}'`
+    db.query(thisUser, (err, result) => {
+      if(result === undefined || result.rows.length === 0){
+        return res.status(401).json({
+          status: 400,
           Error: 'Property not found'
         })
       }
-    })
-    Object.keys(inputs).forEach((key) => {
-      const updateProperty = `UPDATE properties SET ${key} = '${inputs[key]}' where id = '${id}'`
-      db.query(updateProperty)
-    });
-    db.query(confirmProperty, (err, result) => {
-      if(result !== undefined || result.rows !== 0){
-        return res.status(201).json({
-          status: '201',
-          message: 'Property successfully updated',
-          data: result.rows[0]
+      if(result.rows[0].owner === owner){
+        db.query(deletePropertyQuery, (err, result) => {
+          return res.status(201).json({
+            status: '201',
+            message: 'properties deleted succesfully'
+          })
+        })
+      }else{
+        res.status(401).json({
+          status:401,
+          Error: "Unauthorized"
         })
       }
-    }) 
+    })
+    
   }catch(err){
     return res.status(500).json({
-      status:500,
-      Error:err
-    })
-  }
-};
-
-const  deletePropertyController = async(res, id) => {
-  try{
-    const deletePropertyQuery = `DELETE FROM properties WHERE id='${id}'`
-    db.query(deletePropertyQuery, (err, result) => {
-      res.status(201).json({
-        status: '201',
-        message: 'properties deleted succesfully'
-      })
-    })
-  }catch(err){
-    res.status(500).json({
       status:500,
       Error: err
     })

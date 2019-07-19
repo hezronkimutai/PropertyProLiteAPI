@@ -35,6 +35,17 @@ describe('Post a Property', () => {
       });
   });
 
+  it('Should add a valid property to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/property/')
+      .set('Authorization', Token)
+      .send(properties.validProperty)
+      .end((_err, res) => {
+        res.should.have.status(201);
+        done();
+      });
+  });
+
   it('Should not add property with invalid category to the db', (done) => {
     chai.request(server)
       .post('/api/v2/property/')
