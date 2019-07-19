@@ -3,6 +3,8 @@ import validator from '../helpers/userValidator';
 import jwt from 'jsonwebtoken';
 import db from '../models/query';
 import dotenv from 'dotenv';
+import { validatePassword } from './resetPassword'
+
 dotenv.config();
 const config = process.env.secret;
 const getUsersController = async(res) => {
@@ -34,8 +36,8 @@ const getUserController = async (res, id) => {
     const userQuery = `SELECT * from users where id='${id}'`
     db.query(userQuery, (err, result) => {
       if(result.rows.length === 0|| result === undefined){
-        return res.status(400).json({
-          status:400,
+        return res.status(404).json({
+          status:404,
           Error: "User not found"
         })
       }
@@ -74,6 +76,7 @@ const signupUserController = async(res, inputs) => {
       let salt =  bcrypt.genSaltSync(saltRounds);
       let hashedPassword = bcrypt.hashSync(inputs.password,salt);
       inputs.password = hashedPassword;
+      const thisUser = `select * from users where email = '${inputs.email}'`
       const userQuery = `INSERT INTO  users(firstname,
       lastname,username, email, phonenumber, address, isadmin, password)
       VALUES('${inputs.firstname}', '${inputs.lastname}', '${inputs.username}'
@@ -84,39 +87,35 @@ const signupUserController = async(res, inputs) => {
       const phonenumberQuery = `SELECT * from users where phonenumber= '${inputs.phonenumber}'`
       db.query(emailQuery, (err, ress) => {
         if (ress.rows.length != 0) {
-          res.status(400).json({
-            status: 400,
+          res.status(409).json({
+            status: 409,
             message: 'A user with same email exist'
           });
         } else {
           db.query(usernameQuery, (err, resu) => {
             if (resu.rows.length != 0) {
-              res.status(400).json({
-                status: 400,
+              res.status(409).json({
+                status: 409,
                 message: 'A user with same username exist'
               });
             } else {
               db.query(phonenumberQuery, (err, resul) => {
                 if (resul.rows.length != 0) {
-                  res.status(400).json({
-                    status: 400,
+                  res.status(409).json({
+                    status: 409,
                     message: 'A user with same phonenumber exist'
                   });
                 } else {
-                  delete inputs.password;
-                  inputs.token = jwt.sign(inputs, config, { expiresIn: '24h' });
                   db.query(userQuery, (err, result) => {
-                    if (err) {
-                      res.status(500).json({
-                        status:500,
-                        Error: "Internal server error"
-                      })
-                    }
-                    res.status(201).json({
-                      status: 201,
-                      message: 'successfully created the user',
-                      data: inputs
-                    });
+                    db.query(thisUser,(err, result)=> {
+                      delete result.rows[0].password
+                      result.rows[0].token = jwt.sign(result.rows[0], config, { expiresIn: '24h' });
+                      res.status(201).json({
+                        status: 201,
+                        message: 'successfully created the user',
+                        data: result.rows[0]
+                      });
+                    })
                   });
                 }
               });
@@ -185,16 +184,20 @@ const updateUserController = async(res, inputs, id) => {
         })
       }
       Object.keys(inputs).forEach((key) => {
+        
         const updateUser = `UPDATE users SET ${key} = '${inputs[key]}' where id = '${id}'`
         db.query(updateUser, (err, result) => {
         if (err) { res.status(500).json({Error:err}) }
         });
       });
-      res.status(201).json({
-        status: 201,
-        message: 'User success fully updated',
-        data:result.rows
-      });
+      const thisUser = `select * from users where id= '${id}'`
+      db.query(thisUser, (err, result) => {
+       return res.status(201).json({
+          status: 201,
+          message: 'User success fully updated',
+          data:result.rows
+        });
+      })
     });
   }catch(err){
     return res.status(500).json({
@@ -208,8 +211,12 @@ const deleteUserController = (res, id) => {
     const user = `select * from users where id = ${id}`;
     const deleteUserQuery = `DELETE FROM users WHERE id='${id}'`;
     db.query(user, (err, result) => {
-      delete result.rows[0].password;
-      if (err) { res.status(500).json({Error:err}) }
+      if(result === undefined || result.rows.length === 0){
+        return res.status(404).json({
+          status:404,
+          Error: 'User not found'
+        })
+      }
     db.query(deleteUserQuery, (err, result) => {
       if (err) { res.status(500).json({Error:err}) }
       res.status(201).json({
@@ -225,7 +232,11 @@ const deleteUserController = (res, id) => {
     })
   }
 }
+const resetPassword = async(res, to) => {
+  return res.status(201).json(await validatePassword(to))
+}
 export default {
+  resetPassword,
   getUserController,
   getUsersController,
   signupUserController,

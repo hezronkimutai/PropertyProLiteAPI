@@ -30,13 +30,8 @@ users.get('/users/:id', middleware.checkToken, middleware.asyncHandler(async (re
 users.post('/auth/signup', middleware.asyncHandler(async (req, res) => {
   controller.signupUserController(res, req.body)
 }))
-
-users.put('/auth/signout', middleware.asyncHandler(async (req, res) => {
-  middleware.Token.token = '';
-  return res.status(201).json({
-    status:201,
-    message: "logged out succesfully"
-  })
+users.post('/auth/resetpassword', middleware.asyncHandler(async (req, res) => {
+  controller.resetPassword(res, req.body.email)
 }))
 
 users.post('/auth/signin', middleware.asyncHandler(async (req, res) => {
