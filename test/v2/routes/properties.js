@@ -170,6 +170,14 @@ describe('Fetch  properties', () => {
         done();
       });
   });
+  it('Should not Fecth a single property type that is not found.', (done) => {
+    chai.request(server)
+      .get('/api/v2/property/type/Elect')
+      .end((_err, result) => {
+        result.should.have.status(404);
+        done();
+      });
+  });
 });
 
 describe('Test manipulate  property', () => {
@@ -183,6 +191,26 @@ describe('Test manipulate  property', () => {
         done();
       });
   });
+  it('Should mark the property as sold', (done) => {
+    chai.request(server)
+      .put('/api/v2/property/1/sold')
+      .set('Authorization', Token)
+      .end((_err, result) => {
+        result.should.have.status(201);
+        done();
+      });
+  });
+  it('Should not mark the property as sold with string id', (done) => {
+    chai.request(server)
+      .put('/api/v2/property/uij/sold')
+      .set('Authorization', Token)
+      .end((_err, result) => {
+        result.should.have.status(405);
+        done();
+      });
+  });
+
+
 
   it('Should delete a property', (done) => {
     chai.request(server)

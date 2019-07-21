@@ -62,6 +62,15 @@ describe('Signup a user', () => {
         done();
       });
   });
+  it('STest reset password', (done) => {
+    chai.request(server)
+      .post('/api/v2/auth/resetpassword/')
+      .send({email:'hezronkimutai600@gmail.com'})
+      .end((_err, res) => {
+        res.should.have.status(201);
+        done();
+      });
+  });
   it('Should not add a user with an invalid password to the db', (done) => {
 
 

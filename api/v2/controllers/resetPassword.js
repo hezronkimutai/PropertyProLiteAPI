@@ -2,8 +2,6 @@
 import nodemailer from "nodemailer";
 
 const validatePassword = async(to) => {
-  try{
-
 
     let testAccount = await nodemailer.createTestAccount();
 
@@ -30,9 +28,7 @@ const validatePassword = async(to) => {
       id : info.messageId,
       Preview : nodemailer.getTestMessageUrl(info)
     }
-  }catch(err){
-    console.log(err)
-  }
+
 
 }
 
