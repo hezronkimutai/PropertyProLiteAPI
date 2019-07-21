@@ -36,6 +36,15 @@ class Validator {
   }
 
   User() {
+    if (!this.req.body.firstname
+      || !this.req.body.lastname
+      || !this.req.body.username
+      || !this.req.body.email
+      || !this.req.body.phonenumber
+      || !this.req.body.password
+      || !this.req.body.address) {
+      return this.res.status(400).json({ status: 400, Error: 'Please fill all the required inputs.' });
+    }
     this.validFirstName = this.req.body.firstname.toLowerCase().match(this.stringPattern);
     this.validsecondname = this.req.body.lastname.toLowerCase().match(this.stringPattern);
     this.validusername = this.req.body.username.toLowerCase().match(this.stringPattern);
@@ -70,7 +79,7 @@ class Validator {
     return false;
   }
 
-  propertyValidator() {
+  Property() {
     this.validType = this.req.body.type.toLowerCase().match(this.stringPattern);
     this.validCity = this.req.body.city.toLowerCase().match(this.stringPattern);
     this.validState = this.req.body.state.toLowerCase().match(this.stringPattern);

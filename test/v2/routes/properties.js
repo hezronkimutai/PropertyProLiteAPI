@@ -157,7 +157,7 @@ describe('Fetch  properties', () => {
     chai.request(server)
       .get('/api/v2/property/10')
       .end((_err, result) => {
-        result.should.have.status(400);
+        result.should.have.status(404);
         done();
       });
   });
@@ -193,13 +193,30 @@ describe('Test manipulate  property', () => {
         done();
       });
   });
-
+  it('Should delete a user', (done) => {
+    chai.request(server)
+      .delete('/api/v2/users/1')
+      .set('Authorization', Token)
+      .end((_err, result) => {
+        result.should.have.status(201);
+        done();
+      });
+  });
   it('Should delete a property', (done) => {
     chai.request(server)
       .delete('/api/v2/property/10')
       .set('Authorization', Token)
       .end((_err, result) => {
-        result.should.have.status(400);
+        result.should.have.status(404);
+        done();
+      });
+  });
+  it('Should delete a user', (done) => {
+    chai.request(server)
+      .delete('/api/v2/users/10')
+      .set('Authorization', Token)
+      .end((_err, result) => {
+        result.should.have.status(404);
         done();
       });
   });

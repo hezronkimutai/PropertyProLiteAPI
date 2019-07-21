@@ -2,14 +2,13 @@ const validUser = {
   firstname: 'hezron',
   lastname: 'kimutai',
   username: 'hjiye',
-  email: 'hj@gmail.com',
+  email: 'hj@ppl.com',
   phonenumber: '8888888888',
   address: '979790790',
-  isadmin: true,
   password: 'rtTT45$ty@',
 };
 const validLoginUser = {
-  email: 'hj@gmail.com',
+  email: 'hj@ppl.com',
   password: 'rtTT45$ty@',
 };
 const inValidLoginUser = {

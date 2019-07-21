@@ -1,9 +1,10 @@
 import db from '../models/query'
 import Validator from '../helpers/Validator';
+import Schema from '../models/schemas';
 
 
 
-const postPropertiesController = async(res, req) => {
+const postPropertiesController = async(req, res) => {
  let validator = new Validator(req, res)
  if (!req.body.type
   || !req.body.price
@@ -13,7 +14,7 @@ const postPropertiesController = async(res, req) => {
   || !req.body.imageurl) {
 return res.status(400).json({ status: '400', Error: 'Please fill all the required req.body.' });
 }
- if (!validator.Property) {
+ if (!validator.Property()) {
     const propertyQuery = `INSERT INTO  properties(owner,
       price, state, city, address, type, imageurl)
       VALUES('${req.body.owner}', '${req.body.price}', '${req.body.state}',
@@ -163,73 +164,28 @@ const getPropertyTypeController = async(res, type) => {
   } 
 }
 
-const updatePropertyController = async(res, req, id, owner) => {
-    const confirmIfFoundProperty = `select * from properties where id = '${id}'`
-    if(isNaN(id)){
-      return res.status(405).json({
-        status: 405,
-        Error: "Method not allowed"
+const updatePropertyController = async(req, res, owner) => {
+  let schema = new Schema(req, res ,owner, "properties")
+    try{
+      if(isNaN(req.params.id)){
+        return res.status(405).json({
+          status: 405,
+          Error: "Method not allowed"
+        })
+      }
+      schema.update()    
+    }catch(err){
+      return res.status(500).json({
+        status:500,
+        Error: err
       })
     }
-  db.query(confirmIfFoundProperty, (err, result) => {
-    console.log(result.rows[0])
-          if(result === undefined || result.rows === 0 ){
-            return res.status(404).json({
-              status: 404,
-              Error: 'Property not found'
-            })
-          }
-          if(result.rows[0].owner === owner){
-            console.log(result.rows[0])
-            Object.keys(req.body).forEach((key) => {
-              const updateProperty = `UPDATE properties SET ${key} = '${req.body[key]}' where id = '${id}'`
-              db.query(updateProperty)
-            });
-            const confirmIfFound = `select * from properties where id = '${id}'`
-            db.query(confirmIfFound, (err, resut) => {
-              return res.status(201).json({
-                status: 201,
-                message: 'Property successfully updated',
-                data: resut.rows[0]
-              })
-            })
-                
-          }else{
-            res.status(401).json({
-              status:401,
-              Error: "Unauthorized"
-            })
-          }
-        })
- 
-};
+  }
 
-const  deletePropertyController = async(res, id, owner) => {
+const  deletePropertyController = async(req, res, owner) => {
+  let schema = new Schema(req, res ,owner, "properties")
   try{
-    const deletePropertyQuery = `DELETE FROM properties WHERE id='${id}'`
-    const thisUser = `select * from properties where id= '${id}'`
-    db.query(thisUser, (err, result) => {
-      if(result === undefined || result.rows.length === 0){
-        return res.status(401).json({
-          status: 400,
-          Error: 'Property not found'
-        })
-      }
-      if(result.rows[0].owner === owner){
-        db.query(deletePropertyQuery, (err, result) => {
-          return res.status(201).json({
-            status: '201',
-            message: 'properties deleted succesfully'
-          })
-        })
-      }else{
-        res.status(401).json({
-          status:401,
-          Error: "Unauthorized"
-        })
-      }
-    })
-    
+    schema.delete()    
   }catch(err){
     return res.status(500).json({
       status:500,

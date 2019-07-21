@@ -7,7 +7,7 @@ const properties = express.Router()
 
 properties.post('/', middleware.checkToken, middleware.asyncHandler(async(req, res) => {
   req.body.owner = jwt.decode(middleware.Token.token).id
-  controller.postPropertiesController(res, req)
+  controller.postPropertiesController(req, res)
 }));
 
 properties.post('/:id', middleware.checkToken, middleware.asyncHandler(async(req, res) => {
@@ -27,14 +27,14 @@ properties.get('/type/:type', middleware.asyncHandler(async (req, res) => {
 }));
 
 properties.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.updatePropertyController(res, req.body, req.params.id, jwt.decode(middleware.Token.token).id)
+  controller.updatePropertyController(req, res, jwt.decode(middleware.Token.token).id)
 }));
 properties.put('/:id/sold', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   controller.updatePropertyController(res, { status:"sold" }, req.params.id, jwt.decode(middleware.Token.token).id)
 }));
 
 properties.delete('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.deletePropertyController(res, req.params.id, jwt.decode(middleware.Token.token).id)
+  controller.deletePropertyController(req, res, jwt.decode(middleware.Token.token).id)
 }));
 
 export default properties;
