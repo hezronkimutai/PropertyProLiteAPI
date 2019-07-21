@@ -7,7 +7,7 @@ const users = express.Router()
 
 users.get('/users',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
-    return controller.getUsersController(res)
+    return controller.getUsersController(req, res)
   }else{
     return res.status(401).json({
       status:401,
@@ -18,7 +18,7 @@ users.get('/users',  middleware.checkToken, middleware.asyncHandler(async (req, 
 
 users.get('/users/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
   if (jwt.decode(middleware.Token.token).isadmin) {
-    return controller.  getUserController(res, req.params.id)
+    return controller.  getUserController(req, res)
   }else{
     return res.status(401).json({
       status:401,
@@ -28,10 +28,10 @@ users.get('/users/:id', middleware.checkToken, middleware.asyncHandler(async (re
 }))
 
 users.post('/auth/signup', middleware.asyncHandler(async (req, res) => {
-  controller.signupUserController(res, req.body)
+  controller.signupUserController(req, res)
 }))
 users.post('/auth/resetpassword', middleware.asyncHandler(async (req, res) => {
-  controller.resetPassword(res, req.body.email)
+  controller.resetPassword(req, res)
 }))
 
 users.put('/auth/signout', middleware.asyncHandler(async (req, res) => {
@@ -43,15 +43,15 @@ users.put('/auth/signout', middleware.asyncHandler(async (req, res) => {
 }))
 
 users.post('/auth/signin', middleware.asyncHandler(async (req, res) => {
-  controller.signinUserController(res, req.body)
+  controller.signinUserController(req, res)
 }))
 
 users.patch('/users/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.updateUserController(res, req.body, req.params.id)
+  controller.updateUserController(req, res)
 }))
 
 users.delete('/users/:id',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.deleteUserController(res, req.params.id)
+  controller.deleteUserController(req, res)
 }))
 
 export default users;

@@ -1,23 +1,23 @@
 import db from '../models/query'
-import format from 'pg-format';
-import validator from '../helpers/propertyValidator';
-import vaalidator from '../helpers/flagValidator';
+import Validator from '../helpers/Validator';
 
 
 
-const postPropertiesController = async(res, inputs) => {
-  if (!inputs.type || !inputs.price ||
-      !inputs.state || !inputs.city || !inputs.address ||!inputs.imageurl) {
-    return res.status(409).json({
-      status: '409',
-      Error: 'Please fill all the required inputs.'
-    })
-  }
- if (!validator.propertyValidator(res, inputs)) {
+const postPropertiesController = async(res, req) => {
+ let validator = new Validator(req, res)
+ if (!req.body.type
+  || !req.body.price
+  || !req.body.state
+  || !req.body.city
+  || !req.body.address
+  || !req.body.imageurl) {
+return res.status(400).json({ status: '400', Error: 'Please fill all the required req.body.' });
+}
+ if (!validator.Property) {
     const propertyQuery = `INSERT INTO  properties(owner,
       price, state, city, address, type, imageurl)
-      VALUES('${inputs.owner}', '${inputs.price}', '${inputs.state}',
-       '${inputs.city}', '${inputs.address}', '${inputs.type}', '${inputs.imageurl}')`;
+      VALUES('${req.body.owner}', '${req.body.price}', '${req.body.state}',
+       '${req.body.city}', '${req.body.address}', '${req.body.type}', '${req.body.imageurl}')`;
   
       db.query(propertyQuery, (err, result) => {
         if(err){
@@ -26,7 +26,7 @@ const postPropertiesController = async(res, inputs) => {
         res.status(201).json({
           status: '201',
           message: 'Property created Succesfully',
-          data:inputs
+          data:req.body
         })
       })
      
@@ -34,19 +34,19 @@ const postPropertiesController = async(res, inputs) => {
 
 }
 }
-const postFlagController = async(res, inputs,id, owner) => {
+const postFlagController = async(res, req, owner) => {
+  let validator = new Validator(req, res)
   try{
-    if (!inputs.reason || !inputs.description || !inputs.mappoints) {
+    if (!req.body.reason || !req.body.description || !req.body.mappoints) {
       return res.status(400).json({
         status: '400',
-        Error: 'Please fill all the required inputs.'
+        Error: 'Please fill all the required req.body.'
       })
     }
-     if (!vaalidator.flagValidator(res, inputs, id)) {
-
-      const thisFlag = `select * from flags where propertyid = '${id}'`
+     if (!validator.Flag()) {
+      const thisFlag = `select * from properties where id = '${req.params.id}'`
       const flagQuery = `INSERT INTO  flags(reason, description, mappoints, propertyid)
-      VALUES('${inputs.reason}','${inputs.description}', '${inputs.mappoints}', '${id}')`;
+      VALUES('${req.body.reason}','${req.body.description}', '${req.body.mappoints}', '${req.params.id}')`;
       db.query(thisFlag, (err, result) => {
         if(result === undefined || result.rows.length === 0){
           return res.status(404).json({
@@ -163,7 +163,7 @@ const getPropertyTypeController = async(res, type) => {
   } 
 }
 
-const updatePropertyController = async(res, inputs, id, owner) => {
+const updatePropertyController = async(res, req, id, owner) => {
     const confirmIfFoundProperty = `select * from properties where id = '${id}'`
     if(isNaN(id)){
       return res.status(405).json({
@@ -181,8 +181,8 @@ const updatePropertyController = async(res, inputs, id, owner) => {
           }
           if(result.rows[0].owner === owner){
             console.log(result.rows[0])
-            Object.keys(inputs).forEach((key) => {
-              const updateProperty = `UPDATE properties SET ${key} = '${inputs[key]}' where id = '${id}'`
+            Object.keys(req.body).forEach((key) => {
+              const updateProperty = `UPDATE properties SET ${key} = '${req.body[key]}' where id = '${id}'`
               db.query(updateProperty)
             });
             const confirmIfFound = `select * from properties where id = '${id}'`

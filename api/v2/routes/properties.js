@@ -7,12 +7,11 @@ const properties = express.Router()
 
 properties.post('/', middleware.checkToken, middleware.asyncHandler(async(req, res) => {
   req.body.owner = jwt.decode(middleware.Token.token).id
-  console.log("fuiehiufhiueh",req.body.owner)
-  controller.postPropertiesController(res, req.body)
+  controller.postPropertiesController(res, req)
 }));
 
 properties.post('/:id', middleware.checkToken, middleware.asyncHandler(async(req, res) => {
-  controller.postFlagController(res, req.body,req.params.id, jwt.decode(middleware.Token.token).id)
+  controller.postFlagController(res, req, jwt.decode(middleware.Token.token).id)
 }));
 
 properties.get('/', middleware.asyncHandler(async (req, res) => {
