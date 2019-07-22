@@ -42,14 +42,6 @@ users.put('/auth/signout', middleware.asyncHandler(async (req, res) => {
   })
 }))
 
-users.put('/auth/signout', middleware.asyncHandler(async (req, res) => {
-  middleware.Token.token = '';
-  return res.status(201).json({
-    status:201,
-    message: "logged out succesfully"
-  })
-}))
-
 users.post('/auth/signin', middleware.asyncHandler(async (req, res) => {
   controller.signinUserController(req, res)
 }))

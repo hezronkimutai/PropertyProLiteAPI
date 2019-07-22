@@ -23,57 +23,37 @@ const token = jwt.sign(
 },
   config,
   { expiresIn: '24h',},);
-const Token = `Bearer ${  token}`;
+
 
 const should = chai.should();
 chai.use(chaiHttp);
 
-describe('User login', () => {
+const tk = {tk:""}
+const Token = `Bearer ${  token}`;
+describe('Signup a user', () => {
   it('Should add user to the db', (done) => {
     chai.request(server)
       .post('/api/v2/auth/signup/')
       .send(users.validUser)
       .end((_err, res) => {
-        console.log("-----------------",res.body)
+        tk.tk =res.body.data.token
         res.should.have.status(201);
         done();
       });
   });
-
-  it('Should login a user with valid credentials', (done) => {
-    chai.request(server)
-      .post('/api/v2/auth/signin')
-      .send(users.validLoginUser)
-      .end((_err, result) => {
-       
-        result.should.have.status(201);
-        done();
-      });
-  });
-  it('Should not login a user with invalid credentials', (done) => {
-    chai.request(server)
-      .post('/api/v2/auth/signin')
-      .send(users.inValidLoginUser)
-      .end((_err, result) => {
-        result.should.have.status(400);
-        done();
-      });
-  });
-});
-
-describe('Signup a user', () => {
-
   it('Should not add null user to the db', (done) => {
+    
     chai.request(server)
       .post('/api/v2/auth/signup/')
-      .send(users.nullUser)
+      .send({})
       .end((_err, res) => {
         res.should.have.status(400);
         done();
       });
+     
   });
+ 
   it('Should not add a user with an invalid username to the database', (done) => {
-
     chai.request(server)
       .post('/api/v2/auth/signup/')
       .send(users.inValidNameUser)
@@ -112,6 +92,27 @@ describe('Signup a user', () => {
       });
   });
 });
+describe('User login', () => {
+  it('Should login a user with valid credentials', (done) => {
+    chai.request(server)
+      .post('/api/v2/auth/signin')
+      .send(users.validLoginUser)
+      .end((_err, result) => {
+       
+        result.should.have.status(201);
+        done();
+      });
+  });
+  it('Should not login a user with invalid credentials', (done) => {
+    chai.request(server)
+      .post('/api/v2/auth/signin')
+      .send(users.inValidLoginUser)
+      .end((_err, result) => {
+        result.should.have.status(400);
+        done();
+      });
+  });
+});
 
 describe('Test fetch users', () => {
   it('Should Fecth all the users', (done) => {
@@ -137,7 +138,7 @@ describe('Test fetch users', () => {
       .get('/api/v2/users/10')
       .set('Authorization', Token)
       .end((_err, result) => {
-        result.should.have.status(400);
+        result.should.have.status(404);
         done();
       });
   });
@@ -155,41 +156,18 @@ describe('Test manipulte a user', () => {
       });
   });
 
-  it('Should delete a user', (done) => {
-    chai.request(server)
-      .delete('/api/v2/users/1')
-      .set('Authorization', Token)
-      .end((_err, result) => {
-        result.should.have.status(201);
-        done();
-      });
-  });
-  it('Should delete a user', (done) => {
-    chai.request(server)
-      .delete('/api/v2/users/10')
-      .set('Authorization', Token)
-      .end((_err, result) => {
-        result.should.have.status(400);
-        done();
-      });
-  });
+
+
 });
 
-describe('Test all 404 and 500', () => {
-  it('Should catch all 404', (done) => {
+describe('Test all 403', () => {
+  it('Should catch all 403', (done) => {
     chai.request(server)
       .get('/')
       .end((_err, result) => {
-        result.should.have.status(500);
+        result.should.have.status(403);
         done();
       });
   });
-  it('Should catch all 500', (done) => {
-    chai.request(server)
-      .get('/api/v2/users-fivehundred')
-      .end((_err, result) => {
-        result.should.have.status(500);
-        done();
-      });
-  });
+
 });
