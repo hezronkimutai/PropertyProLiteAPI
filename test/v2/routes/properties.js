@@ -35,6 +35,17 @@ describe('Post a Property', () => {
       });
   });
 
+  it('Should add a valid property to the db', (done) => {
+    chai.request(server)
+      .post('/api/v2/property/')
+      .set('Authorization', Token)
+      .send(properties.validProperty)
+      .end((_err, res) => {
+        res.should.have.status(201);
+        done();
+      });
+  });
+
   it('Should not add property with invalid category to the db', (done) => {
     chai.request(server)
       .post('/api/v2/property/')
@@ -142,6 +153,15 @@ describe('Fetch  properties', () => {
       });
   });
 
+  it('Should Fecth a single property', (done) => {
+    chai.request(server)
+      .get('/api/v2/property/10')
+      .end((_err, result) => {
+        result.should.have.status(400);
+        done();
+      });
+  });
+
   it('Should Fecth a single property type properties', (done) => {
     chai.request(server)
       .get('/api/v2/property/type/Electronics')
@@ -170,6 +190,16 @@ describe('Test manipulate  property', () => {
       .set('Authorization', Token)
       .end((_err, result) => {
         result.should.have.status(201);
+        done();
+      });
+  });
+
+  it('Should delete a property', (done) => {
+    chai.request(server)
+      .delete('/api/v2/property/10')
+      .set('Authorization', Token)
+      .end((_err, result) => {
+        result.should.have.status(400);
         done();
       });
   });
