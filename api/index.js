@@ -13,8 +13,8 @@ app.use((req, res, next) => {
   next(err);
 });
 app.use((err, req, res, next) => {
-  res.status(err.status || 500).json({
-    status:500,
+  res.status(err.status || 403).json({
+    status:403,
     Error: err.message,
   });
 });
