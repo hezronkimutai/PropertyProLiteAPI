@@ -69,8 +69,8 @@ class UserController {
       })
     }
   }
-  signupUserController(){
-  let schema = new Schema(this.req, this.res, "users")
+signupUserController(){
+  
   let validator = new Validator(this.req, this.res)
   if (!this.req.body.firstname
     || !this.req.body.lastname

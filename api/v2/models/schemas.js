@@ -1,50 +1,41 @@
-/* eslint-disable no-shadow */
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import db from './query';
 
 dotenv.config();
-const config = process.env.secret;
 
 class Schema {
-  constructor(req, res, owner, table) {
+  constructor(req, condition, conditionValue, table) {
     this.req = req;
-    this.res = res;
+    this.condition = condition;
+    this.conditionValue = conditionValue;
     this.table = table;
-    this.owner = owner;
   }
 
-  signup() {
-
+  create() {
+    Object.keys(this.req.body).forEach((key) => {
+      db.query(`INSERT INTO  ${this.table} (${key}) VALUES('${this.req.body[key]}')`);
+    });
   }
 
-  signin() {
+  getAll() {
+    db.query(`select * from ${this.table}`, (_err, result) => result.rows);
+  }
 
+ getConditioned() {
+       db.query(`select * from ${this.table} where ${this.condition} = '${this.conditionValue}'`, async (err, res)=>{
+        return  res.rows;
+  
+     });
   }
 
   update() {
-
-  }
-
-  updateu() {
-
-  }
-
-  deleteu() {
-
+    Object.keys(this.req.body).forEach((key) => {
+      db.query(`UPDATE ${this.table} SET ${key} = '${this.req.body[key]}' where id = '${this.req.params.id}'`);
+    });
   }
 
   delete() {
-
-  }
-
-  get() {
-
-  }
-
-  post() {
-
+    db.query(`DELETE FROM ${this.table} WHERE ${this.condition} = '${this.conditionValue}'`);
   }
 }
 
