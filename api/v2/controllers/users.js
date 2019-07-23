@@ -102,14 +102,17 @@ if (!req.body.firstname
               Error: 'A user with the same credentials exists',
             });
           }
-          delete req.body.password;
-          req.body.token = jwt.sign(req.body, config, { expiresIn: '24h' });
+          
           await db.query(userQuery, async(_err, result) => {
-            res.status(201).json({
-              status: 201,
-              message: 'User successfully created',
-              data: req.body,
-            });
+            await db.query(emailQuery, async(err, resss) => {
+              delete resss.rows[0].password;
+              resss.rows[0].token = jwt.sign(resss.rows[0], config, { expiresIn: '24h' });
+              res.status(201).json({
+                status: 201,
+                message: 'User successfully created',
+                data: resss.rows[0],
+              });
+            })  
           });
         });
       });
@@ -118,7 +121,6 @@ if (!req.body.firstname
 
 }
 const signinUserController = async(req, res)=>{
-  let schema = new Schema(req, res, "users")
   try{
     if(!req.body.email && !req.body.password){
     return this.res.status(400).json({
@@ -126,7 +128,27 @@ const signinUserController = async(req, res)=>{
     });
     
   }
-  schema.signin()   
+  const loginQuery = `select * from users where email= '${this.req.body.email}'`;
+  db.query(loginQuery, (_err, result) => {
+    if (result.rows.length === 0 || result === undefined) {
+      return this.res.status(400).json({
+        status: 400,
+        message: 'Invalreq.params.id credentials',
+      });
+    }
+    if (bcrypt.compareSync(this.req.body.password, result.rows[0].password)) {
+      const token = jwt.sign(result.rows[0], config, { expiresIn: '24h' });
+      return this.res.status(201).json({
+        status: 201,
+        message: 'user Succesfully logged in',
+        token,
+      });
+    }
+    return this.res.status(400).json({
+      status: 400,
+      Error: 'Invalreq.params.id credentials',
+    });
+  });   
   }catch(err){
     return res.status(500).json({
       status:500,
@@ -136,7 +158,6 @@ const signinUserController = async(req, res)=>{
  
 }
 const updateUserController = async(req, res) => {
-  let schema = new Schema(req, res , "users")
   try{
     if(isNaN(req.params.id)){
       return res.status(405).json({
@@ -144,7 +165,25 @@ const updateUserController = async(req, res) => {
         Error: "Method not allowed"
       })
     }
-    schema.updateu()    
+    const confirmIfFoundProperty = `select * from users where id = '${this.req.params.id}'`;
+    db.query(confirmIfFoundProperty, (_err, result) => {
+      if (result === undefined || result.rows === 0) {
+        return this.res.status(404).json({
+          status: 404,
+          Error: 'Property not found',
+        });
+      }
+      Object.keys(this.req.body).forEach((key) => {
+        const updateProperty = `UPDATE users SET ${key} = '${this.req.body[key]}' where id = '${this.req.params.id}'`;
+        db.query(updateProperty);
+      });
+      const confirmIfFound = `select * from users where id = '${this.req.params.id}'`;
+      db.query(confirmIfFound, (_err, resut) => this.res.status(201).json({
+        status: 201,
+        message: 'Property successfully updated',
+        data: resut.rows[0],
+      }));
+    });    
   }catch(err){
     return res.status(500).json({
       status:500,
@@ -153,9 +192,21 @@ const updateUserController = async(req, res) => {
   }
 }
 const deleteUserController = (req, res) => {
-  let schema = new Schema(req, res , "users")
   try{
-    schema.deleteu()    
+    const deletePropertyQuery = `DELETE FROM users WHERE id='${this.req.params.id}'`;
+    const thisUser = `select * from users where id= '${this.req.params.id}'`;
+    db.query(thisUser, (_err, result) => {
+      if (result === undefined || result.rows.length === 0) {
+        return this.res.status(404).json({
+          status: 404,
+          Error: 'Property not found',
+        });
+      }
+      db.query(deletePropertyQuery, (_err, _result) => this.res.status(201).json({
+        status: '201',
+        message: 'properties deleted succesfully',
+      }));
+    });    
   }catch(err){
     return res.status(500).json({
       status:500,

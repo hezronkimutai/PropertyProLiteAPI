@@ -3,6 +3,7 @@ import controller from '../controllers/users';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
+
 const users = express.Router()
 
 users.get('/users',  middleware.checkToken, middleware.asyncHandler(async (req, res) => {
