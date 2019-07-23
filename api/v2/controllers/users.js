@@ -186,14 +186,15 @@ class UserController {
         Object.keys(this.req.body).forEach((key) => {
           const updateProperty = `UPDATE users SET ${key} = '${this.req.body[key]}' where id = '${this.req.params.id}'`;
           db.query(updateProperty);
-        });
-        delete resut.rows[0].password;
-        const confirmIfFound = `select * from users where id = '${this.req.params.id}'`;
-        db.query(confirmIfFound, (_err, resut) => this.res.status(201).json({
+        });   
+        const confirmIfFound = `select * from users where id = '${this.req.params.id}'`;     
+        db.query(confirmIfFound, (_err, resut) => {
+          delete resut.rows[0].password;
+          this.res.status(201).json({
           status: 201,
           message: 'Property successfully updated',
           data: resut.rows[0],
-        }));
+        })});
       } 
       });  
      
