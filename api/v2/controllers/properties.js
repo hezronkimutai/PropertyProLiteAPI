@@ -139,15 +139,9 @@ const getPropertyTypeController = async(res, type) => {
     const propertyQuery = `SELECT * from properties WHERE type ='${type}'`
     db.query(propertyQuery, (err, result) => {
       if(result === undefined || result.rows.length === 0 ){
-        return res.status(400).json({
-          status:400,
+        return res.status(404).json({
+          status:404,
           Error: "Property not found"
-        })
-      }
-      if (err) {
-        res.status(500).json({
-          status:"500",
-          Error: "Internal server error"
         })
       }
       res.status(200).json({

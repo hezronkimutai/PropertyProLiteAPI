@@ -30,7 +30,8 @@ properties.patch('/:id', middleware.checkToken, middleware.asyncHandler(async (r
   controller.updatePropertyController(req, res, jwt.decode(middleware.Token.token).id)
 }));
 properties.put('/:id/sold', middleware.checkToken, middleware.asyncHandler(async (req, res) => {
-  controller.updatePropertyController(res, { status:"sold" }, req.params.id, jwt.decode(middleware.Token.token).id)
+  req.body.status = 'sold'
+  controller.updatePropertyController(req, res, jwt.decode(middleware.Token.token).id)
 }));
 
 properties.delete('/:id', middleware.checkToken, middleware.asyncHandler(async (req, res) => {

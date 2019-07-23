@@ -163,8 +163,8 @@ const deleteUserController = (req, res) => {
     })
   }
 }
-const resetPassword = async(res, to) => {
-  return res.status(201).json(await validatePassword(to))
+const resetPassword = async(req, res) => {
+  return res.status(201).json(await validatePassword(req.body.email))
 }
 export default {
   resetPassword,
